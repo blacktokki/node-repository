@@ -1,8 +1,8 @@
 const request= require("axios");
 const cheerio= require("cheerio");
 const fs=require("fs");
-//페이지목록 1~287
-for (let ii=1;ii<=287;ii++){
+//페이지목록 1~293
+for (let ii=1;ii<=293;ii++){
   setTimeout(()=>{
     request("http://www.jobkorea.co.kr/starter/PassAssay?Page="+ii).then(html=>{
       const $=cheerio.load(html.data);
@@ -12,7 +12,7 @@ for (let ii=1;ii<=287;ii++){
         const link=$(this).find("a.logo").attr("href");
         const num=parseInt(link.replace("/starter/PassAssay/View/",""));
 
-        fs.stat("./page1/"+num+".json", function(err, stat) {
+        fs.stat("./crawler/page1/"+num+".json", function(err, stat) {
           if (err==null){
             console.log(ii+" ["+num+"] skip");
           }
@@ -51,7 +51,7 @@ for (let ii=1;ii<=287;ii++){
               return data;
             }).then(data=>{
               //console.log(JSON.stringify(data, null, '\t'));
-              fs.writeFile( "./page1/"+num+".json", JSON.stringify(data, null, '\t'), "utf8",()=>{});
+              fs.writeFile( "./crawler/page1/"+num+".json", JSON.stringify(data, null, '\t'), "utf8",()=>{});
               console.log(ii+" ["+num+"] finish");
             }).catch(function (err) {
               console.error(err); // Error 출력
@@ -63,5 +63,5 @@ for (let ii=1;ii<=287;ii++){
         });
       });
     });
-  },200*ii);
+  },1500*ii);
 }

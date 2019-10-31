@@ -1,8 +1,8 @@
 const request= require("axios");
 const cheerio= require("cheerio");
 const fs=require("fs");
-//페이지목록 1~247
-for (let ii=1;ii<=247;ii++){
+//페이지목록 1~256
+for (let ii=1;ii<=256;ii++){
   setTimeout(()=>{
     request("http://www.saramin.co.kr/zf_user/public-recruit/coverletter-list/page/"+ii+"?pass_status=y").then(html=>{
       const $=cheerio.load(html.data);
@@ -10,7 +10,7 @@ for (let ii=1;ii<=247;ii++){
       $selflist.each(function(i,elem){
         const link=$(this).find("td.td_apply_subject a").attr("href");
         const num=parseInt(link.replace("/zf_user/public-recruit/coverletter?real_seq=",""));
-        fs.stat("./page2/"+num+".json", function(err, stat) {
+        fs.stat("./crawler/page2/"+num+".json", function(err, stat) {
           if (err==null){
             console.log(ii+" ["+num+"] skip");
           }
@@ -45,7 +45,7 @@ for (let ii=1;ii<=247;ii++){
               return data;
             }).then(data=>{
               //console.log(JSON.stringify(data, null, '\t'));
-              fs.writeFile( "./page2/"+num+".json", JSON.stringify(data, null, '\t'), "utf8",()=>{});
+              fs.writeFile( "./crawler/page2/"+num+".json", JSON.stringify(data, null, '\t'), "utf8",()=>{});
               console.log(ii+" ["+num+"] finish");
             }).catch(function (err) {
               console.error(err); // Error 출력
