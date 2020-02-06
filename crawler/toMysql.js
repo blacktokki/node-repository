@@ -19,9 +19,12 @@ fs.readdir(pg, function(error, filelist){
         console.log(fname);
         const obj=JSON.parse(data);
         obj.qna.forEach(function(ele,i2){
-          var sql = 'INSERT INTO intro(dept,company,question,answer,user_id,edit_date)'+
-            'VALUES(?,?,?,?,?,?)';
-          var params = [obj.pos,obj.comp,ele.question ,ele.answer,obj.author,obj.edit_date];
+          var sql = 'INSERT INTO intro(dept,company,question,answer,user_id,state,edit_date)'+
+            'VALUES(?,?,?,?,?,?,?)';
+          var text=ele.text
+            .replace("\n                            \n                                                            ","")
+            .replace("                                                                 \n                                                            \n                                                            \n                            \n                        ","");
+          var params = [obj.pos,obj.comp,ele.question ,text,obj.author,"미작성",obj.edit_date];
           //console.log(params);
           conn.query(sql,params,function(err,rows,fields) {
             if(err){
