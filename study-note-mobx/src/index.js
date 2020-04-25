@@ -4,6 +4,12 @@ import './index.css';
 import App from './App';
 import 'mobx-react-lite/batchingForReactDom'
 import { Provider } from 'mobx-react';
+import 'jquery-sparkline';
+import 'summernote';
+import 'jquery-sparkline';
+//import 'chart.js';
+//import 'owl.carouse';
+
 import Store from 'store/index';
 import * as serviceWorker from './serviceWorker';
 
