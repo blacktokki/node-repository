@@ -1,18 +1,8 @@
-import {decorate, observable, action } from 'mobx';
+import CounterStore from './counter'
+import NoteStore from './note'
 export default class Store {
-  number = 0;
-  
-  increase = () => {
-    this.number++;
-  }
-
-  decrease = () => {
-    this.number--;
+  constructor(){
+    this.counter = new CounterStore(this);
+    this.notes = new NoteStore(this);
   }
 }
-
-decorate(Store, {
-    number: observable,
-    increase: action,
-    decrease: action
-})

@@ -13,7 +13,32 @@ function Left() {
                 <a href="index.html">St</a>
             </div>
             <ul className="sidebar-menu">
-                <li className="menu-header">Dashboard</li>
+                <li>
+                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/"}>
+                        <i className="far fa-square"></i> 
+                        <span>Home</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/option"}>
+                        <i className="far fa-square"></i> 
+                        <span>Option</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note/new"}>
+                        <i className="far fa-square"></i>
+                        <span>New Note</span>
+                    </NavLink>
+                </li>
+                <li className="menu-header"><hr/></li>
+                <li>
+                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note"}>
+                        <i className="far fa-square"></i>
+                        <span>Notes</span>
+                    </NavLink>
+                </li>
+                {/*
                 <li className="nav-item dropdown active">
                     <a href="!#" className="nav-link has-dropdown">
                         <i className="fas fa-fire"></i>
@@ -24,6 +49,7 @@ function Left() {
                         <li><NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/about"}>About</NavLink></li>
                     </ul>
                 </li>
+                */}
             </ul>
             <div className="mt-4 mb-4 p-3 hide-sidebar-mini">
             <a href="https://getstisla.com/docs" className="btn btn-primary btn-lg btn-block btn-icon-split">
