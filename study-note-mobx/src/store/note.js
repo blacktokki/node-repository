@@ -1,31 +1,44 @@
-import {decorate, observable, action } from 'mobx';
-import CardStore from './card'
+import {decorate, observable, action} from 'mobx';
 export default class NoteStore {
-  constructor(){
-    this.notes = [{
-        title:"배",
-        cards:new CardStore(this)
-      }
+  constructor(root){
+    this.root = root
+    this.title = '제목'
+    this.changed = {}
+    this.cards = [
     ]
   }
-  
-  increase = () => {
-    this.notes.push(
-      {
-        title:"배"+this.notes.length,
-        cards:new CardStore(this)
-      }
-    );
+
+  handleTitle = (title)=>{
+    this.title = title
   }
 
-  decrease = (title) => {
-    const note = this.notes.find(note => note.title === title);
-    this.notes.remove(note);
+  handleChanged = () =>{
+    this.changed = {}
+  }
+
+  addCard = (idx) =>{
+    this.cards.splice(idx,0,[{}])
+    this.handleCard(idx,"name","")
+    this.handleCard(idx,"value","")
+  }
+
+  handleCard = (idx,key,value)=> {
+    this.cards[idx][key] = value
+    this.handleChanged()
+  }
+
+  removeCard = (idx) => {
+    this.cards.remove(this.cards[idx]);
   }
 }
 
 decorate(NoteStore, {
-    notes: observable,
-    increase: action,
-    decrease: action
+    cards: observable,
+    title:observable,
+    changed:observable,
+    handleTitle:action,
+    handleChanged:action,
+    addCard: action,
+    handleCard:action,
+    removeCard: action
 })
