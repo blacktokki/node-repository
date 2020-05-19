@@ -3,7 +3,7 @@ export default class NoteStore {
   constructor(root){
     this.root = root
     this.title = '제목'
-    this.changed = {}
+    this.changed = -1
     this.cards = [
     ]
     this.is_scroll = false
@@ -13,8 +13,8 @@ export default class NoteStore {
     this.title = title
   }
 
-  handleChanged = () =>{
-    this.changed = {}
+  handleChanged = (idx) =>{
+    this.changed = idx
   }
 
   addCard = (idx) =>{
@@ -27,7 +27,7 @@ export default class NoteStore {
 
   handleCard = (idx,key,value)=> {
     this.cards[idx][key] = value
-    this.handleChanged()
+    this.handleChanged(idx)
   }
 
   removeCard = (idx) => {
