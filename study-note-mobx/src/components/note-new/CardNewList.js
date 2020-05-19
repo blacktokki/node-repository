@@ -1,15 +1,9 @@
-import React, {useRef, useEffect } from 'react';
+import React,{ useEffect } from 'react';
 import { observer,inject } from 'mobx-react';
 import CardNew  from './CardNew';
 
-const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)   
-const useMountEffect = (fun) => useEffect(fun, [])
-
 export default inject("note")(
   observer(({note})=>{
-    const myRef = useRef(null)
-    useMountEffect(() => scrollToRef(myRef)) // Scroll on mount
-    
     const results = note.cards.map(
       (card,idx) => {
         //console.log(card);
@@ -25,11 +19,18 @@ export default inject("note")(
         );
       }
     );
+    
+    useEffect(() => {
+      if(note.is_scroll){
+        window.scrollTo(0,document.body.scrollHeight);
+        note.is_scroll = false
+      }
+    });
 
     return (
     <div data-changed={note.changed}>
       {results}
-      <button ref={myRef} onClick={(event) => {/*scrollToRef(myRef);*/note.addCard(note.cards.length)}}>+++</button>
+      <button onClick={(event) => {note.addCard(note.cards.length);}}>+++</button>
     </div>
 
     );

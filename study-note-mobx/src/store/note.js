@@ -6,6 +6,7 @@ export default class NoteStore {
     this.changed = {}
     this.cards = [
     ]
+    this.is_scroll = false
   }
 
   handleTitle = (title)=>{
@@ -17,6 +18,8 @@ export default class NoteStore {
   }
 
   addCard = (idx) =>{
+    if (idx===this.cards.length)
+      this.is_scroll = true
     this.cards.splice(idx,0,[{}])
     this.handleCard(idx,"name","")
     this.handleCard(idx,"value","")
