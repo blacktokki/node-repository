@@ -1,6 +1,7 @@
 import React,{ useState ,useEffect } from 'react';
+import {SortableElement} from 'react-sortable-hoc';
 
-export default (props)=>{
+export default SortableElement((props)=>{
   const [name,setName] = useState(props.name)
   const [value,setValue] = useState(props.value)
   
@@ -28,7 +29,6 @@ export default (props)=>{
         <input type='text' value={value} onChange={handleValue}/>{/*props.value*/}
         <button onClick={(event) => {props.onRemove(props.idx);}}>---</button>
       </div>
-      
     </div>
   );
-}
+})

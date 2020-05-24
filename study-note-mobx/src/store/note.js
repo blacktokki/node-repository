@@ -20,9 +20,20 @@ export default class NoteStore {
   addCard = (idx) =>{
     if (idx===this.cards.length)
       this.is_scroll = true
-    this.cards.splice(idx,0,[{}])
+    this.cards.splice(idx,0,{})
     this.handleCard(idx,"name","")
     this.handleCard(idx,"value","")
+  }
+
+  replaceCard= (oldIndex,newIndex)=>{
+    const card = {
+      'name':this.cards[oldIndex].name,
+      'value':this.cards[oldIndex].value
+    }
+    this.removeCard(oldIndex)
+    this.addCard(newIndex)
+    this.handleCard(newIndex,"name",card.name)
+    this.handleCard(newIndex,"value",card.value)
   }
 
   handleCard = (idx,key,value)=> {
@@ -42,6 +53,7 @@ decorate(NoteStore, {
     handleTitle:action,
     handleChanged:action,
     addCard: action,
+    replaceCard:action,
     handleCard:action,
     removeCard: action
 })

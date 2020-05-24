@@ -1,25 +1,35 @@
 import React,{ useEffect } from 'react';
 import { observer,inject } from 'mobx-react';
+import {SortableContainer} from 'react-sortable-hoc';
 import CardNew  from './CardNew';
+
+const Results = SortableContainer(({items,onCreate, onRemove, onHandle}) => {
+  return(
+    <div>
+      {
+        items.map(
+          (item,idx) => (
+            <CardNew 
+              {...item}
+              key={idx}
+              index={idx}
+              idx={idx}
+              onCreate={onCreate}
+              onRemove={onRemove}
+              onHandle={onHandle}
+            />
+          )
+        )
+      }
+    </div>
+  )
+});
 
 export default inject("note")(
   observer(({note})=>{
-    const results = note.cards.map(
-      (card,idx) => {
-        //console.log(card);
-        return(
-        <CardNew 
-          {...card}
-          key={idx}
-          idx={idx}
-          onCreate={note.addCard}
-          onRemove={note.removeCard}
-          onHandle={note.handleCard}
-        />
-        );
-      }
-    );
-    
+    const onSortEnd = ({oldIndex, newIndex}) => {
+      note.replaceCard(oldIndex, newIndex)
+    };
     useEffect(() => {
       if(note.is_scroll){
         window.scrollTo(0,document.body.scrollHeight);
@@ -29,7 +39,12 @@ export default inject("note")(
 
     return (
     <div data-changed={note.changed}>
-      {results}
+      <Results items={note.cards}
+        onCreate={note.addCard}
+        onRemove={note.removeCard}
+        onHandle={note.handleCard}
+        onSortEnd={onSortEnd}
+      />
       <button onClick={(event) => {note.addCard(note.cards.length);}}>+++</button>
     </div>
 
