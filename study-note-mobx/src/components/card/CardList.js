@@ -48,7 +48,7 @@ export default inject("card")(
         {results}
       </Results>
       <button onClick={(event) => {card.addCard(card.cards.length);}}>+++</button>
-    <button> onClick={save}</button>
+      <button onClick={save}>저장</button>
     </div>
     );
   }

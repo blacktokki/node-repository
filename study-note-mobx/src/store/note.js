@@ -11,10 +11,12 @@ export default class NoteStore {
     this.noteId += 1
     note.id = this.noteId
     this.notes.push(note);
+    console.log(this.notes)
   }
 
   handleNote = (idx,note)=> {
     this.notes[idx] = note
+    console.log(this.notes)
   }
 
   removeNote = (id) => {
