@@ -10,13 +10,23 @@ export default class NoteStore {
   addNote = (note) => {
     this.noteId += 1
     note.id = this.noteId
-    this.notes.push(note);
-    console.log(this.notes)
+    const _note = {
+      'id': note.id,
+      'title': note.title,
+      'cards': JSON.stringify(note.cards),
+      'len' : note.cards.length
+    }
+    this.notes.push(_note);
   }
 
   handleNote = (idx,note)=> {
-    this.notes[idx] = note
-    console.log(this.notes)
+    const _note = {
+      'id': idx,
+      'title': note.title,
+      'cards': JSON.stringify(note.cards),
+      'len' : note.cards.length
+    }
+    this.notes[idx] = _note
   }
 
   removeNote = (id) => {

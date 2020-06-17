@@ -26,7 +26,7 @@ function Left() {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/card"}>
+                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note/new"}>
                         <i className="far fa-square"></i>
                         <span>New Note</span>
                     </NavLink>

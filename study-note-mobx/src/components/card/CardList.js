@@ -12,15 +12,17 @@ const Results = SortableContainer((props) => {
 });
 
 export default inject("card")(
-  observer(({card})=>{
+  observer(({saveRedirect, card})=>{
     const onSortEnd = ({oldIndex, newIndex}) => {
       card.replaceCard(oldIndex, newIndex)
     };
     const save = () => {
-      if (card.id===undefined)
+      if (card.id===undefined){
         card.root.note.addNote(card)
+      }
       else
         card.root.note.handleNote(card.id, card)
+      return saveRedirect(card.id)  
     }
     useEffect(() => {
       if(card.is_scroll){

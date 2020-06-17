@@ -8,8 +8,8 @@ function Main() {
       <hr/>
         <Route exact path="/" component={Home}/>
         <Route path="/option" component={Option}/>
-        <Route path="/card" component={Card}/>
-        <Route path="/note" exact component={Note}/>
+        <Route exact path="/note" component={Note}/>
+        <Route exact path="/note/:id" component={Card}/>
         <Route path="/study" component={Study}/>
     </main>
   );
