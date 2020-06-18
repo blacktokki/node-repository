@@ -17,7 +17,7 @@ export default inject("card")(
     else if(index < card.root.note.notes.length){
       card.id = index
       card.handleTitle(card.root.note.notes[index].title)
-      card.cards=JSON.parse(card.root.note.notes[index].cards)
+      card.cards=JSON.parse(JSON.stringify(card.root.note.notes[index].cards))
     }
     else{
       history.push('/');
