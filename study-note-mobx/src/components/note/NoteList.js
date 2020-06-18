@@ -17,7 +17,8 @@ export default inject("note")(
     return (
     <div>
       {results}
-      {<button onClick={(event) => {}}>+++</button>}
+      {<button onClick={note.importNote}>불러오기</button>}
+      {<button onClick={note.exportNote}>저장하기</button>}
     </div>
     );
   }
