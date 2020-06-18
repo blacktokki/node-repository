@@ -14,7 +14,6 @@ export default class NoteStore {
       'id': note.id,
       'title': note.title,
       'cards': JSON.parse(JSON.stringify(note.cards)),
-      'len' : note.cards.length
     }
     this.notes.push(_note);
   }
@@ -24,7 +23,6 @@ export default class NoteStore {
       'id': idx,
       'title': note.title,
       'cards': JSON.parse(JSON.stringify(note.cards)),
-      'len' : note.cards.length
     }
     this.notes[idx] = _note
   }
@@ -43,7 +41,18 @@ export default class NoteStore {
     var file = new Blob([json], {type:'application/json'});
     a.href = URL.createObjectURL(file);
     console.log(a.href)
-    a.download = 'note.json';
+    var datetime = new Date().toLocaleString([],
+      {
+        'hour12':false,
+        'year':'2-digit',
+        'month':'2-digit',
+        'day':'2-digit',
+        'hour':'2-digit',
+        'minute':'2-digit',
+        'second':'2-digit'
+      }
+    ).replace(/(\. |:)/g,'')
+    a.download = 'note'+datetime+'.json';
     a.click();
   }
   importNote = () => {

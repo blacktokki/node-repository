@@ -6,7 +6,7 @@ export default (props)=>{
         <div className="card">
             <NavLink className="nav-link" exact to={"/note/"+props.id}>
                 {props.id}
-                {props.title} {props.cards.len}개
+                {props.title} {props.cards.length}개
             </NavLink>
         </div>
     )
