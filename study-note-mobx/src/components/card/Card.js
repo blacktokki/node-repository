@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
 import SectionHeader from '../commons/SectionHeader';
-import NoteTitle from './NoteTitle';
+import CardListTitle from './CardListTitle';
 import CardList from './CardList';
 
 export default inject("card")(
@@ -32,7 +32,7 @@ export default inject("card")(
         <div className='row'>
           <div className='col-12'></div>
         </div>
-        <NoteTitle/>
+        <CardListTitle/>
         <CardList saveRedirect={saveRedirect}/>
       </section>
     )
