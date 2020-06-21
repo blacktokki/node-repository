@@ -40,7 +40,6 @@ export default class NoteStore {
     var a = document.createElement("a");
     var file = new Blob([json], {type:'application/json'});
     a.href = URL.createObjectURL(file);
-    console.log(a.href)
     var datetime = new Date().toLocaleString([],
       {
         'hour12':false,
