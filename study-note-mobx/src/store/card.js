@@ -4,6 +4,7 @@ export default class CardStore {
     this.root = root
     this.title = '제목'
     this.changed = -1
+    this.saved = false
     this.cards = [
     ]
     this.is_scroll = false
@@ -11,10 +12,15 @@ export default class CardStore {
 
   handleTitle = (title)=>{
     this.title = title
+    this.saved = false
   }
 
   handleChanged = (idx) =>{
     this.changed = idx
+    this.saved = false
+  }
+  handleSaved = (saved) =>{
+    this.saved =saved
   }
 
   addCard = (idx) =>{
@@ -24,7 +30,6 @@ export default class CardStore {
     this.handleCard(idx,"indent",0)
     this.handleCard(idx,"name","")
     this.handleCard(idx,"value","")
-    console.log('!')
   }
 
   replaceCard= (oldIndex,newIndex)=>{
@@ -44,9 +49,13 @@ export default class CardStore {
     this.cards[idx][key] = value
     this.handleChanged(idx)
   }
+  handleCards = (cards)=>{
+    this.cards = cards
+  } 
 
   removeCard = (idx) => {
     this.cards.remove(this.cards[idx]);
+    this.handleChanged(idx)
   }
 }
 
@@ -54,10 +63,13 @@ decorate(CardStore, {
     cards: observable,
     title:observable,
     changed:observable,
+    saved:observable,
     handleTitle:action,
     handleChanged:action,
+    handleSaved:action,
     addCard: action,
     replaceCard:action,
     handleCard:action,
+    handleCards:action,
     removeCard: action
 })
