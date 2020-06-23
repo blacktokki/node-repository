@@ -1,5 +1,4 @@
 import React from 'react';
-import 'App.css';
 import { Route } from 'react-router-dom';
 import {Home,Option,Card,Note,Study} from 'components';
 function Main() {
