@@ -1,6 +1,5 @@
 import React from 'react';
 import { Header, Main,Left,Footer } from 'layout';
-import 'App.css';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router-dom';
