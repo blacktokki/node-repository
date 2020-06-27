@@ -4,8 +4,8 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import 'jquery-sparkline';
-import 'summernote';
+//import 'jquery-sparkline';
+//import 'summernote';
 //import 'chart.js';
 //import 'owl.carouse';
 
