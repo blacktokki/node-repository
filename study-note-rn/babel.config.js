@@ -7,7 +7,14 @@ module.exports = function(api) {
         "module-resolver",
         {
           "root":["./"],
-          "extensions":[".js",".ios.js","android.js"]
+          "extensions":[".js","min.js",".ios.js","android.js",".css"]
+        }
+      ],
+      "react-native-classname-to-style",
+      [  
+        "react-native-platform-specific-extensions",
+        {
+          "extensions": ["css"]
         }
       ]
     ]
