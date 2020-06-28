@@ -7,23 +7,6 @@ import { Router } from 'react-router-dom';
 import { syncHistoryWithStore } from 'mobx-react-router';
 import Store from 'store/index';
 
-//import "public/css/bootstrap.min.css";
-//import "bootstrap/dist/css/bootstrap.css";
-import "public/css/style.css";
-import "public/css/components.css";
-//import '@fortawesome/fontawesome-free/css/all.css';
-
-import jQuery  from  "jquery";
-//import "bootstrap";
-//import "jquery.nicescroll";
-window.$ = jQuery
-window.jQuery = jQuery
-//require("public/js/moment.min.js");
-//require("public/js/popper.min.js");
-//require("public/js/scripts.js");
-//require("public/js/stisla.js");
-
-
 const store = new Store();
 const memoryHistory =  createMemoryHistory();
 const history = syncHistoryWithStore(memoryHistory,store.router)
