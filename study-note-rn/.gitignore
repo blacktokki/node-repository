@@ -63,5 +63,4 @@ buck-out/
 web-build/
 
 /components
-/layout
 /store

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform,View } from 'react-native';
+import { Platform,SafeAreaView,StyleSheet } from 'react-native';
 import { Header, Main,Left,Footer } from 'layout';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'mobx-react';
@@ -16,16 +16,23 @@ const instructions = Platform.select({
   android: `Double tap R on your keyboard to reload,\nShake or press menu button for dev menu`,
 });
 
+const style = StyleSheet.create({
+  droidSafeArea: {
+      flex: 1,
+      paddingTop: Platform.OS === 'android' ? 25 : 0
+  },
+});
+
 export default function App() {
   return (
     <Provider {...store}>
       <Router className="App" history={history}>
-        <View>
+        <SafeAreaView style={style.droidSafeArea}>
           <Header></Header>
           <Left></Left>
           <Main></Main>
           <Footer></Footer>
-        </View>
+        </SafeAreaView>
       </Router>
     </Provider>
   );
