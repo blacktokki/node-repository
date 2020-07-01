@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text,Button,TextInput } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faSearch, faBars } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesome } from '@expo/vector-icons';
+import A from 'components/commons/A'
 
 function Header() {
   return (
@@ -10,12 +10,12 @@ function Header() {
       <View className="navbar navbar-expand-lg main-navbar">
         <View className="form-inline mr-auto">
           <View className="navbar-nav mr-3">
-            <View><Text href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesomeIcon icon={faBars}/></Text></View>
-            <View><Text href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesomeIcon icon={faSearch}/></Text></View>
+            <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"></A><FontAwesome name="bars"/></View>
+            <View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"></A><FontAwesome name="search"/></View>
           </View>
           <View className="search-element">
             <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250"/>
-            <Button className="btn" type="submit" title={<FontAwesomeIcon icon={faSearch}/>}></Button>
+            <FontAwesome.Button name="search"/>
             <View className="search-backdrop"></View>
             {/*
             <View className="search-result">

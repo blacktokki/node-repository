@@ -1,8 +1,8 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom'
 import { View, Text } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faSquare,faRocket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesome } from '@expo/vector-icons';
+import A from 'components/commons/A'
 
 function Left() {
     return (
@@ -12,31 +12,31 @@ function Left() {
                 <Text href="index.html">Study Note</Text>
             </View>
             <View className="sidebar-brand sidebar-brand-sm">
-                <a href="index.html">St</a>
+                <A href="index.html">St</A>
             </View>
             <View className="sidebar-menu">
                 <View>
                     <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/"}>
-                        <FontAwesomeIcon icon={faSquare}></FontAwesomeIcon>
+                    <FontAwesome name="square"/>
                         <Text>Home</Text>
                     </NavLink>
                 </View>
                 <View>
                     <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/option"}>
-                    <FontAwesomeIcon icon={faSquare}></FontAwesomeIcon>
+                    <FontAwesome name="square"/>
                         <Text>Option</Text>
                     </NavLink>
                 </View>
                 <View>
                     <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note/new"}>
-                    <FontAwesomeIcon icon={faSquare}></FontAwesomeIcon>
+                    <FontAwesome name="square"/>
                         <Text>New Note</Text>
                     </NavLink>
                 </View>
-                <View className="menu-header"><hr/></View>
+                {/*<View className="menu-header"><hr/></View>*/}
                 <View>
                     <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note"}>
-                    <FontAwesomeIcon icon={faSquare}></FontAwesomeIcon>
+                    <FontAwesome name="square"/>
                         <Text>Notes</Text>
                     </NavLink>
                 </View>
@@ -54,9 +54,9 @@ function Left() {
                 */}
             </View>
             <View className="mt-4 mb-4 p-3 hide-sidebar-mini">
-            <Text href="https://getstisla.com/docs" className="btn btn-primary btn-lg btn-block btn-icon-split">
-                <FontAwesomeIcon icon={faRocket}></FontAwesomeIcon> Documentation
-            </Text>
+            <A href="https://getstisla.com/docs" className="btn btn-primary btn-lg btn-block btn-icon-split">
+                <FontAwesome name="rocket"/> Documentation
+            </A>
             </View>
             </View>
         </View>
