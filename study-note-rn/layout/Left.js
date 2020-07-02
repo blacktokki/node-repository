@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom'
+import { Link } from 'router/router'
 import { View, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import A from 'components/commons/A'
@@ -16,29 +16,29 @@ function Left() {
             </View>
             <View className="sidebar-menu">
                 <View>
-                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/"}>
+                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/"}>
                     <FontAwesome name="square"/>
                         <Text>Home</Text>
-                    </NavLink>
+                    </Link>
                 </View>
                 <View>
-                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/option"}>
+                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/option"}>
                     <FontAwesome name="square"/>
                         <Text>Option</Text>
-                    </NavLink>
+                    </Link>
                 </View>
                 <View>
-                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note/new"}>
+                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note/new"}>
                     <FontAwesome name="square"/>
                         <Text>New Note</Text>
-                    </NavLink>
+                    </Link>
                 </View>
                 {/*<View className="menu-header"><hr/></View>*/}
                 <View>
-                    <NavLink className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note"}>
+                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note"}>
                     <FontAwesome name="square"/>
                         <Text>Notes</Text>
-                    </NavLink>
+                    </Link>
                 </View>
                 {/*
                 <View className="nav-item dropdown active">

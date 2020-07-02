@@ -7,7 +7,7 @@ module.exports = function(api) {
         "module-resolver",
         {
           "root":["./"],
-          "extensions":[".js","min.js",".ios.js","android.js",".css"]
+          "extensions":[".js","min.js",".ios.js","android.js",".web.js",".native.js",".css"]
         }
       ],
       "react-native-classname-to-style",
