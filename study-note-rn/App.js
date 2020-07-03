@@ -9,7 +9,7 @@ import Store from 'store/index';
 
 const store = new Store();
 const memoryHistory =  createMemoryHistory();
-const history = {}//syncHistoryWithStore(memoryHistory,store.router)
+const history = syncHistoryWithStore(memoryHistory,store.router)
 
 const instructions = Platform.select({
   ios: `Press Cmd+R to reload,\nCmd+D or shake for dev menu`,
@@ -19,14 +19,15 @@ const instructions = Platform.select({
 const style = StyleSheet.create({
   droidSafeArea: {
       flex: 1,
-      paddingTop: Platform.OS === 'android' ? 25 : 0
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+      paddingHorizontal: Platform.OS === 'android' ? 15 : 0
   },
 });
 
 export default function App() {
   return (
     <Provider {...store}>
-      <Router className="App" history={memoryHistory}>
+      <Router className="App" history={history}>
         <SafeAreaView style={style.droidSafeArea}>
           <Header></Header>
           <Left></Left>

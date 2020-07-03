@@ -15,29 +15,41 @@ function Left() {
                 <A href="index.html">St</A>
             </View>
             <View className="sidebar-menu">
+                {/*<FontAwesome name="square"/>*/}
                 <View>
-                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/"}>
-                    <FontAwesome name="square"/>
-                        <Text>Home</Text>
+                    <Link className="nav-link" exact = "true" to={"/"}>
+                        <View>
+                            <FontAwesome name="square"/>
+                            <Text>Home</Text>
+                        </View>
                     </Link>
                 </View>
                 <View>
-                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/option"}>
-                    <FontAwesome name="square"/>
-                        <Text>Option</Text>
+                    <Link className="nav-link" exact = "true" to={"/option"}>
+                        <View>
+                            <FontAwesome name="square"/>
+                            <Text>Option</Text>
+                        </View>
                     </Link>
                 </View>
                 <View>
-                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note/new"}>
-                    <FontAwesome name="square"/>
-                        <Text>New Note</Text>
+                    <Link className="nav-link" exact = "true" to={"/note/new"}>
+                        <View>
+                            <FontAwesome name="square"/>
+                            <Text>New Note</Text>
+                        </View>
                     </Link>
                 </View>
-                {/*<View className="menu-header"><hr/></View>*/}
+                <View style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                }}></View>
                 <View>
-                    <Link className="nav-link" exact activeClassName={"font-weight-bold text-primary"} to={"/note"}>
-                    <FontAwesome name="square"/>
-                        <Text>Notes</Text>
+                    <Link className="nav-link" exact = "true" to={"/note"}>
+                        <View>
+                            <FontAwesome name="square"/>
+                            <Text>Notes</Text>
+                        </View>
                     </Link>
                 </View>
                 {/*
