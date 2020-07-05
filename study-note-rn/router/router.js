@@ -2,7 +2,6 @@ import * as React from 'react';
 import { NativeRouter } from 'react-router-native';
 
 const Router = (props)=>{
-  console.log('!')
   return(
     <NativeRouter>
       {props.children}
