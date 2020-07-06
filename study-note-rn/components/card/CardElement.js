@@ -1,7 +1,6 @@
 import React,{ useState ,useEffect } from 'react';
-import {SortableElement} from 'react-sortable-hoc';
 import { View, Button, Text, TextInput } from 'react-native';
-export default SortableElement((props)=>{
+export default (props)=>{
   const [indent,setIndent] = useState(props.indent)
   const [name,setName] = useState(props.name)
   const [value,setValue] = useState(props.value)
@@ -47,4 +46,4 @@ export default SortableElement((props)=>{
       </View>
     </View>
   );
-})
+}
