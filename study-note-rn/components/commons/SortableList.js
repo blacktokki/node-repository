@@ -1,9 +1,10 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ViewPropTypes } from 'react-native';
 import SortableList from 'react-native-sortable-list';
 
 
-export default class _SortableList extends SortableList {
+class _SortableList extends SortableList {
     static propTypes = {
       data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
       order: PropTypes.arrayOf(PropTypes.any),
@@ -93,4 +94,19 @@ export default class _SortableList extends SortableList {
         );
       });
     }*/
+}
+
+export default (props)=>{
+  const results = {}
+  props.data.forEach((item,idx) => {
+    results[idx]=item
+  });
+  return (
+    <_SortableList
+      //checkScroll={checkScroll}
+      //onSortEnd={onSortEnd}
+      data = {results}
+      renderRow = {props.renderRow}
+    />
+  )
 }

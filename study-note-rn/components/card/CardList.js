@@ -1,49 +1,41 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import { observer,inject } from 'mobx-react';
-import {SortableContainer} from 'react-sortable-hoc';
+import SortableList from '../commons/SortableList';
 import { View, Button } from 'react-native';
-import CardNew  from './CardElement';
-
-const Results = SortableContainer((props) => {
-  return(
-    <View>
-      {props.children}
-    </View>
-  )
-});
+import CardElement  from './CardElement';
 
 export default inject("card")(
   observer(({card})=>{
+    const checkScroll = (action) => {
+      if(card.is_scroll){
+        action()
+        card.is_scroll = false
+      }
+    };
+    
     const onSortEnd = ({oldIndex, newIndex}) => {
       card.replaceCard(oldIndex, newIndex)
     };
-    
-    const results = card.cards.map(
-      (item,idx) => (
-        <CardNew 
-          {...item}
-          key={idx}
-          index={idx}
-          idx={idx}
-          onCreate={card.addCard}
-          onRemove={card.removeCard}
-          onHandle={card.handleCard}
-        />
-      )
-    )
 
-    useEffect(() => {
-      if(card.is_scroll){
-        window.scrollTo(0,document.body.scrollHeight);
-        card.is_scroll = false
-      }
-    });
+    const renderRow = ({index, item, active})=>{
+      return(
+      <CardElement 
+        {...item}
+        idx={index}
+        onCreate={card.addCard}
+        onRemove={card.removeCard}
+        onHandle={card.handleCard}
+      />)
+    }
 
     return (
     <View data-changed={card.changed}>
-      <Results onSortEnd={onSortEnd}>
-        {results}
-      </Results>
+      <SortableList
+        checkScroll={checkScroll}
+        onSortEnd={onSortEnd}
+        data = {card.cards}
+        renderRow = {renderRow}
+      />
       <Button onPress={(event) => {card.addCard(card.cards.length);}} title="+++"/>
     </View>
     );
