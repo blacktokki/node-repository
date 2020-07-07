@@ -4,9 +4,9 @@ import A from 'components/commons/A'
 function Footer() {
     return(
         <View className="main-footer">
-            <View className="footer-left">
+            <View className="footer-left" style={{ flexDirection: "row"}}>
                 <Text>Copyright &copy; 2018</Text><View className="bullet"></View>
-                <Text>Design By</Text><A href="https://nauval.in/">Muhamad Nauval Azhar</A>
+                <Text>Design By </Text><A href="https://nauval.in/">Muhamad Nauval Azhar</A>
             </View>
             <View className="footer-right">
                 <Text>2.3.0</Text>

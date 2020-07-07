@@ -8,13 +8,13 @@ function Header() {
     <View className="main-header">
       <View className="navbar-bg"></View>
       <View className="navbar navbar-expand-lg main-navbar">
-        <View className="form-inline mr-auto">
-          <View className="navbar-nav mr-3">
-            <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"></A><FontAwesome name="bars"/></View>
-            <View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"></A><FontAwesome name="search"/></View>
+        <View className="form-inline mr-auto" style={{ flexDirection: "row"}}>
+          <View className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
+            <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesome name="bars" style={{fontSize: 30, color: 'white'}}/></A></View>
+            {/*<View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesome name="search" style={{fontSize: 30}}/></A></View>*/}
           </View>
-          <View className="search-element">
-            <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250"/>
+          <View className="search-element" style={{ flexDirection: "row"}}>
+            <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250" style={{width:250}}/>
             <FontAwesome.Button name="search"/>
             <View className="search-backdrop"></View>
             {/*
