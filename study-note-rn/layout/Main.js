@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'router/router';
+import { Route } from 'router';
 import {Home,Option,Card,Note,Study} from 'components';
 import { View } from 'react-native';
 

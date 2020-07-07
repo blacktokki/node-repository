@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'router/router'
+import { Link } from 'router';
 import { View, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import A from 'components/commons/A'

@@ -1,4 +1,5 @@
 import {decorate, observable, action } from 'mobx';
+import * as Repository from 'repository';
 export default class NoteStore {
   constructor(root){
     this.root = root
@@ -33,13 +34,6 @@ export default class NoteStore {
   }
 
   exportNote = () => {
-    var json = JSON.stringify({
-      'noteId':this.noteId,
-      'notes':this.notes
-    })
-    var a = document.createElement("a");
-    var file = new Blob([json], {type:'application/json'});
-    a.href = URL.createObjectURL(file);
     var datetime = new Date().toLocaleString([],
       {
         'hour12':false,
@@ -50,22 +44,19 @@ export default class NoteStore {
         'minute':'2-digit',
         'second':'2-digit'
       }
-    ).replace(/(\. |:)/g,'')
-    a.download = 'note'+datetime+'.json';
-    a.click();
+    ).replace(/(\. |:| )/g,'')
+    var filename = 'note'+datetime+'.json'
+    var data = {
+      'noteId':this.noteId,
+      'notes':this.notes
+    }
+    Repository.save(filename, data);
   }
   importNote = () => {
-    var input=document.createElement('input');
-    input.type='file';
-    var reader = new FileReader();
-    reader.onload = ()=>{
-      var json = reader.result
-      var note = JSON.parse(json)
+    Repository.load((note)=>{
       this.noteId = note.noteId
       this.notes = note.notes
-    }
-    input.onchange= (e) => reader.readAsText(e.target.files[0])
-    input.click();
+    });
   }
 }
 
