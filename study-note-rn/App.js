@@ -3,7 +3,7 @@ import { Platform,SafeAreaView,StyleSheet } from 'react-native';
 import { Header, Main,Left,Footer } from 'layout';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'mobx-react';
-import { Router } from 'router/router';
+import { Router } from 'router';
 import { syncHistoryWithStore } from 'mobx-react-router';
 import 'mobx-react-lite/batchingForReactNative'
 import Store from 'store/index';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'router/router'
+import { Link } from 'router'
 import { View, Text } from 'react-native';
 
 export default (props)=>{
