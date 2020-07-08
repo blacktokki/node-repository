@@ -5,7 +5,7 @@ import { View } from 'react-native';
 
 function Main() {
   return (
-    <View className="main-content">
+    <View className="main-content" style={{flex:1}}>
       <Route exact path="/" component={Home}/>
       <Route path="/option" component={Option}/>
       <Route exact path="/note" component={Note}/>
