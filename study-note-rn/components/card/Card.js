@@ -47,7 +47,7 @@ export default inject("router")(
     })
 
     return(
-      <View className='section'>
+      <View className='section' style={{flex:1}}>
         <SectionHeader title={"Card/"+index+(card.saved===true?'[저장됨]':'')}/>
         <View className='row'>
           <View className='col-12'></View>

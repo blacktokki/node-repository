@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text,Button,TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import A from 'components/commons/A'
+import { A, Div } from 'components/commons'
 
 function Header() {
   return (
@@ -10,7 +10,7 @@ function Header() {
       <View className="navbar navbar-expand-lg main-navbar">
         <View className="form-inline mr-auto" style={{ flexDirection: "row"}}>
           <View className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
-            <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesome name="bars" style={{fontSize: 30, color: 'white'}}/></A></View>
+            <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesome name="bars" style={{fontSize: 20, color: 'white'}}/></A></View>
             {/*<View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesome name="search" style={{fontSize: 30}}/></A></View>*/}
           </View>
           <View className="search-element" style={{ flexDirection: "row"}}>
