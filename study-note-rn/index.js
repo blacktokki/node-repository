@@ -3,8 +3,8 @@ import { registerRootComponent } from 'expo';
 import App from './App';
 
 //import 'bootstrap/dist/css/bootstrap.css'
-import 'public/css/style.css';
-import 'public/css/components.css';
+//import 'public/css/style.css';
+//import 'public/css/components.css';
 //import 'jquery.nicescroll';
 //import 'popper.js';
 //import 'bootstrap';
