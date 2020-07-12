@@ -10,13 +10,14 @@ module.exports = function(api) {
           "extensions":[".js","min.js",".ios.js","android.js",".web.js",".native.js",".css"]
         }
       ],
-      "react-native-classname-to-style",
-      [  
-        "react-native-platform-specific-extensions",
-        {
-          "extensions": ["css"]
-        }
-      ]
+      
+      //"react-native-classname-to-style",
+      //[  
+      //  "react-native-platform-specific-extensions",
+      //  {
+      //    "extensions": ["css"]
+      //  }
+      //]
     ]
   };
 };

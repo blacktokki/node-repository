@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text,Button,TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { A, Div } from 'components/commons'
+import { A } from 'components/commons'
+import Div from './Div';
 
 function Header() {
   return (
     <View className="main-header">
-      <View className="navbar-bg"></View>
-      <View className="navbar navbar-expand-lg main-navbar">
+      <Div className="navbar-bg"></Div>
+      <Div className="navbar navbar-expand-lg main-navbar">
         <View className="form-inline mr-auto" style={{ flexDirection: "row"}}>
           <View className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
             <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesome name="bars" style={{fontSize: 20, color: 'white'}}/></A></View>
@@ -82,7 +83,7 @@ function Header() {
         <ul className="navbar-nav navbar-right">
         </ul>
         */}
-      </View>
+      </Div>
     </View>
   );
 }
