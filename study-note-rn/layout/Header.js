@@ -1,23 +1,22 @@
 import React from 'react';
 import { View, Text,Button,TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { A } from 'components/commons'
-import Div from './Div';
+import { A, Div } from 'components/commons'
 
 function Header() {
   return (
-    <View className="main-header">
+    <Div className="main-header">
       <Div className="navbar-bg"></Div>
       <Div className="navbar navbar-expand-lg main-navbar">
-        <View className="form-inline mr-auto" style={{ flexDirection: "row"}}>
-          <View className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
-            <View><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesome name="bars" style={{fontSize: 20, color: 'white'}}/></A></View>
+        <Div className="form-inline mr-auto" style={{ flexDirection: "row"}}>
+          <Div className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
+            <Div><A href="!#" data-toggle="sidebar" className="nav-link nav-link-lg"><FontAwesome name="bars" style={{fontSize: 20, color: 'white'}}/></A></Div>
             {/*<View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesome name="search" style={{fontSize: 30}}/></A></View>*/}
-          </View>
-          <View className="search-element" style={{ flexDirection: "row"}}>
+          </Div>
+          <Div className="search-element" style={{ flexDirection: "row"}}>
             <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250" style={{width:250}}/>
             <FontAwesome.Button name="search"/>
-            <View className="search-backdrop"></View>
+            <Div className="search-backdrop"></Div>
             {/*
             <View className="search-result">
               <View className="search-header">
@@ -77,14 +76,14 @@ function Header() {
               </View>
             </View>
             */}
-          </View>
-        </View>
+          </Div>
+        </Div>
         {/*
         <ul className="navbar-nav navbar-right">
         </ul>
         */}
       </Div>
-    </View>
+    </Div>
   );
 }
 
