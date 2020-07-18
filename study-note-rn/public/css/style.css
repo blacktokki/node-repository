@@ -1943,7 +1943,6 @@ a.bb {
   margin-bottom: 10px; }
 
 .bullet, .slash {
-  display: inline;
   margin: 0 4px; }
 
 .login-brand {
@@ -2282,7 +2281,6 @@ pre {
     .section .section-header h1 {
       margin-bottom: 0;
       font-weight: 700;
-      display: inline-block;
       font-size: 24px;
       margin-top: 3px;
       color: #34395e; }
@@ -2313,7 +2311,6 @@ pre {
       height: 8px;
       width: 30px;
       background-color: #6777ef;
-      display: inline-block;
       margin-top: 6px;
       margin-right: 15px; }
   .section .section-title + .section-lead {
@@ -2339,7 +2336,6 @@ pre {
     .section .section-header h1 {
       font-size: 18px; }
     .section .section-header .float-right {
-      display: inline-block;
       width: 100%;
       margin-top: 15px; }
     .section .section-header .section-header-breadcrumb {
@@ -2644,7 +2640,6 @@ body.layout-3 .main-footer {
   padding-right: 0; }
 
 .main-sidebar .sidebar-brand {
-  display: inline-block;
   width: 100%;
   text-align: center;
   height: 60px;
@@ -2752,7 +2747,7 @@ body.layout-3 .main-footer {
         padding-left: 10px; }
 
 .main-content {
-  padding-left: 280px;
+  padding-left: 0px;/*padding-left: 280*/
   padding-right: 30px;
   padding-top: 80px;
   width: 100%;
@@ -2765,7 +2760,6 @@ body.layout-3 .main-footer {
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: #e3eaef;
-  display: inline-block;
   width: 100%; }
   .main-footer .footer-left {
     float: left; }
@@ -2825,7 +2819,8 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   .main-content {
     padding-left: 30px;
     padding-right: 30px;
-    width: 100% ; }
+    width: 100% ;
+   }
   .main-footer {
     padding-left: 30px; }
   body.search-show {
