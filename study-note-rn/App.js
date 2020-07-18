@@ -1,10 +1,11 @@
-import * as React from 'react';
+import  React, { useState } from 'react';
 import { Platform,SafeAreaView,StyleSheet } from 'react-native';
 import { Header, Main,Left,Footer } from 'layout';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'mobx-react';
 import { Router } from 'router';
 import { syncHistoryWithStore } from 'mobx-react-router';
+import Drawer from 'react-native-drawer'
 import 'mobx-react-lite/batchingForReactNative'
 import Store from 'store/index';
 
@@ -26,13 +27,23 @@ const style = StyleSheet.create({
 });
 
 export default function App() {
+  const [ panel , setPanel ] = useState(true);
+  const toggle= () =>{
+    setPanel(!panel)
+  }
   return (
     <Provider {...store}>
       <Router className="App" history={history}>
         <SafeAreaView style={style.droidSafeArea}>
-          <Header></Header>
-          <Left></Left>
-          <Main></Main>
+          <Header controlPanel={toggle}></Header>
+          <Drawer
+            open={panel}
+            content={<Left />}
+            type="overlay"
+            openDrawerOffset={100} 
+          >
+            <Main></Main>
+          </Drawer>
           <Footer></Footer>
         </SafeAreaView>
       </Router>
