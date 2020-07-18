@@ -1,10 +1,9 @@
 import React from 'react';
-import SectionHeader from '../commons/SectionHeader';
+import Section from '../commons/Section';
 import { View } from 'react-native';
 export default () => {
   return (
-    <View className='section'>
-        <SectionHeader title="Option"/>
-    </View>
+    <Section title="Option">
+    </Section>
   );
 };

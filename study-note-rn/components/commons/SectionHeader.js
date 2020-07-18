@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
+import Div from './Div'
 
 export default (props) => {
   return (
-      <View className="section-header">
+      <Div className="section-header">
           <Text>
               {props.title}
           </Text>
-      </View>
+      </Div>
   );
 };

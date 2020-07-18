@@ -1,5 +1,7 @@
 import React,{ useState ,useEffect } from 'react';
 import { View, Button, Text, TextInput } from 'react-native';
+import { Div } from '../commons';
+
 export default (props)=>{
   const [indent,setIndent] = useState(props.indent)
   const [name,setName] = useState(props.name)
@@ -34,7 +36,7 @@ export default (props)=>{
         (<Text>ㄴ</Text>) :
         null
       }
-      <View className="card card-new">
+      <Div className="card card-new">
         <Text> {props.idx+1}</Text>
         {
           indent>0 ?
@@ -43,7 +45,7 @@ export default (props)=>{
         }
         <TextInput type='text' value={value} onChange={handleValue}/>
         <Button onPress={(event) => {props.onRemove(props.idx);}} title="---"/>
-      </View>
+      </Div>
     </View>
   );
 }

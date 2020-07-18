@@ -1,9 +1,9 @@
 import React,{ useEffect } from 'react';
 import { observer,inject } from 'mobx-react';
 import { View, Button } from 'react-native';
-import SectionHeader from '../commons/SectionHeader';
 import CardListTitle from './CardListTitle';
 import CardList from './CardList';
+import { Section, Div } from  '../commons';
 
 export default inject("router")(
   observer(({router, match})=>{
@@ -47,15 +47,14 @@ export default inject("router")(
     })
 
     return(
-      <View className='section' style={{flex:1}}>
-        <SectionHeader title={"Card/"+index+(card.saved===true?'[저장됨]':'')}/>
-        <View className='row'>
-          <View className='col-12'></View>
-        </View>
+      <Section title={"Card/"+index+(card.saved===true?'[저장됨]':'')}>
+        <Div className='row'>
+          <Div className='col-12'></Div>
+        </Div>
         <CardListTitle/>
         <CardList/>
         <Button onPress={save} title="저장"/>
-      </View>
+      </Section>
     )
   })
 )
