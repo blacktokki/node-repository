@@ -18,4 +18,22 @@ import App from './App';
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
 // It also ensures that whether you load the app in the Expo client or in a native build,
 // the environment is set up appropriately
+
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+const ignoreWarnings = ['componentWillReceiveProps', 'componentWillMount'];
+YellowBox.ignoreWarnings(ignoreWarnings);
+const _console = _.clone(console);
+console.warn = message => {
+    var warn = true;
+    ignoreWarnings.forEach((value)=>{
+        if (message.indexOf(value) <= -1) {
+            warn = false;
+        }
+    });
+    if (warn){
+        _console.warn(message);
+    };
+};
 registerRootComponent(App);
