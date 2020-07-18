@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
 import { View, TextInput, Text } from 'react-native';
+import { Div } from '../commons';
 
 export default inject('card')(
   observer(({card})=>{
@@ -9,10 +10,10 @@ export default inject('card')(
       card.handleTitle(event.target.value)
     }
     return (
-      <View className="card title">
+      <Div className="card title">
         <TextInput type='text' value={card.title}  onChange={handleTitle}/>
         <Text>{card.title}</Text>
-      </View>
+      </Div>
     )
   }
 ));

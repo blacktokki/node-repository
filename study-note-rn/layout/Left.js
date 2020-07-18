@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'router';
 import { View, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { A, Div} from 'components/commons';
+import { A, Div } from 'components/commons';
 
 function Left() {
     return (
-    <View className="main-sidebar">
+    <Div className="main-sidebar">
         <Div id="sidebar-wrapper">
             <Div className="sidebar-brand">
                 <Text href="index.html">Study Note</Text>
@@ -71,7 +71,7 @@ function Left() {
             </A>
             </Div>
             </Div>
-        </View>
+        </Div>
   )
 }
 export default Left;
