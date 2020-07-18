@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Div, SectionHeader } from './index';
+import SectionHeader from './SectionHeader';
+import Div from './Div';
 
 export default (props) => {
   return (
