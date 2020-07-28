@@ -1,5 +1,5 @@
-import  React, { useState } from 'react';
-import { Platform,SafeAreaView,StyleSheet } from 'react-native';
+import  React, { useState, useEffect } from 'react';
+import { Platform, SafeAreaView, Dimensions } from 'react-native';
 import { Header, Main,Left,Footer } from 'layout';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'mobx-react';
@@ -18,33 +18,69 @@ const instructions = Platform.select({
   android: `Double tap R on your keyboard to reload,\nShake or press menu button for dev menu`,
 });
 
-const style = StyleSheet.create({
-  droidSafeArea: {
-      flex: 1,
-      paddingTop: Platform.OS === 'android' ? 50 : 0,
-      paddingHorizontal: Platform.OS === 'android' ? 15 : 0
-  },
-});
-
 export default function App() {
-  const [ panel , setPanel ] = useState(true);
+  const getScreen = ()=>{
+    const breakpoints = {
+      Xs: 0, // should start at zero
+      Sm: 640,
+      Md: 768,
+      Lg: 1024,
+      Xl: 1280,
+    }
+      return Object.keys(breakpoints).sort((a, b) => (breakpoints[a] > breakpoints[b] ? 1 : -1))
+      .map(item => [item, breakpoints[item]])
+      .filter(item => item[1] <= Dimensions.get('window').width)
+      .map(item => item[0])
+  }
+
+  const [ panel , setPanel ] = useState(false);
+  const [ screen, setScreen ] = useState(getScreen());
+
+  const onChange = (_screen) => {
+    setScreen(getScreen());
+    //console.log(screen);
+  };
+
   const toggle= () =>{
     setPanel(!panel)
   }
+
+  useEffect(() => {
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  });
+
   return (
     <Provider {...store}>
       <Router className="App" history={history}>
-        <SafeAreaView style={style.droidSafeArea}>
-          <Header controlPanel={toggle}></Header>
+        <SafeAreaView style={{
+              flex: 1,
+              paddingTop: Platform.OS === 'android' ? 50 : 0,
+              paddingHorizontal: Platform.OS === 'android' ? 15 : 0
+        }}>
           <Drawer
             open={panel}
             content={<Left />}
             type="overlay"
-            openDrawerOffset={100} 
+            acceptPan ={false}
+            tweenHandler={(ratio) => ({
+              main: {
+                paddingLeft: ratio*250
+                },
+                mainOverlay : {
+                  width: 0
+                },
+                drawer : {
+                  width: ratio*250
+                }
+            })}
           >
+            <Header controlPanel={toggle}></Header>
             <Main></Main>
+            <Footer></Footer>
           </Drawer>
-          <Footer></Footer>
         </SafeAreaView>
       </Router>
     </Provider>
