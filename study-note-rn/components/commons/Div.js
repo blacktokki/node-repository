@@ -4,9 +4,15 @@ import { style } from 'public/js/style';
 
 export default (props) => {
   var styleName = style[props.className]
-  return (
+  return props.style?(
     <View style={styleName}>
-        {props.children}
+      <View style={props.style}>
+          {props.children}
+      </View>
+    </View>
+  ):(
+    <View style={styleName}>
+      {props.children}
     </View>
   );
 };

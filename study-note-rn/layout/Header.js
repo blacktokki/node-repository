@@ -7,15 +7,17 @@ function Header(props) {
   return (
     <Div className="main-header">
       <Div className="navbar-bg"></Div>
-      <Div className="navbar navbar-expand-lg main-navbar">
-        <Div className="form-inline mr-auto" style={{ flexDirection: "row"}}>
+      <Div className="navbar navbar-expand-lg main-navbar" style={{position:'absolute'}}>
+        <Div className="form-inline mr-auto" style={{flexDirection: "row", paddingBottom:100, padding:20}}>
           <Div className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
-            <Div className="nav-link nav-link-lg"><FontAwesome onPress={()=>props.controlPanel()} name="bars" style={{fontSize: 20, color: 'white'}}/></Div>
+            <Div className="nav-link nav-link-lg">
+              <FontAwesome onPress={()=>props.controlPanel()} name="bars" style={{fontSize: 20, color: 'white', margin:10, marginRight:20}}/>
+            </Div>
             {/*<View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesome name="search" style={{fontSize: 30}}/></A></View>*/}
           </Div>
-          <Div className="search-element" style={{ flexDirection: "row"}}>
-            <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250" style={{width:250}}/>
-            <FontAwesome.Button name="search"/>
+          <Div className="search-element" style={{ flexDirection: "row", backgroundColor:'white'}}>
+            <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250" style={{width:250, backgroundColor: 'white'}}/>
+            <FontAwesome.Button name="search" style={{backgroundColor:'white'}} color="black"/>
             <Div className="search-backdrop"></Div>
             {/*
             <View className="search-result">

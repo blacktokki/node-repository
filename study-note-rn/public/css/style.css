@@ -579,6 +579,7 @@ select.form-control:not([size]):not([multiple]) {
 /* 3.5 Card */
 .card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+  min-height:100px;
   background-color: #fff;
   border-radius: 3px;
   
@@ -1496,7 +1497,7 @@ h6 .badge {
     background-color: #6777ef;}
 
 .navbar-bg {
-  
+
   position: absolute;
   top: 0;
   left: 0;
@@ -2747,9 +2748,9 @@ body.layout-3 .main-footer {
         padding-left: 10px; }
 
 .main-content {
-  padding-left: 0px;/*padding-left: 280*/
+  padding-left: 30px;/*padding-left: 280*/
   padding-right: 30px;
-  padding-top: 80px;
+  /*padding-top: 80px;*/
   width: 100%;
   position: relative; }
 
