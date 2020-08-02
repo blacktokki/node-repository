@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
 import SortableList from '../commons/SortableList';
-import { Button, ScrollView } from 'react-native';
+import { Button, View} from 'react-native';
 import CardElement  from './CardElement';
 
 export default inject("card")(
@@ -29,7 +29,7 @@ export default inject("card")(
     }
 
     return (
-    <ScrollView data-changed={card.changed}>
+    <View data-changed={card.changed}>
       <SortableList
         checkScroll={checkScroll}
         onSortEnd={onSortEnd}
@@ -37,8 +37,8 @@ export default inject("card")(
         renderRow = {renderRow}
         style={{flex: 1}}
       />
-      <Button onPress={(event) => {card.addCard(card.cards.length);}} title="+++" style={{flex: 1}}/>
-    </ScrollView>
+      <Button onPress={(event) => {card.addCard(card.cards.length);}} title="+++" style={{height:100}}/>
+    </View>
     );
   }
 ))

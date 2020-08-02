@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 function Main() {
   return (
-    <View style={{flex:1}}>
+    <View style={{marginTop:100}}>
       <Div className="main-content">
         <Route exact path="/" component={Home}/>
         <Route path="/option" component={Option}/>

@@ -1,5 +1,5 @@
 import  React, { useState, useEffect } from 'react';
-import { Platform, SafeAreaView, Dimensions } from 'react-native';
+import { Platform, SafeAreaView, Dimensions,  ScrollView, View } from 'react-native';
 import { Header, Main,Left,Footer } from 'layout';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'mobx-react';
@@ -58,7 +58,8 @@ export default function App() {
         <SafeAreaView style={{
               flex: 1,
               paddingTop: Platform.OS === 'android' ? 50 : 0,
-              paddingHorizontal: Platform.OS === 'android' ? 15 : 0
+              paddingHorizontal: Platform.OS === 'android' ? 15 : 0,
+              backgroundColor:'#f4f6f9'
         }}>
           <Drawer
             open={panel}
@@ -77,9 +78,13 @@ export default function App() {
                 }
             })}
           >
-            <Header controlPanel={toggle}></Header>
-            <Main></Main>
-            <Footer></Footer>
+            <View style={{flex:1}}>
+              <ScrollView>
+                <Header controlPanel={toggle}></Header>
+                <Main></Main>
+              </ScrollView>
+              <Footer></Footer>
+            </View>
           </Drawer>
         </SafeAreaView>
       </Router>
