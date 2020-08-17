@@ -29,7 +29,7 @@ export default inject("card")(
     }
 
     return (
-    <View data-changed={card.changed}>
+    <View data-changed={card.changed} data-length={card.cards.length}>
       <SortableList
         checkScroll={checkScroll}
         onSortEnd={onSortEnd}
