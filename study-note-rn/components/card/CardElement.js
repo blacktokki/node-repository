@@ -19,14 +19,15 @@ export default (props)=>{
   }
 
   function handleName(event){
-    props.onHandle(props.idx,"name",event.target.value)
-    setName(event.target.value)
+    const val = event.target ? event.target.value : event
+    props.onHandle(props.idx,"name",val)
+    setName(val)
   }
   function handleValue(event){
-    props.onHandle(props.idx,"value",event.target.value)
-    setValue(event.target.value)
+    const val = event.target ? event.target.value : event
+    props.onHandle(props.idx,"value",val)
+    setValue(val)
   }
-
   return (
     <View>
       <Button onPress={(event) => {handleIndent(1-indent);}} title="ㄴㄴㄴ"/>
@@ -41,9 +42,9 @@ export default (props)=>{
         {
           indent>0 ?
           null :
-          (<TextInput type='text' value= {name}  onChange={handleName}/>)
+        (<TextInput type='text' value= {name}  onChangeText={handleName}/>)
         }
-        <TextInput type='text' value={value} onChange={handleValue}/>
+        <TextInput type='text' value={value} onChangeText={handleValue}/>
         <Button onPress={(event) => {props.onRemove(props.idx);}} title="---"/>
       </Div>
     </View>

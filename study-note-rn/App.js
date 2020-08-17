@@ -57,8 +57,8 @@ export default function App() {
       <Router className="App" history={history}>
         <SafeAreaView style={{
               flex: 1,
-              paddingTop: Platform.OS === 'android' ? 50 : 0,
-              paddingHorizontal: Platform.OS === 'android' ? 15 : 0,
+              paddingTop: Platform.OS === 'android' ? 39 : 0,
+              paddingHorizontal: Platform.OS === 'android' ? 0 : 0,
               backgroundColor:'#f4f6f9'
         }}>
           <Drawer
@@ -83,9 +83,9 @@ export default function App() {
                 <Header controlPanel={toggle}></Header>
                 <Main></Main>
               </ScrollView>
-              <Footer></Footer>
             </View>
           </Drawer>
+          <Footer></Footer>
         </SafeAreaView>
       </Router>
     </Provider>
