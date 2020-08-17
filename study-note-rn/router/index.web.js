@@ -1,5 +1,5 @@
 export {
-    Router,
+    BrowserRouter as Router,
     Switch,
     Route,
     Link

@@ -17,10 +17,10 @@ export default inject("card")(
       card.replaceCard(oldIndex, newIndex)
     };
 
-    const renderRow = ({index, item, active})=>{
+    const renderRow = ({index, data, active})=>{
       return(
       <CardElement 
-        {...item}
+        {...data}
         idx={index}
         onCreate={card.addCard}
         onRemove={card.removeCard}
