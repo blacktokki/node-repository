@@ -11,7 +11,7 @@ function Header(props) {
         <Div className="form-inline mr-auto" style={{flexDirection: "row", paddingBottom:100, padding:20}}>
           <Div className="navbar-nav mr-3" style={{ flexDirection: "row"}}>
             <Div className="nav-link nav-link-lg">
-              <FontAwesome onPress={()=>props.controlPanel()} name="bars" style={{fontSize: 20, color: 'white', margin:10, marginRight:20}}/>
+              <FontAwesome onPress={()=>props.controlPanel()} name="bars" style={{fontSize: 20, color: 'white', padding:10, paddingRight:20}}/>
             </Div>
             {/*<View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesome name="search" style={{fontSize: 30}}/></A></View>*/}
           </Div>

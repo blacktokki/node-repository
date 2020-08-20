@@ -36,6 +36,7 @@ export default function App() {
   const [ panel , setPanel ] = useState(false);
   const [ screen, setScreen ] = useState(getScreen());
 
+  //resize detect
   const onChange = (_screen) => {
     setScreen(getScreen());
     //console.log(screen);
@@ -90,6 +91,7 @@ export default function App() {
             tweenHandler={twinHandler}
             panCloseMask = {1-(250/Dimensions.get('window').width)}
             tapToClose={true}
+            onClose={()=>{setPanel(false)}}
           >
             <View style={{flex:1}}>
               <ScrollView>
