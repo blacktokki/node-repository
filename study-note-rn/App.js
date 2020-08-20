@@ -52,6 +52,28 @@ export default function App() {
     };
   });
 
+  const twinHandler = (ratio) => {
+    const style = {}
+    if (Platform.OS === 'web'){
+      style['drawer'] = {
+        width: ratio*250
+      }
+      style['main'] = {
+        paddingLeft: ratio*250
+      }
+      style['mainOverlay'] = {
+        width: 0,
+      }
+    }
+    else{
+      style['mainOverlay'] = {
+        backgroundColor : '#000000',
+        opacity : ratio/2,
+      }
+    }
+    return style
+  }
+
   return (
     <Provider {...store}>
       <Router className="App" history={history}>
@@ -65,18 +87,9 @@ export default function App() {
             open={panel}
             content={<Left />}
             type="overlay"
-            acceptPan ={false}
-            tweenHandler={(ratio) => ({
-              main: {
-                paddingLeft: ratio*250
-                },
-                mainOverlay : {
-                  width: 0
-                },
-                drawer : {
-                  width: ratio*250
-                }
-            })}
+            tweenHandler={twinHandler}
+            panCloseMask = {1-(250/Dimensions.get('window').width)}
+            tapToClose={true}
           >
             <View style={{flex:1}}>
               <ScrollView>
@@ -84,8 +97,8 @@ export default function App() {
                 <Main></Main>
               </ScrollView>
             </View>
+            <Footer></Footer>
           </Drawer>
-          <Footer></Footer>
         </SafeAreaView>
       </Router>
     </Provider>
