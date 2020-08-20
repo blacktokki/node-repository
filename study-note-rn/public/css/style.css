@@ -2755,8 +2755,8 @@ body.layout-3 .main-footer {
   position: relative; }
 
 .main-footer {
-  padding: 20px 30px 20px 280px;
-  margin-top: 40px;
+  /*padding: 20px 30px 20px 280px;
+  margin-top: 40px;*/
   background-color: #98a6ad;
   border-top-width: 1px;
   border-top-style: solid;
