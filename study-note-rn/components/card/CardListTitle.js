@@ -10,7 +10,7 @@ export default inject('card')(
       card.handleTitle(event.target ? event.target.value : event)
     }
     return (
-      <Div className="card title">
+      <Div className="card">
         <TextInput style={{backgroundColor:'white'}} type='text' value={card.title} onChangeText={handleTitle}/>
         <Text>{card.title}</Text>
       </Div>
