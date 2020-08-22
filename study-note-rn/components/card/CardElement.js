@@ -1,6 +1,6 @@
 import React,{ useState ,useEffect } from 'react';
-import { View, Button, Text, TextInput } from 'react-native';
-import { Div } from '../commons';
+import { View, Text, TextInput } from 'react-native';
+import { Button, Div } from '../commons';
 
 export default (props)=>{
   const [indent,setIndent] = useState(props.indent)
@@ -37,7 +37,7 @@ export default (props)=>{
         (<Text>ㄴ</Text>) :
         null
       }
-      <Div className="card card-new">
+      <Div className="card">
         <Text> {props.idx+1}</Text>
         {
           indent>0 ?
