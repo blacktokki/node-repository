@@ -13,7 +13,7 @@ function Main() {
           <Route path="/option" component={Option}/>
           <Route exact path="/note" component={Note}/>
           <Route exact path="/note/:id" component={Card}/>
-          <Route path="/study" component={Study}/>
+          <Route path="/note/:id/study" component={Study}/>
         </Switch>
       </Div>
     </View>

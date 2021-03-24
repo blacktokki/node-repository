@@ -1,25 +1,27 @@
 import React,{ useEffect } from 'react';
 import { observer,inject } from 'mobx-react';
+import { withRouter } from 'react-router-dom';
 import { View, Button } from 'react-native';
 import CardListTitle from './CardListTitle';
 import CardList from './CardList';
 import { Section, Div } from  '../commons';
 
-export default inject("router")(
-  observer(({router, match})=>{
+export default withRouter(inject("card")(
+  observer(({history, match, card})=>{
     const index = match.params.id
-    const card = router.root.card
-
     const save = () => {
       if (index==="new"){
         card.root.note.addNote(card)
         card.handleSaved(true)
-        router.push('/note/'+card.id);
+        history.push('/note/'+card.id);
       }
       else{
         card.root.note.handleNote(card.id, card)
         card.handleSaved(true)
       }
+    }
+    const study = () => {
+      history.push('/note/'+card.id+'/study')
     }
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export default inject("router")(
           card.handleSaved(false)
         }
       }
-      else if(index < router.root.note.notes.length){
+      else if(index < card.root.note.notes.length){
         if (card.id !== index){
           card.id = index
           card.handleTitle(card.root.note.notes[index].title)
@@ -42,19 +44,24 @@ export default inject("router")(
         }
       }
       else{
-        router.push('/');
+        history.push('/');
       } 
     })
 
     return(
-      <Section title={"Card/"+index+(card.saved===true?'[저장됨]':'')}>
+      <Section title={"Note/"+index+(card.saved===true?'[저장됨]':'')}>
         <Div className='row'>
           <Div className='col-12'></Div>
         </Div>
         <CardListTitle/>
+        {
+          index !== 'new'?
+          (<Button onPress={study} title="학습"/>):
+          null
+        }
         <CardList/>
         <Button onPress={save} title="저장"/>
       </Section>
     )
   })
-)
+))
