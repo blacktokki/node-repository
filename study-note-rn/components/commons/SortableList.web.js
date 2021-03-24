@@ -31,7 +31,7 @@ export default (props)=>{
         (item,idx) => (
             <Element key = {idx} index={idx}>
                 {props.renderRow({
-                    item:item,
+                    data:item,
                     index:idx,
                     active:true
                 })}
