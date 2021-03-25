@@ -105,6 +105,7 @@ export default (props)=>{
     <_SortableList
       //checkScroll={checkScroll}
       //onSortEnd={onSortEnd}
+      sortingEnabled = {false}
       data = {results}
       renderRow = {props.renderRow}
     />
