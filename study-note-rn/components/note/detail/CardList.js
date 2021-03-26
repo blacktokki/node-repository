@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
-import { Button, SortableList } from '../commons';
+import { Button, SortableList } from '../../commons';
 import {View} from 'react-native';
 import CardElement  from './CardElement';
 

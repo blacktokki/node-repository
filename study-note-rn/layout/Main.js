@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'router';
-import {Home,Option,Card,Note,Study} from 'components';
+import {Home,Option, Note, NoteStudy, NoteDetail} from 'components';
 import { Div } from 'components/commons';
 import { View } from 'react-native';
 
@@ -12,8 +12,8 @@ function Main() {
           <Route exact path="/" component={Home}/>
           <Route path="/option" component={Option}/>
           <Route exact path="/note" component={Note}/>
-          <Route exact path="/note/:id" component={Card}/>
-          <Route path="/note/:id/study" component={Study}/>
+          <Route exact path="/note/:id" component={NoteDetail}/>
+          <Route exact path="/note/:id/study" component={NoteStudy}/>
         </Switch>
       </Div>
     </View>

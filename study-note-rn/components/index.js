@@ -1,5 +1,5 @@
 export { default as Home } from './home/Home';
 export { default as Option } from './option/Option';
-export { default as Card } from './card/Card';
+export { default as NoteDetail } from './note/detail/NoteDetail';
 export { default as Note } from './note/Note';
-export { default as Study } from './study/Study';
+export { default as NoteStudy } from './note/detail/NoteStudy';

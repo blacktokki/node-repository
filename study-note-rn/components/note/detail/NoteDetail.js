@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { View, Button } from 'react-native';
 import CardListTitle from './CardListTitle';
 import CardList from './CardList';
-import { Section, Div } from  '../commons';
+import { Section, Div } from  '../../commons';
 
 export default withRouter(inject("card")(
   observer(({history, match, card})=>{

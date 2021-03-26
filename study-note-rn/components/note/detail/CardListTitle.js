@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
 import { View, TextInput, Text } from 'react-native';
-import { Div } from '../commons';
+import { Div } from '../../commons';
 
 export default inject('card')(
   observer(({card})=>{
