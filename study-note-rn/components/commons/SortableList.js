@@ -1,100 +1,47 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ViewPropTypes } from 'react-native';
-import SortableList from 'react-native-sortable-list';
+import React from 'react'
+import {Dimensions, View, ScrollView} from 'react-native'
+import {AutoDragSortableView} from 'react-native-drag-sort'
 
+const {width} = Dimensions.get('window')
 
-class _SortableList extends SortableList {
-    static propTypes = {
-      data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-      order: PropTypes.arrayOf(PropTypes.any),
-      style: ViewPropTypes.style,
-      contentContainerStyle: ViewPropTypes.style,
-      innerContainerStyle: ViewPropTypes.style,
-      sortingEnabled: PropTypes.bool,
-      scrollEnabled: PropTypes.bool,
-      horizontal: PropTypes.bool,
-      showsVerticalScrollIndicator: PropTypes.bool,
-      showsHorizontalScrollIndicator: PropTypes.bool,
-      refreshControl: PropTypes.element,
-      autoscrollAreaSize: PropTypes.number,
-      snapToAlignment: PropTypes.string,
-      rowActivationTime: PropTypes.number,
-      manuallyActivateRows: PropTypes.bool,
-      keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-      scrollEventThrottle: PropTypes.number,
-      decelerationRate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      pagingEnabled: PropTypes.bool,
-      nestedScrollEnabled: PropTypes.bool,
-      disableIntervalMomentum: PropTypes.bool,
-  
-      renderRow: PropTypes.func.isRequired,
-      renderHeader: PropTypes.func,
-      renderFooter: PropTypes.func,
-  
-      onChangeOrder: PropTypes.func,
-      onActivateRow: PropTypes.func,
-      onReleaseRow: PropTypes.func,
-      onScroll: PropTypes.func,
-    };
-    /*
-    _renderRows() {
-      const {horizontal, rowActivationTime, sortingEnabled, renderRow} = this.props;
-      const {animated, order, data, activeRowKey, releasedRowKey, rowsLayouts} = this.state;
-  
-  
-      let nextX = 0;
-      let nextY = 0;
-  
-      return order.map((key, index) => {
-        const style = {[ZINDEX]: 0};
-        const location = {x: 0, y: 0};
-  
-        if (rowsLayouts) {
-          if (horizontal) {
-            location.x = nextX;
-            nextX += rowsLayouts[key] ? rowsLayouts[key].width : 0;
-          } else {
-            location.y = nextY;
-            nextY += rowsLayouts[key] ? rowsLayouts[key].height : 0;
-          }
-        }
-  
-        const active = activeRowKey === key;
-        const released = releasedRowKey === key;
-  
-        if (active || released) {
-          style[ZINDEX] = 100;
-        }
-  
-        return (
-          <Row
-            key={uniqueRowKey(key)}
-            ref={this._onRefRow.bind(this, key)}
-            horizontal={horizontal}
-            activationTime={rowActivationTime}
-            animated={animated && !active}
-            disabled={!sortingEnabled}
-            style={style}
-            location={location}
-            onLayout={!rowsLayouts ? this._onLayoutRow.bind(this, key) : null}
-            onActivate={this._onActivateRow.bind(this, key, index)}
-            onPress={this._onPressRow.bind(this, key)}
-            onRelease={this._onReleaseRow.bind(this, key)}
-            onMove={this._onMoveRow}
-            manuallyActivateRows={this.props.manuallyActivateRows}>
-            {renderRow({
-              key,
-              data: data[key],
-              disabled: !sortingEnabled,
-              active,
-              index,
-            })}
-          </Row>
-        );
-      });
-    }*/
+const parentWidth = width
+const childrenWidth = width - 20
+const childrenHeight = 48
+
+class CustomAutoDragSortableView extends AutoDragSortableView{
+  render() {
+    return (
+        <ScrollView
+            bounces={false}
+            scrollEventThrottle={1}
+            scrollIndicatorInsets={this.props.scrollIndicatorInsets}
+            ref={(scrollRef)=> {
+                if (this.props.onScrollRef) this.props.onScrollRef(scrollRef)
+                this.scrollRef = scrollRef
+                return this.scrollRef
+            }}
+            scrollEnabled = {this.state.scrollEnabled}
+            onScroll={this.onScrollListener}
+            style={{height:300}}
+        >  
+            {this.props.renderHeaderView ? this.props.renderHeaderView : null} 
+            <View
+                //ref={(ref)=>this.sortParentRef=ref}
+                style={{
+                  width: this.props.parentWidth,
+                  height: this.state.height
+                }}
+                //onLayout={()=> {}}
+                >
+                {this._renderItemView()}
+            </View>
+            {this.props.renderBottomView ? this.props.renderBottomView : null}
+        </ScrollView>
+    )
 }
+
+}
+
 
 export default (props)=>{
   const results = {}
@@ -102,12 +49,25 @@ export default (props)=>{
     results[idx]=item
   });
   return (
-    <_SortableList
-      //checkScroll={checkScroll}
-      //onSortEnd={onSortEnd}
-      sortingEnabled = {false}
-      data = {results}
-      renderRow = {props.renderRow}
-    />
+    <CustomAutoDragSortableView 
+      dataSource={props.data}
+      marginChildrenBottom={10}
+      marginChildrenRight={10}
+      marginChildrenLeft = {10}
+      marginChildrenTop={10}
+      parentWidth={parentWidth}
+      childrenWidth= {childrenWidth}
+      childrenHeight={childrenHeight}
+      
+      onDataChange = {(data)=>{
+          if (data.length != this.state.data.length) {
+              this.setState({
+                  data: data
+              })
+          }
+      }}
+      keyExtractor={(item,index)=> index} // FlatList作用一样，优化
+      renderItem={props.renderRow}
+  />
   )
 }

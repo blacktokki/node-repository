@@ -88,13 +88,13 @@ export default function App() {
             tapToClose={true}
             onClose={()=>{setPanel(false)}}
           >
-            <View style={{flex:1}}>
-              <ScrollView>
+            <View style={{flex:1}} contentContainerStyle={{ flexGrow: 1 }} scrollEnabled={false}>
+              <View style={{flex:1}}>
                 <Header controlPanel={toggle}></Header>
                 <Main></Main>
-              </ScrollView>
+              </View>
+              <Footer></Footer>
             </View>
-            <Footer></Footer>
           </Drawer>
         </SafeAreaView>
       </Router>
