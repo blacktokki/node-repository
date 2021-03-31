@@ -1,6 +1,6 @@
 import  React, { useState, useEffect } from 'react';
-import { Platform, SafeAreaView, Dimensions,  ScrollView, View } from 'react-native';
-import { Header, Main,Left,Footer } from 'layout';
+import { Platform, SafeAreaView, Dimensions, View } from 'react-native';
+import { Left, Content, Header, Main, Footer } from 'layout';
 import { Provider } from 'mobx-react';
 import { Router } from 'router';
 import Drawer from 'react-native-drawer'
@@ -88,13 +88,13 @@ export default function App() {
             tapToClose={true}
             onClose={()=>{setPanel(false)}}
           >
-            <View style={{flex:1}} contentContainerStyle={{ flexGrow: 1 }} scrollEnabled={false}>
+            <Content>
               <View style={{flex:1}}>
                 <Header controlPanel={toggle}></Header>
                 <Main></Main>
               </View>
               <Footer></Footer>
-            </View>
+            </Content>
           </Drawer>
         </SafeAreaView>
       </Router>

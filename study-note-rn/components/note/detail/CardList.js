@@ -4,8 +4,8 @@ import { Button, SortableList } from '../../commons';
 import {View} from 'react-native';
 import CardElement  from './CardElement';
 
-export default inject("card")(
-  observer(({card})=>{
+export default inject("card", "scroll")(
+  observer(({card, scroll})=>{
     const checkScroll = (action) => {
       if(card.is_scroll){
         action()
@@ -16,6 +16,9 @@ export default inject("card")(
     const onSortEnd = ({oldIndex, newIndex}) => {
       card.replaceCard(oldIndex, newIndex)
     };
+    const onDataChange = (data) => {
+      card.handleCards(data)
+    }
 
     const renderRow = ({index, data, active})=>{
       return(
@@ -31,11 +34,13 @@ export default inject("card")(
     return (
     <View data-changed={card.changed} data-length={card.cards.length}>
       <SortableList
+        scroll={scroll}
         checkScroll={checkScroll}
         onSortEnd={onSortEnd}
+        onDataChange={onDataChange}
         data = {card.cards}
         renderRow = {renderRow}
-        style={{flex: 1}}
+        childrenHeight={180}
       />
       <Button onPress={(event) => {card.addCard(card.cards.length);}} title="+++" style={{height:100}}/>
     </View>

@@ -1,73 +1,136 @@
-import React from 'react'
-import {Dimensions, View, ScrollView} from 'react-native'
+import  React, { useState, useEffect, useRef } from 'react';
+import {Dimensions, View, Animated, Easing, TouchableOpacity } from 'react-native'
 import {AutoDragSortableView} from 'react-native-drag-sort'
 
 const {width} = Dimensions.get('window')
+const touchZIndex = 99
+const defaultZIndex = 8
 
-const parentWidth = width
-const childrenWidth = width - 20
-const childrenHeight = 48
+class CustomAutoDragSortableView2 extends AutoDragSortableView{
+  initTag = () => {
+    this.clearAutoInterval();
+    this.autoObj = {
+        curDy: 0,
+        scrollDx: 0,
+        scrollDy: 0,
+        hasScrollDy: null,
+        forceScrollStatus: 0, // 0: NONE 1: DOWN 2: ONLY_DOWN -1: UP -2: ONLY_UP
+    }
+    console.log(Object.keys(this.sortParentRef.viewConfig))
+    console.log(this.sortParentRef.viewConfig)
+}
+  
+  isStartupAuto = () => {
+      if (this.curScrollData != this.props.scrollStore.curScrollData)
+        this.curScrollData = this.props.scrollStore.curScrollData
+      if (this.curScrollData == null) {
+          return false;
+      }
+      return true;
+  }
 
-class CustomAutoDragSortableView extends AutoDragSortableView{
   render() {
+    this.scrollRef = this.props.scrollStore.refs[0]
+    if (this.state.scrollEnabled != this.scrollRef.props.scrollEnabled)
+      this.scrollRef.setscrollEnabled(this.state.scrollEnabled)
+    //console.log(this.scrollRef.props)
     return (
-        <ScrollView
-            bounces={false}
-            scrollEventThrottle={1}
-            scrollIndicatorInsets={this.props.scrollIndicatorInsets}
-            ref={(scrollRef)=> {
-                if (this.props.onScrollRef) this.props.onScrollRef(scrollRef)
-                this.scrollRef = scrollRef
-                return this.scrollRef
+        <View
+            ref={(ref)=>this.sortParentRef=ref}
+            style={{
+              //width: this.props.parentWidth,
+              height: this.state.height,
             }}
-            scrollEnabled = {this.state.scrollEnabled}
-            onScroll={this.onScrollListener}
-            style={{height:300}}
-        >  
-            {this.props.renderHeaderView ? this.props.renderHeaderView : null} 
-            <View
-                //ref={(ref)=>this.sortParentRef=ref}
-                style={{
-                  width: this.props.parentWidth,
-                  height: this.state.height
-                }}
-                //onLayout={()=> {}}
-                >
-                {this._renderItemView()}
-            </View>
-            {this.props.renderBottomView ? this.props.renderBottomView : null}
-        </ScrollView>
+            //onLayout={()=> {}}
+            >
+            {this._renderItemView()}
+        </View>
     )
-}
+  }
 
+  _renderItemView = () => {
+    const {maxScale, minOpacity} = this.props
+    const inputRange = maxScale >= 1 ? [1, maxScale] : [maxScale, 1]
+    const outputRange = maxScale >= 1 ? [1, minOpacity] : [minOpacity, 1]
+    return this.state.dataSource.map((item,index)=>{
+        const transformObj = {}
+        transformObj[this.props.scaleStatus] = item.scaleValue
+        const key = this.props.keyExtractor ? this.props.keyExtractor(item.data,index) : item.originIndex
+        return (
+            <Animated.View
+                key={key}
+                ref={(ref) => this.sortRefs.set(key,ref)}
+                {...this._panResponder.panHandlers}
+                style={[{
+                    position: 'absolute',
+                    zIndex: defaultZIndex,
+                  },{
+                    marginTop: this.props.marginChildrenTop,
+                    marginBottom: this.props.marginChildrenBottom,
+                    marginLeft: this.props.marginChildrenLeft,
+                    marginRight: this.props.marginChildrenRight,
+                    left: item.position.x,
+                    top: item.position.y,
+                    opacity: item.scaleValue.interpolate({inputRange,outputRange}),
+                    transform: [transformObj],
+                    flexDirection:'row'
+                    
+                }]}>
+                <TouchableOpacity
+                    activeOpacity = {1}
+                    delayLongPress={this.props.delayLongPress}
+                    onPressOut={()=> this.onPressOut()}
+                    onLongPress={()=>this.startTouch(index)}
+                    style={{flex:1}}
+                    onPress={()=>{
+                        if (this.props.onClickItem) {
+                            this.isHasMeasure = true
+                            this.props.onClickItem(this.getOriginalData(),item.data,index)
+                        }
+                    }}>
+                    {this.props.renderItem(item.data,index)}
+                </TouchableOpacity>
+            </Animated.View>
+        )
+    })
+  }
 }
-
 
 export default (props)=>{
   const results = {}
+  const [ headerViewHeight , setHeaderViewHeight ] = useState(390);
+  const here = useRef();
   props.data.forEach((item,idx) => {
     results[idx]=item
   });
+  useEffect(() => {
+    //console.log(Object.keys(here.current.sortParentRef))
+    /*
+    here.measure((fx, fy, width, height, px, py) => {
+      console.log('Component width is: ' + width)
+      console.log('Component height is: ' + height)
+      console.log('X offset to frame: ' + fx)
+      console.log('Y offset to frame: ' + fy)
+      console.log('X offset to page: ' + px)
+      console.log('Y offset to page: ' + py)
+  })*/
+    //if headerViewHeight
+  });
   return (
-    <CustomAutoDragSortableView 
+    <CustomAutoDragSortableView2
+      ref={here}  
       dataSource={props.data}
-      marginChildrenBottom={10}
-      marginChildrenRight={10}
-      marginChildrenLeft = {10}
-      marginChildrenTop={10}
-      parentWidth={parentWidth}
-      childrenWidth= {childrenWidth}
-      childrenHeight={childrenHeight}
-      
-      onDataChange = {(data)=>{
-          if (data.length != this.state.data.length) {
-              this.setState({
-                  data: data
-              })
-          }
-      }}
+      headerViewHeight={props.scroll.headerViewHeight}
+      parentWidth={width}
+      childrenWidth= {width}
+      childrenHeight={props.childrenHeight}
+      autoThrottle={20}
+      autoThrottleDuration={10}
+      scrollStore={props.scroll}
+      onDataChange={props.onDataChange}
       keyExtractor={(item,index)=> index} // FlatList作用一样，优化
-      renderItem={props.renderRow}
+      renderItem={(data, index) => props.renderRow({data:data, index:index})}
   />
   )
+
 }
