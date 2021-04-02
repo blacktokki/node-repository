@@ -1,25 +1,11 @@
 import  React, { useState, useEffect, useRef } from 'react';
-import {Dimensions, View, Animated, Easing, TouchableOpacity } from 'react-native'
+import {Dimensions, View, Animated, TouchableOpacity } from 'react-native'
 import {AutoDragSortableView} from 'react-native-drag-sort'
 
 const {width} = Dimensions.get('window')
-const touchZIndex = 99
 const defaultZIndex = 8
 
 class CustomAutoDragSortableView2 extends AutoDragSortableView{
-  initTag = () => {
-    this.clearAutoInterval();
-    this.autoObj = {
-        curDy: 0,
-        scrollDx: 0,
-        scrollDy: 0,
-        hasScrollDy: null,
-        forceScrollStatus: 0, // 0: NONE 1: DOWN 2: ONLY_DOWN -1: UP -2: ONLY_UP
-    }
-    console.log(Object.keys(this.sortParentRef.viewConfig))
-    console.log(this.sortParentRef.viewConfig)
-}
-  
   isStartupAuto = () => {
       if (this.curScrollData != this.props.scrollStore.curScrollData)
         this.curScrollData = this.props.scrollStore.curScrollData
@@ -33,7 +19,6 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
     this.scrollRef = this.props.scrollStore.refs[0]
     if (this.state.scrollEnabled != this.scrollRef.props.scrollEnabled)
       this.scrollRef.setscrollEnabled(this.state.scrollEnabled)
-    //console.log(this.scrollRef.props)
     return (
         <View
             ref={(ref)=>this.sortParentRef=ref}
@@ -41,7 +26,8 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
               //width: this.props.parentWidth,
               height: this.state.height,
             }}
-            //onLayout={()=> {}}
+            onLayout={()=> {this.sortParentRef.measure((x, y, width, height, pageX, pageY) => {
+              this.props.scrollStore.handleHeaderViewHeight(pageY - this.scrollRef.pageY)})}}
             >
             {this._renderItemView()}
         </View>
@@ -98,34 +84,18 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
 
 export default (props)=>{
   const results = {}
-  const [ headerViewHeight , setHeaderViewHeight ] = useState(390);
-  const here = useRef();
   props.data.forEach((item,idx) => {
     results[idx]=item
   });
-  useEffect(() => {
-    //console.log(Object.keys(here.current.sortParentRef))
-    /*
-    here.measure((fx, fy, width, height, px, py) => {
-      console.log('Component width is: ' + width)
-      console.log('Component height is: ' + height)
-      console.log('X offset to frame: ' + fx)
-      console.log('Y offset to frame: ' + fy)
-      console.log('X offset to page: ' + px)
-      console.log('Y offset to page: ' + py)
-  })*/
-    //if headerViewHeight
-  });
   return (
     <CustomAutoDragSortableView2
-      ref={here}  
       dataSource={props.data}
       headerViewHeight={props.scroll.headerViewHeight}
       parentWidth={width}
       childrenWidth= {width}
       childrenHeight={props.childrenHeight}
       autoThrottle={20}
-      autoThrottleDuration={10}
+      autoThrottleDuration={2}
       scrollStore={props.scroll}
       onDataChange={props.onDataChange}
       keyExtractor={(item,index)=> index} // FlatList作用一样，优化

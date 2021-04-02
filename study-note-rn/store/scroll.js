@@ -14,17 +14,16 @@ export default class ScrollStore {
     }
     if (nativeEvent.contentOffset.y !== 0) this.isHasMeasure = true;
   }
-  onLayoutListener = (event) => {
-    console.log(event)
-    const nativeEvent = event.nativeEvent
-    this.headerViewHeight = nativeEvent.layout.y
+  handleHeaderViewHeight = (height) => {
+    this.headerViewHeight = height
   }
 }
+
 
 decorate(ScrollStore, {
     curScrollData: observable,
     isHasMeasure: observable,
     headerViewHeight: observable,
     onScrollListener: action,
-    onLayoutListener: action
+    handleHeaderViewHeight: action
 })
