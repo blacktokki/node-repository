@@ -1,3 +1,4 @@
+import { set } from 'mobx';
 import  React, { useState, useEffect, useRef } from 'react';
 import {Dimensions, View, Animated, TouchableOpacity } from 'react-native'
 import {AutoDragSortableView} from 'react-native-drag-sort'
@@ -27,7 +28,10 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
               height: this.state.height,
             }}
             onLayout={()=> {this.sortParentRef.measure((x, y, width, height, pageX, pageY) => {
-              this.props.scrollStore.handleHeaderViewHeight(pageY - this.scrollRef.pageY)})}}
+              if (this.props.headerViewHeight==null){
+                this.props.setHeaderViewHeight(pageY - this.scrollRef.pageY)
+              }
+            })}}
             >
             {this._renderItemView()}
         </View>
@@ -83,14 +87,19 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
 }
 
 export default (props)=>{
-  const results = {}
-  props.data.forEach((item,idx) => {
-    results[idx]=item
+  const [headerViewHeight, setHeaderViewHeight] = useState(null)
+  const [prevDataSource, setPrevDataSource] =useState([])
+  if (props.data.length != prevDataSource.length){
+    setPrevDataSource(props.data.map((item,idx)=>item))
+  }
+  useEffect(()=>{
+    props.scroll.refs[0].scrollTo({y:props.scroll.curScrollData.offsetY})
   });
   return (
     <CustomAutoDragSortableView2
-      dataSource={props.data}
-      headerViewHeight={props.scroll.headerViewHeight}
+      dataSource={prevDataSource}
+      headerViewHeight={headerViewHeight}
+      setHeaderViewHeight={setHeaderViewHeight}
       parentWidth={width}
       childrenWidth= {width}
       childrenHeight={props.childrenHeight}
