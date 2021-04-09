@@ -1,30 +1,33 @@
 import {decorate, observable, action } from 'mobx';
-export default class CounterStore {
-  studyCards = [
-  ]
+export default class StudyStore {
+  cards = []
+  questionIndices = []
+  answerIndex = 0
 
   constructor(root){
     this.root = root
   }
   shuffle = () => {
-    array = this.studyCards
-    let i = array.length - 1;
-    for (; i > 0; i--) {
+    this.cards = this.cards.map((num, idx)=>num)
+    for (let i = this.cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
+      temp = this.cards[i];
+      this.cards[i] = this.cards[j];
+      this.cards[j] = temp;
     }
-    this.handleStudyCards(JSON.parse(JSON.stringify(card.root.note.notes[index].cards)))
+    this.answerIndex = Math.floor(Math.random() * this.questionIndices.length)
   }
 
-  handleStudyCards = (cards)=>{
+  handleCards = (cards)=>{
     this.cards = cards
-  } 
+    this.questionIndices = this.cards.map((num, idx)=>idx)
+  }
 }
 
-decorate(CounterStore, {
-    number: observable,
-    handleStudyCards: action,
+decorate(StudyStore, {
+    cards: observable,
+    questionIndices: observable,
+    answerIndex: observable,
+    handleCards: action,
     shuffle: action,
 })

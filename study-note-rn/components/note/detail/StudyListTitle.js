@@ -5,10 +5,9 @@ import { Div } from '../../commons';
 
 export default inject('study')(
   observer(({study})=>{
-    console.log(study.studyCards)
     return (
       <Div className="card">
-        <Text>{study.studyCards.length>0?study.studyCards[0].name:''}</Text>
+        <Text>{study.cards.length>0?study.cards[study.answerIndex].name:''}</Text>
       </Div>
     )
   }
