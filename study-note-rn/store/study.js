@@ -1,4 +1,5 @@
 import {decorate, observable, action, computed } from 'mobx';
+import { Vibration } from 'react-native';
 export default class StudyStore {
   constructor(root){
     this.root = root
@@ -37,8 +38,10 @@ export default class StudyStore {
   }
 
   onAnswer = (answerIndex)=>{
-    console.log(answerIndex == this.questionIndex)
-    this.shuffle()
+    if (answerIndex == this.questionIndex)
+      this.shuffle()
+    else
+      Vibration.vibrate(250)
   }
 
   handleCurrentNoteId = (currentNoteId)=>{
