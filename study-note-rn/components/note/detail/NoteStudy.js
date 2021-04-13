@@ -15,9 +15,9 @@ export default withRouter(inject("study")(
     if(index < study.root.note.notes.length){
       if (study.id !== index){
         study.id = index
-        study.handleCards(JSON.parse(JSON.stringify(study.root.note.notes[index].cards)))
+        study.handleCurrentNoteId(index)
         study.shuffle()
-        if (study.cards.length < 2) back();
+        if (study.questions.length < 2) back();
       }
     }
     else{

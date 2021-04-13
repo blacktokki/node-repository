@@ -7,7 +7,7 @@ export default inject("study")(
   observer(({study})=>{
     
     return study.answerIndices.map((answerIdx, idx)=>(
-      <StudyElement {...study.cards[answerIdx]} idx={idx} key={idx}/>
+      <StudyElement {...study.cards[answerIdx]} onPress={() =>{study.onAnswer(answerIdx)}} idx={idx} key={idx}/>
     ))
   }
 ))

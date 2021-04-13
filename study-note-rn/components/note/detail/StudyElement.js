@@ -1,5 +1,5 @@
 import React,{ useState ,useEffect } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Button, Div } from '../../commons';
 
 export default (props)=>{
@@ -9,11 +9,11 @@ export default (props)=>{
     setValue(props.value);
   },[props.indent,props.name,props.value])
   return (
-    <View>
+    <TouchableOpacity onPress={props.onPress}>
       <Div className="card">
         <Text> {props.idx+1}</Text>
         <Text>{value}</Text>
       </Div>
-    </View>
+    </TouchableOpacity>
   );
 }

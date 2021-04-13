@@ -15,6 +15,7 @@ export default class NoteStore {
       'id': note.id,
       'title': note.title,
       'cards': JSON.parse(JSON.stringify(note.cards)),
+      'studyIndices': note.cards.map((card, idx)=> idx)
     }
     this.notes.push(_note);
   }

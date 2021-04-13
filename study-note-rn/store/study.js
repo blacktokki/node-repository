@@ -1,33 +1,59 @@
-import {decorate, observable, action } from 'mobx';
+import {decorate, observable, action, computed } from 'mobx';
 export default class StudyStore {
-  cards = []
-  questionIndices = []
-  answerIndex = 0
-
   constructor(root){
     this.root = root
-  }
-  shuffle = () => {
-    this.cards = this.cards.map((num, idx)=>num)
-    for (let i = this.cards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      temp = this.cards[i];
-      this.cards[i] = this.cards[j];
-      this.cards[j] = temp;
-    }
-    this.answerIndex = Math.floor(Math.random() * this.questionIndices.length)
+    this.currentNoteId = -1
+    this.questions = []
+    this.questionIndex = -1
+    this.answerIndices = []
   }
 
-  handleCards = (cards)=>{
-    this.cards = cards
-    this.questionIndices = this.cards.map((num, idx)=>idx)
+  get cards(){
+    return this.root.note.notes[this.currentNoteId].cards
+  }
+
+  shuffle = () => {
+    this.questions = this.questions.map((question, idx)=>question)    
+    for (let i = this.questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      temp = this.questions[i];
+      this.questions[i] = this.questions[j];
+      this.questions[j] = temp;
+    }
+    this.answerIndices = []
+    let offset = Math.floor(Math.random() * this.questions.length)
+    for (let i=0; i < this.questions.length; i++){
+      const idx = (offset + i) % this.questions.length
+      if (this.answerIndices.length == 0 && this.questions[idx].isRemain || this.answerIndices.length < Math.max(2, this.questions.length))
+        this.answerIndices.push(this.questions[idx].idx)
+    }
+    this.questionIndex = this.answerIndices[0]
+    for (let i = this.answerIndices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      temp = this.answerIndices[i];
+      this.answerIndices[i] = this.answerIndices[j];
+      this.answerIndices[j] = temp;
+    }
+  }
+
+  onAnswer = (answerIndex)=>{
+    console.log(answerIndex == this.questionIndex)
+    this.shuffle()
+  }
+
+  handleCurrentNoteId = (currentNoteId)=>{
+    this.currentNoteId = currentNoteId
+    this.questions = this.cards.map((value, idx)=> ({idx:idx, isRemain:true}))
   }
 }
 
 decorate(StudyStore, {
-    cards: observable,
-    questionIndices: observable,
-    answerIndex: observable,
-    handleCards: action,
+
+    currentNoteId: observable,
+    questions: observable,
+    questionIndex: observable,
+    answerIndices: observable,
+    cards: computed,
+    handleCurrentNoteId: action,
     shuffle: action,
 })
