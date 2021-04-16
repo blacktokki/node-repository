@@ -9,7 +9,7 @@ export default inject("scroll")(
         return (
             <View 
                 ref={(viewRef)=>{this.viewRef = viewRef}}
-                onLayout={()=> {this.viewRef.measure((x, y, width, height, pageX, pageY) => {this.scrollRef.pageY = pageY})}}
+                onLayout={()=> {if (this.viewRef)this.viewRef.measure((x, y, width, height, pageX, pageY) => {this.scrollRef.pageY = pageY})}}
                 style={{flex:1}}
             >
             <ScrollView
@@ -19,6 +19,7 @@ export default inject("scroll")(
                     //if (this.props.onScrollRef) this.props.onScrollRef(scrollRef)
                     if (scrollRef) {
                         scrollRef.setscrollEnabled = setscrollEnabled
+                        scrollRef.scrollEnabled = scrollEnabled
                         scroll.refs[0] = scrollRef
                         this.scrollRef = scrollRef
                         return this.scrollRef

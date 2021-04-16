@@ -2,7 +2,7 @@ import React from 'react';
 import { observer,inject } from 'mobx-react';
 import { Section, Div } from '../commons';
 import { View, Button , Text } from 'react-native';
-console.disableYellowBox = true;
+
 export default inject("counter")(
     observer(({counter})=>(
         <Section title="Home">

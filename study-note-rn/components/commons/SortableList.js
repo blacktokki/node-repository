@@ -18,8 +18,6 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
 
   render() {
     this.scrollRef = this.props.scrollStore.refs[0]
-    if (this.state.scrollEnabled != this.scrollRef.props.scrollEnabled)
-      this.scrollRef.setscrollEnabled(this.state.scrollEnabled)
     return (
         <View
             ref={(ref)=>this.sortParentRef=ref}
@@ -36,6 +34,10 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
             {this._renderItemView()}
         </View>
     )
+  }
+  componentDidUpdate() {
+    this.scrollRef.setscrollEnabled(this.state.scrollEnabled)
+    super.componentDidUpdate()
   }
 
   _renderItemView = () => {

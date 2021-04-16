@@ -12,18 +12,18 @@ export default withRouter(inject("study")(
     const back = () => {
       history.push('/note/'+index)
     }
-    if(index < study.root.note.notes.length){
-      if (study.id !== index){
-        study.id = index
-        study.handleCurrentNoteId(index)
-        study.shuffle()
-        if (study.questions.length < 2) back();
-      }
+    if (index < study.root.note.notes.length){
+      if (study.root.note.notes[index].cards.length < 2) back();
     }
-    else{
+    else {
       history.push('/');
     }
-
+    useEffect(() => {
+      study.id = index
+      study.handleCurrentNoteId(index)
+      study.shuffle()
+      if (study.questions.length < 2) back();
+    })
     return(
       <Section title={"Note/"+index+"/Study"}>
         <Div className='row'>
