@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
-import { Button, SortableList } from '../../commons';
 import StudyElement  from './StudyElement';
 
 export default inject("study")(

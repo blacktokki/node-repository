@@ -7,7 +7,7 @@ export default inject('study')(
   observer(({study})=>{
     return (
       <Div className="card">
-        <Text>{study.cards.length>0?study.cards[study.questionIndex].name:''}</Text>
+        <Text>{study.currentNoteId>=0 && study.cards.length>0?study.cards[study.questionIndex].name:''}</Text>
       </Div>
     )
   }

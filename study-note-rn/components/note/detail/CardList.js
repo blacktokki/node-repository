@@ -4,8 +4,8 @@ import { Button, SortableList } from '../../commons';
 import {View} from 'react-native';
 import CardElement  from './CardElement';
 
-export default inject("card", "scroll")(
-  observer(({card, scroll})=>{
+export default inject("card")(
+  observer(({card})=>{
     const checkScroll = (action) => {
       if(card.is_scroll){
         action()
@@ -34,7 +34,7 @@ export default inject("card", "scroll")(
     return (
     <View data-changed={card.changed} data-length={card.cards.length}>
       <SortableList
-        scroll={scroll}
+        scrollRef={card.root._ref.scrollRef}
         checkScroll={checkScroll}
         onSortEnd={onSortEnd}
         onDataChange={onDataChange}

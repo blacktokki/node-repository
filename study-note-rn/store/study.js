@@ -25,7 +25,7 @@ export default class StudyStore {
     let offset = Math.floor(Math.random() * this.questions.length)
     for (let i=0; i < this.questions.length; i++){
       const idx = (offset + i) % this.questions.length
-      if (this.answerIndices.length == 0 && this.questions[idx].isRemain || this.answerIndices.length < Math.max(2, this.questions.length))
+      if (this.answerIndices.length == 0 && this.questions[idx].isRemain || this.answerIndices.length < Math.min(Math.max(2, this.questions.length),4))
         this.answerIndices.push(this.questions[idx].idx)
     }
     this.questionIndex = this.answerIndices[0]
