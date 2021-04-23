@@ -5,10 +5,10 @@ import { Div } from '../../commons';
 
 export default inject('study')(
   observer(({study})=>{
-    return study.currentNoteId>=0?(
+    return (
       <Div className="card">
-        <Text>{study.cards.length}:{study.questions.length}</Text>
+        <Text>{study.currentNoteId>=0 && study.cards.length>0?study.cards[study.questionIndex].name:''}</Text>
       </Div>
-    ):(<Div className="card"/>)
+    )
   }
 ));

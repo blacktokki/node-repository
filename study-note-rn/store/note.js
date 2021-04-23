@@ -15,7 +15,7 @@ export default class NoteStore {
       'id': note.id,
       'title': note.title,
       'cards': JSON.parse(JSON.stringify(note.cards)),
-      'studyIndices': note.cards.map((card, idx)=> idx)
+      'questions': note.cards.map((card, idx)=> ({idx:idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}))
     }
     this.notes.push(_note);
   }
@@ -25,6 +25,7 @@ export default class NoteStore {
       'id': idx,
       'title': note.title,
       'cards': JSON.parse(JSON.stringify(note.cards)),
+      'questions': note.cards.map((card, idx)=> ({idx:idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}))
     }
     this.notes[idx] = _note
   }

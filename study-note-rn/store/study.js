@@ -4,7 +4,6 @@ export default class StudyStore {
   constructor(root){
     this.root = root
     this.currentNoteId = -1
-    this.questions = []
     this.questionIndex = -1
     this.answerIndices = []
   }
@@ -13,8 +12,11 @@ export default class StudyStore {
     return this.root.note.notes[this.currentNoteId].cards
   }
 
+  get questions(){
+    return this.root.note.notes[this.currentNoteId].questions
+  }
+
   shuffle = () => {
-    this.questions = this.questions.map((question, idx)=>question)    
     for (let i = this.questions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       temp = this.questions[i];
@@ -38,25 +40,32 @@ export default class StudyStore {
   }
 
   onAnswer = (answerIndex)=>{
-    if (answerIndex == this.questionIndex)
-      this.shuffle()
-    else
+    // {idx:idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}
+    if (answerIndex == this.questionIndex){
+        if (this.questionIndex.isCorrectLast == true)
+          this.questionIndex.isRemain = true
+        this.questionIndex.isCorrectOnce = true
+        this.questionIndex.isCorrectLast = true
+    }
+    else{
+      this.questionIndex.isCorrectLast = false
       Vibration.vibrate(250)
+    }
+    this.shuffle()
   }
 
   handleCurrentNoteId = (currentNoteId)=>{
     this.currentNoteId = currentNoteId
-    this.questions = this.cards.map((value, idx)=> ({idx:idx, isRemain:true}))
   }
 }
 
 decorate(StudyStore, {
 
     currentNoteId: observable,
-    questions: observable,
     questionIndex: observable,
     answerIndices: observable,
     cards: computed,
+    questions: computed,
     handleCurrentNoteId: action,
     shuffle: action,
 })

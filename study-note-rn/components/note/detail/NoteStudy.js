@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { View, Button } from 'react-native';
 import { Section, Div } from  '../../commons';
 import StudyListTitle from './StudyListTitle';
+import StudyQuestion from './StudyQuestion';
 import StudyList from './StudyList';
 
 export default withRouter(inject("study")(
@@ -30,6 +31,7 @@ export default withRouter(inject("study")(
           <Div className='col-12'></Div>
         </Div>
         <StudyListTitle/>
+        <StudyQuestion/>
         <StudyList/>
         <Button onPress={back} title="돌아가기"/>
       </Section>
