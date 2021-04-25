@@ -29,6 +29,7 @@ export default withRouter(inject("card")(
         if (card.id !== undefined){
           card.id = undefined
           card.handleTitle('제목')
+          card.handleCardId(-1)
           card.handleCards([])
           card.handleChanged(-1)
           card.handleSaved(false)
@@ -38,7 +39,8 @@ export default withRouter(inject("card")(
         if (card.id !== index){
           card.id = index
           card.handleTitle(card.root.note.notes[index].title)
-          card.handleCards(JSON.parse(JSON.stringify(card.root.note.notes[index].cards)))
+          card.handleCardId(card.root.note.notes[index].cardId)
+          card.handleCards(card.root.note.notes[index].cards)
           card.handleChanged(-1)
           card.handleSaved(true)
         }

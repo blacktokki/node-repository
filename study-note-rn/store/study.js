@@ -4,51 +4,70 @@ export default class StudyStore {
   constructor(root){
     this.root = root
     this.currentNoteId = -1
-    this.questionIndex = -1
-    this.answerIndices = []
+    this.questionId = -1
+    this.answerIds = []
+    this.shuffleToggle = false
   }
 
   get cards(){
-    return this.root.note.notes[this.currentNoteId].cards
+    const note = this.root.note.notes[this.currentNoteId]
+    return note? note.cards: []
   }
 
-  get questions(){
-    return this.root.note.notes[this.currentNoteId].questions
+  get question(){
+    return this.cards.find((card)=> card.id==this.questionId)
+  }
+
+  get answers(){
+    return this.answerIds.map((id)=> this.cards.find((card)=> card.id==id))
+  }
+  get remains(){
+    return this.shuffleToggle !==undefined?this.cards.filter((card)=>card.isRemain && !card.isCorrectOnce):[]
+  }
+  get correctOnces(){
+    return this.shuffleToggle !==undefined?this.cards.filter((card)=>card.isRemain && card.isCorrectOnce):[]
+  }
+  get notRemains(){
+    return this.shuffleToggle !==undefined?this.cards.filter((card)=>!card.isRemain):[]
   }
 
   shuffle = () => {
-    for (let i = this.questions.length - 1; i > 0; i--) {
+    this.shuffleToggle = !this.shuffleToggle
+    const cardIds = this.cards.map((card)=>card.id)
+    for (let i = cardIds.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      temp = this.questions[i];
-      this.questions[i] = this.questions[j];
-      this.questions[j] = temp;
+      temp = cardIds[i];
+      cardIds[i] = cardIds[j];
+      cardIds[j] = temp;
     }
-    this.answerIndices = []
-    let offset = Math.floor(Math.random() * this.questions.length)
-    for (let i=0; i < this.questions.length; i++){
-      const idx = (offset + i) % this.questions.length
-      if (this.answerIndices.length == 0 && this.questions[idx].isRemain || this.answerIndices.length < Math.min(Math.max(2, this.questions.length),4))
-        this.answerIndices.push(this.questions[idx].idx)
+    this.answerIds = []
+    let offset = Math.floor(Math.random() * cardIds.length)
+    for (let i=0; i < cardIds.length; i++){
+      const id = (offset + i) % cardIds.length
+      const card = this.cards.find((card)=> card.id==id)
+      if (this.answseIds == 0 && card.isRemain || this.answerIds.length < Math.min(Math.max(2, cardIds.length),4))
+        this.answerIds.push(card.id)
     }
-    this.questionIndex = this.answerIndices[0]
-    for (let i = this.answerIndices.length - 1; i > 0; i--) {
+    this.questionId = this.answerIds[0]
+    for (let i = this.answerIds.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      temp = this.answerIndices[i];
-      this.answerIndices[i] = this.answerIndices[j];
-      this.answerIndices[j] = temp;
+      temp = this.answerIds[i];
+      this.answerIds[i] = this.answerIds[j];
+      this.answerIds[j] = temp;
     }
   }
 
-  onAnswer = (answerIndex)=>{
-    // {idx:idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}
-    if (answerIndex == this.questionIndex){
-        if (this.questionIndex.isCorrectLast == true)
-          this.questionIndex.isRemain = true
-        this.questionIndex.isCorrectOnce = true
-        this.questionIndex.isCorrectLast = true
+  onAnswer = (answerId)=>{
+    const questionIdx = this.cards.findIndex((card)=>card.id==this.questionId)
+    const card = this.cards[questionIdx]
+    if (answerId == this.questionId){
+        if (card.isCorrectLast == true)
+          card.isRemain = false
+        card.isCorrectOnce = true
+        card.isCorrectLast = true
     }
     else{
-      this.questionIndex.isCorrectLast = false
+      card.isCorrectLast = false
       Vibration.vibrate(250)
     }
     this.shuffle()
@@ -60,12 +79,16 @@ export default class StudyStore {
 }
 
 decorate(StudyStore, {
-
     currentNoteId: observable,
-    questionIndex: observable,
-    answerIndices: observable,
+    questionId: observable,
+    answerIds: observable,
+    shuffleToggle: observable,
     cards: computed,
-    questions: computed,
+    question: computed,
+    answers: computed,
+    remains: computed,
+    correctOnces:computed,
+    notRemains:computed,
     handleCurrentNoteId: action,
     shuffle: action,
 })

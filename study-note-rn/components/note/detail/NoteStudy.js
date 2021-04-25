@@ -23,7 +23,7 @@ export default withRouter(inject("study")(
       study.id = index
       study.handleCurrentNoteId(index)
       study.shuffle()
-      if (study.questions.length < 2) back();
+      if (study.cards.length < 2) back();
     })
     return(
       <Section title={"Note/"+index+"/Study"}>

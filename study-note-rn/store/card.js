@@ -1,8 +1,10 @@
 import {decorate, observable, action} from 'mobx';
+import {Card} from 'entity';
 export default class CardStore {
   constructor(root){
     this.root = root
     this.title = '제목'
+    this.cardId = -1
     this.changed = -1
     this.saved = false
     this.cards = [
@@ -13,6 +15,9 @@ export default class CardStore {
   handleTitle = (title)=>{
     this.title = title
     this.saved = false
+  }
+  handleCardId = (idx)=>{
+    this.cardId = idx
   }
 
   handleChanged = (idx) =>{
@@ -27,22 +32,17 @@ export default class CardStore {
     if (idx===this.cards.length)
       this.is_scroll = true
     this.cards.splice(idx,0,{})
-    this.handleCard(idx,"indent",0)
-    this.handleCard(idx,"name","")
-    this.handleCard(idx,"value","")
+    this.handleCardId(this.cardId + 1)
+    this.handleCard(idx,"id", this.cardId)
+    this.cards[idx] = new Card(this.cards[idx])
   }
 
   replaceCard= (oldIndex,newIndex)=>{
-    const card = {
-      'indent':this.cards[oldIndex].indent,
-      'name':this.cards[oldIndex].name,
-      'value':this.cards[oldIndex].value
-    }
+    const card = this.cards[oldIndex]
     this.removeCard(oldIndex)
     this.addCard(newIndex)
-    this.handleCard(newIndex,"indent",card.indent)
-    this.handleCard(newIndex,"name",card.name)
-    this.handleCard(newIndex,"value",card.value)
+    this.handleCard(newIndex,"id", card.id)
+    this.cards[newIndex] = new Card(card)
   }
 
   handleCard = (idx,key,value)=> {

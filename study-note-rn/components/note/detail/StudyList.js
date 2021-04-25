@@ -4,9 +4,8 @@ import StudyElement  from './StudyElement';
 
 export default inject("study")(
   observer(({study})=>{
-    
-    return study.answerIndices.map((answerIdx, idx)=>(
-      <StudyElement {...study.cards[answerIdx]} onPress={() =>{study.onAnswer(answerIdx)}} idx={idx} key={idx}/>
+    return study.answers.map((answer, idx)=>(
+      <StudyElement {...answer} onPress={() =>{study.onAnswer(answer.id)}} idx={idx} key={idx}/>
     ))
   }
 ))

@@ -1,4 +1,5 @@
 import {decorate, observable, action } from 'mobx';
+import {Note} from 'entity';
 import * as Repository from 'repository';
 export default class NoteStore {
   constructor(root){
@@ -7,27 +8,15 @@ export default class NoteStore {
     this.notes = [
     ]
   }
-  
+  //'questions': note.cards.map((card, idx)=> ({idx:card.idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}))
   addNote = (note) => {
     this.noteId += 1
     note.id = this.noteId
-    const _note = {
-      'id': note.id,
-      'title': note.title,
-      'cards': JSON.parse(JSON.stringify(note.cards)),
-      'questions': note.cards.map((card, idx)=> ({idx:idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}))
-    }
-    this.notes.push(_note);
+    this.notes.push(new Note(note))
   }
 
-  handleNote = (idx,note)=> {
-    const _note = {
-      'id': idx,
-      'title': note.title,
-      'cards': JSON.parse(JSON.stringify(note.cards)),
-      'questions': note.cards.map((card, idx)=> ({idx:idx, isCorrectOnce:false, isCorrectLast:false, isRemain:true}))
-    }
-    this.notes[idx] = _note
+  handleNote = (idx, note)=> {
+    this.notes[idx] = new Note(note)
   }
 
   removeNote = (id) => {
@@ -50,14 +39,14 @@ export default class NoteStore {
     var filename = 'note'+datetime+'.json'
     var data = {
       'noteId':this.noteId,
-      'notes':this.notes
+      'notes': this.notes.map((note)=> note.data)
     }
     Repository.save(filename, data);
   }
   importNote = () => {
     Repository.load((note)=>{
       this.noteId = note.noteId
-      this.notes = note.notes
+      this.notes = note.notes.map((note)=> new Note(note))
     });
   }
 }
