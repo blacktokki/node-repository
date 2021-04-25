@@ -22,10 +22,6 @@ export default (props)=>{
     useEffect(()=>{
         props.checkScroll(() => window.scrollTo(0,document.body.scrollHeight))
     });
-    /*
-    const Element = SortableElement((props)=>{
-        return <>
-    })*/
 
     const results = props.data.map(
         (item,idx) => (
@@ -40,7 +36,7 @@ export default (props)=>{
     )
 
     return (
-        <Results onSortEnd={props.onSortEnd}>
+        <Results onSortEnd={props.onSortEnd} distance={5}>
             {results}
         </Results>
     )

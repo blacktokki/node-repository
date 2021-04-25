@@ -1,4 +1,4 @@
-import React,{ useState ,useEffect } from 'react';
+import React,{ useState } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { Button, Div } from '../../commons';
 
@@ -6,13 +6,6 @@ export default (props)=>{
   const [indent,setIndent] = useState(props.indent)
   const [name,setName] = useState(props.name)
   const [value,setValue] = useState(props.value)
-  
-  useEffect(() => {
-    setIndent(props.indent);
-    setName(props.name);
-    setValue(props.value);
-  },[props.indent,props.name,props.value])
-
   function handleIndent(num){
     props.onHandle(props.idx,"indent",num)
     setIndent(num)

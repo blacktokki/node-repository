@@ -87,6 +87,7 @@ export default function App() {
             panCloseMask = {1-(250/Dimensions.get('window').width)}
             tapToClose={true}
             onClose={()=>{setPanel(false)}}
+            styles={{mainOverlay:{width: Platform.OS === 'web' ? 0 : 'auto'}}}
           >
             <Content>
               <View style={{flex:1}}>
