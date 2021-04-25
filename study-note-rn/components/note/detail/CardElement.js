@@ -38,7 +38,7 @@ export default (props)=>{
         null
       }
       <Div className="card">
-        <Text> {props.idx+1} ({props.id})</Text>
+        <Text> {props.idx+1} ({props.id}, {props.isRemain?1:0}, {props.isCorrectOnce?1:0}, {props.isCorrectLast?1:0})</Text>
         {
           indent>0 ?
           null :

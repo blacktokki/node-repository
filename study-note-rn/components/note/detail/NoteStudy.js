@@ -13,17 +13,16 @@ export default withRouter(inject("study")(
     const back = () => {
       history.push('/note/'+index)
     }
-    if (index < study.root.note.notes.length){
-      if (study.root.note.notes[index].cards.length < 2) back();
-    }
-    else {
-      history.push('/');
-    }
     useEffect(() => {
       study.id = index
       study.handleCurrentNoteId(index)
+      if(index < study.root.note.notes.length){
+        if(study.cards.length < 2) back();
+      }
+      else {
+        history.push('/');
+      }
       study.shuffle()
-      if (study.cards.length < 2) back();
     })
     return(
       <Section title={"Note/"+index+"/Study"}>
@@ -32,7 +31,7 @@ export default withRouter(inject("study")(
         </Div>
         <StudyListTitle/>
         <StudyQuestion/>
-        <StudyList/>
+        <StudyList onBack={back}/>
         <Button onPress={back} title="돌아가기"/>
       </Section>
     )

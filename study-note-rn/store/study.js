@@ -22,6 +22,7 @@ export default class StudyStore {
     return this.answerIds.map((id)=> this.cards.find((card)=> card.id==id))
   }
   get remains(){
+    console.log(this.shuffleToggle)
     return this.shuffleToggle !==undefined?this.cards.filter((card)=>card.isRemain && !card.isCorrectOnce):[]
   }
   get correctOnces(){
@@ -42,13 +43,14 @@ export default class StudyStore {
     }
     this.answerIds = []
     let offset = Math.floor(Math.random() * cardIds.length)
-    for (let i=0; i < cardIds.length; i++){
-      const id = (offset + i) % cardIds.length
-      const card = this.cards.find((card)=> card.id==id)
-      if (this.answseIds == 0 && card.isRemain || this.answerIds.length < Math.min(Math.max(2, cardIds.length),4))
+    let size = Math.min(Math.max(2, cardIds.length),4)
+    for (let i=0; i < cardIds.length + size; i++){
+      const card = this.cards[(offset + i) % cardIds.length]
+      if (card === undefined) break;
+      if (this.answerIds.length == 0 && card.isRemain || this.answerIds.length > 0 && this.answerIds.length < size)
         this.answerIds.push(card.id)
     }
-    this.questionId = this.answerIds[0]
+    this.questionId = this.answerIds.length > 0 ? this.answerIds[0]: null
     for (let i = this.answerIds.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       temp = this.answerIds[i];
@@ -58,19 +60,25 @@ export default class StudyStore {
   }
 
   onAnswer = (answerId)=>{
-    const questionIdx = this.cards.findIndex((card)=>card.id==this.questionId)
-    const card = this.cards[questionIdx]
     if (answerId == this.questionId){
-        if (card.isCorrectLast == true)
-          card.isRemain = false
-        card.isCorrectOnce = true
-        card.isCorrectLast = true
+        if (this.question.isCorrectLast == true)
+        this.question.isRemain = false
+        this.question.isCorrectOnce = true
+        this.question.isCorrectLast = true
     }
     else{
-      card.isCorrectLast = false
+      this.question.isCorrectLast = false
       Vibration.vibrate(250)
     }
     this.shuffle()
+  }
+
+  reset = ()=>{
+    this.cards.map((card)=>{
+      card.isRemain = true
+      card.isCorrectOnce = false
+      card.isCorrectLast = false 
+    })
   }
 
   handleCurrentNoteId = (currentNoteId)=>{
@@ -91,4 +99,5 @@ decorate(StudyStore, {
     notRemains:computed,
     handleCurrentNoteId: action,
     shuffle: action,
+    reset: action
 })
