@@ -22,7 +22,6 @@ export default class StudyStore {
     return this.answerIds.map((id)=> this.cards.find((card)=> card.id==id))
   }
   get remains(){
-    console.log(this.shuffleToggle)
     return this.shuffleToggle !==undefined?this.cards.filter((card)=>card.isRemain && !card.isCorrectOnce):[]
   }
   get correctOnces(){
