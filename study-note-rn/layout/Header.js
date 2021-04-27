@@ -15,11 +15,11 @@ function Header(props) {
             </Div>
             {/*<View><A href="!#" data-toggle="search" className="nav-link nav-link-lg d-sm-none"><FontAwesome name="search" style={{fontSize: 30}}/></A></View>*/}
           </Div>
+          {/*
           <Div className="search-element" style={{ flexDirection: "row", backgroundColor:'white'}}>
             <TextInput className="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250" style={{width:250, backgroundColor: 'white'}}/>
             <FontAwesome.Button name="search" style={{backgroundColor:'white'}} color="black"/>
             <Div className="search-backdrop"></Div>
-            {/*
             <View className="search-result">
               <View className="search-header">
                 <Text children="Histories"/>
@@ -77,8 +77,8 @@ function Header(props) {
                 </a>
               </View>
             </View>
-            */}
           </Div>
+          */}
         </Div>
         {/*
         <ul className="navbar-nav navbar-right">

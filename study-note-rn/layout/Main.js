@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, Switch } from 'router';
 import {Home,Option, Note, NoteStudy, NoteDetail} from 'components';
 import { Div } from 'components/commons';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 
-function Main() {
+function Main(props) {
   return (
-    <View style={{marginTop:100}}>
+    <View style={{marginTop:props.screen.length>1 && Platform.OS=='web'?100:60}}>
       <Div className="main-content">
         <Switch>
           <Route exact path="/" component={Home}/>

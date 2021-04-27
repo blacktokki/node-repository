@@ -34,7 +34,6 @@ export default function App() {
   //resize detect
   const onChange = (_screen) => {
     setScreen(getScreen());
-    //console.log(screen);
   };
 
   const toggle= () =>{
@@ -69,7 +68,7 @@ export default function App() {
     }
     return style
   }
-
+  store._ref.screen = screen
   return (
     <Provider {...store}>
       <Router className="App">
@@ -92,7 +91,7 @@ export default function App() {
             <Content>
               <View style={{flex:1}}>
                 <Header controlPanel={toggle}></Header>
-                <Main></Main>
+                <Main screen={screen}></Main>
               </View>
               <Footer></Footer>
             </Content>
