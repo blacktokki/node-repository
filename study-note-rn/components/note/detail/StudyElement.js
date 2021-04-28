@@ -9,7 +9,7 @@ export default (props)=>{
     setValue(props.value);
   },[props.indent,props.name,props.value])
   return (
-    <TouchableOpacity onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress} style={{left:'2%', width:'96%'}}>
       <Div className="card">
         <Text> {props.idx+1}</Text>
         <Text>{value}</Text>

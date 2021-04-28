@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { View, Button } from 'react-native';
 import { Section, Div } from  '../../commons';
 import StudyListTitle from './StudyListTitle';
-import StudyQuestion from './StudyQuestion';
 import StudyList from './StudyList';
 
 export default withRouter(inject("study")(
@@ -26,12 +25,10 @@ export default withRouter(inject("study")(
     })
     return(
       <Section title={"Note/"+index+"/Study"}>
-        <Div className='row'>
-          <Div className='col-12'></Div>
+        <Div className="card" style={{backgroundColor:'whitesmoke'}}>
+          <StudyListTitle/>
+          <StudyList onBack={back}/>
         </Div>
-        <StudyListTitle/>
-        <StudyQuestion/>
-        <StudyList onBack={back}/>
         <Button onPress={back} title="돌아가기"/>
       </Section>
     )

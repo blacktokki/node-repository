@@ -11,9 +11,6 @@ export default inject("counter")(
             <Button onPress={counter.increase} title="+1"/>
             <Button onPress={counter.decrease} title="-1"/>
           </Div>
-          <Div className="card" style={{flex:1}}>
-            <Div className="progress-bar" style={{height:"25%", width:"25%"}}></Div>
-          </Div>
         </Section>
     ))
 );  

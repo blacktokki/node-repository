@@ -8,6 +8,7 @@ export default inject('study')(
     return (
       <Div className="card">
         <Text>{study.remains.length}:{study.correctOnces.length}:{study.notRemains.length}</Text>
+        <Text>{study.question?study.question.name:''}</Text>
       </Div>
     )
   }
