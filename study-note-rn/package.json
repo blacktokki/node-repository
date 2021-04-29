@@ -25,6 +25,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-card-flip": "^1.0.7",
     "react-native-css-loader": "^1.0.2",
     "react-native-css-transformer": "^1.2.4",
     "react-native-drag-sort": "^2.4.2",

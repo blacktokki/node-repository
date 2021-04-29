@@ -2,6 +2,7 @@ import React,{ useEffect } from 'react';
 import { observer,inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { View, Button } from 'react-native';
+import FlipCardList from './FlipCardList';
 import CardListTitle from './CardListTitle';
 import CardList from './CardList';
 import { Section, Div } from  '../../commons';
@@ -55,6 +56,7 @@ export default withRouter(inject("card")(
         <Div className='row'>
           <Div className='col-12'></Div>
         </Div>
+        <FlipCardList/>
         <CardListTitle/>
         {
           index !== 'new'?
