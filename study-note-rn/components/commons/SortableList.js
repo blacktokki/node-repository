@@ -71,6 +71,7 @@ class CustomAutoDragSortableView2 extends AutoDragSortableView{
                 this.props.setHeaderViewHeight(this.scrollRef._innerPageY - this.scrollRef.pageY)
               }
             })}}
+            removeClippedSubviews={true} 
             >
             {this._renderItemView()}
         </View>
