@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer,inject } from 'mobx-react';
+import { View } from 'react-native';
 import StudyElement  from './StudyElement';
+import StudyText  from './StudyText';
 
 export default inject("study")(
   observer(({onBack, study})=>{
@@ -10,8 +12,9 @@ export default inject("study")(
         study.reset();
       }
     }
-    return study.answers.map((answer, idx)=>(
-      <StudyElement {...answer} onPress={()=>{study.onAnswer(answer.id);onPostPress()}} idx={idx} key={idx}/>
-    ))
+      return !study.isTextAnswer?study.answers.map((answer, idx)=>(
+        <StudyElement {...answer} onPress={()=>{study.onAnswer(answer.id);onPostPress()}} idx={idx} key={idx}/>
+        )):(<StudyText onAnswer={(text)=>{study.onAnswerText(text);onPostPress()}}/>)
+
   }
 ))

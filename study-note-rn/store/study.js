@@ -7,6 +7,7 @@ export default class StudyStore {
     this.questionId = -1
     this.answerIds = []
     this.shuffleToggle = false
+    this.isTextAnswer = false
   }
 
   get cards(){
@@ -56,14 +57,25 @@ export default class StudyStore {
       this.answerIds[i] = this.answerIds[j];
       this.answerIds[j] = temp;
     }
+    if(this.questionId){
+      if (this.question.isCorrectOnce || this.question.isCorrectLast)
+        this.isTextAnswer = true
+      else
+        this.isTextAnswer = false
+    }
   }
 
   onAnswer = (answerId)=>{
-    if (answerId == this.questionId){
-        if (this.question.isCorrectLast == true)
-        this.question.isRemain = false
-        this.question.isCorrectOnce = true
-        this.question.isCorrectLast = true
+    let answer = this.cards.find((card)=> card.id==answerId)
+    this.onAnswerText(answer?answer.value:'')
+  }
+
+  onAnswerText = (text) =>{
+    if (text == this.question.value){
+      if (this.question.isCorrectLast == true)
+      this.question.isRemain = false
+      this.question.isCorrectOnce = true
+      this.question.isCorrectLast = true
     }
     else{
       this.question.isCorrectLast = false
@@ -76,7 +88,6 @@ export default class StudyStore {
     this.cards.map((card)=>{
       card.isRemain = true
       card.isCorrectOnce = false
-      card.isCorrectLast = false 
     })
   }
 
@@ -90,6 +101,7 @@ decorate(StudyStore, {
     questionId: observable,
     answerIds: observable,
     shuffleToggle: observable,
+    isTextAnswer: observable,
     cards: computed,
     question: computed,
     answers: computed,
