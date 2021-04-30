@@ -11,15 +11,12 @@ export default function Carousel({pages, pageWidth, gap, offset, renderItem}) {
     setPage(newPage);
   };
   const onPage = (num) => {
-    scrollRef.current.scrollToOffset({offset: offset + gap/2 + (page + num) * pageWidth})
+    scrollRef.current.scrollToOffset({offset: offset + gap/2 + (page + num) * (pageWidth + gap)})
   }
 
 
   return (
     <View>
-      <TouchableHighlight onPress={()=>onPage(-1)}>
-        <Text>{"<-"}</Text>
-      </TouchableHighlight>
       <FlatList
         ref={scrollRef}
         automaticallyAdjustContentInsets={false}
@@ -38,25 +35,32 @@ export default function Carousel({pages, pageWidth, gap, offset, renderItem}) {
         snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
       />
-      <TouchableHighlight onPress={()=>onPage(1)}>
-        <Text>{"->"}</Text>
-      </TouchableHighlight>
       <View style={{
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width:'1000',
+        justifyContent: 'space-between',
         marginBottom: 20,
       }}>
-        {Array.from({length: pages.length}, (_, i) => i).map((i) => (
-          <View key={`indicator_${i}`} style={{
-            marginHorizontal: 2,
-            backgroundColor: i === page ? '#262626' : '#dfdfdf',
-            width: 8,
-            height: 8,
-            borderRadius: 4,
-          }} />
-        ))}
+        <TouchableHighlight onPress={()=>onPage(-1)}>
+          <Text style={{fontWeight:"700", fontSize:32, color:'black', textAlign:'center'}}>{"<-"}</Text>
+        </TouchableHighlight>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          {Array.from({length: pages.length}, (_, i) => i).filter((i)=>(page-6<i && page+6>i)).map((i) => (
+            <View key={`indicator_${i}`} style={{
+              marginHorizontal: 2,
+              backgroundColor: i === page ? '#262626' : '#dfdfdf',
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+            }} />
+          ))}
+        </View>
+        <TouchableHighlight onPress={()=>onPage(1)}>
+          <Text style={{fontWeight:"700", fontSize:32, color:'black', textAlign:'center'}}>{"->"}</Text>
+        </TouchableHighlight>
       </View>
     </View>
   );

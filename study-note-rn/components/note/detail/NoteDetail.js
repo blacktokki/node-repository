@@ -7,8 +7,8 @@ import CardListTitle from './CardListTitle';
 import CardList from './CardList';
 import { Section, Div } from  '../../commons';
 
-export default withRouter(inject("card")(
-  observer(({history, match, card})=>{
+export default withRouter(inject("card", '_ref')(
+  observer(({history, match, card, _ref})=>{
     const index = match.params.id
     const save = () => {
       if (index==="new"){
@@ -56,7 +56,7 @@ export default withRouter(inject("card")(
         <Div className='row'>
           <Div className='col-12'></Div>
         </Div>
-        <FlipCardList/>
+        <FlipCardList screen={_ref.screen}/>
         <CardListTitle/>
         {
           index !== 'new'?
