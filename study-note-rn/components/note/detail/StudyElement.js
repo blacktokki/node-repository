@@ -7,7 +7,7 @@ export default (props)=>{
   
   useEffect(() => {
     setValue(props.value);
-  },[props.indent,props.name,props.value])
+  },[props.name,props.value])
   return (
     <TouchableOpacity onPress={props.onPress} style={{left:'2%', width:'96%'}}>
       <Div className="card">

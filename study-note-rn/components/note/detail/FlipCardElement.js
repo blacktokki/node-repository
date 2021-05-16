@@ -5,16 +5,14 @@ import { Div } from '../../commons';
 
 
 export default (props)=>{
-  const [indent,setIndent] = useState(props.indent)
   const [name,setName] = useState(props.name)
   const [value,setValue] = useState(props.value)
   const cardRef = useRef()
   const margin = Platform.OS == 'web' && props.screenLength>2? 40 : 20
   useEffect(() => {
-    setIndent(props.indent);
     setName(props.name);
     setValue(props.value);
-  },[props.indent,props.name,props.value])
+  },[props.name,props.value])
   
   return (
     <View style={{marginHorizontal:margin}}>
