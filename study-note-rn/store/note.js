@@ -25,6 +25,7 @@ export default class NoteStore {
   }
 
   exportNote = () => {
+    /*
     var datetime = new Date().toLocaleString([],
       {
         'hour12':false,
@@ -37,6 +38,8 @@ export default class NoteStore {
       }
     ).replace(/(\. |:| )/g,'')
     var filename = 'note'+datetime+'.json'
+    */
+    var filename = 'note.json'
     var data = {
       'noteId':this.noteId,
       'notes': this.notes.map((note)=> note.data)

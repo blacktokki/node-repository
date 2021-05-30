@@ -24,14 +24,14 @@ function Left() {
                         </Div>
                     </Link>
                 </Div>
-                <Div>
+                {/*<Div>
                     <Link className="nav-link" exact = "true" to={"/option"}>
                         <Div>
                             <FontAwesome name="square"/>
                             <Text>Option</Text>
                         </Div>
                     </Link>
-                </Div>
+                </Div>*/}
                 <Div>
                     <Link className="nav-link" exact = "true" to={"/note/new"}>
                         <Div>
