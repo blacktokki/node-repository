@@ -4,9 +4,10 @@
  */
 
 import { Ionicons } from '@expo/vector-icons';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { DrawerScreenProps, createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
+import { Button } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -53,13 +54,22 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+function TabOneNavigator({navigation}: DrawerScreenProps<DrawerParamList,'TabOne'>) {
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{
+          headerTitle: 'Tab One Title!!!',
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.openDrawer()}
+              title="Menu"
+              color="#888"
+            />
+          ),
+        }}
       />
     </TabOneStack.Navigator>
   );
@@ -67,13 +77,22 @@ function TabOneNavigator() {
 
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
-function TabTwoNavigator() {
+function TabTwoNavigator({navigation}: DrawerScreenProps<DrawerParamList,'TabTwo'>) {
   return (
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ 
+          headerTitle: 'Tab Two Title',
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.openDrawer()}
+              title="Menu"
+              color="#888"
+            />
+          ),
+        }}
       />
     </TabTwoStack.Navigator>
   );
