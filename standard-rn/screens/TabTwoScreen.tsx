@@ -5,12 +5,12 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import {  DrawerParamList} from '../types';
-import DraggableFlatList from '../components/DraggableFlatList'
+import DraggableFlatListDummy from '../components/DraggableFlatListDummy'
 
 export default function TabTwoScreen({
   navigation
 }: StackScreenProps< DrawerParamList, 'TabTwo'>) {
-  return (<DraggableFlatList/>)
+  return (<DraggableFlatListDummy/>)
   // return (
   //   <View style={styles.container}>
   //     <TouchableOpacity onPress={() => navigation.navigate('TabOne')} style={styles.link}>

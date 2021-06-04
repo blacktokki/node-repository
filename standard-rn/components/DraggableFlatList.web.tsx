@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { View, FlatList, TouchableOpacity, Text, Dimensions } from "react-native";
-import {SortableContainer, SortableElement} from 'react-sortable-hoc';
+import { View, FlatList } from "react-native";
+import {SortableContainer, SortableElement, SortEnd} from 'react-sortable-hoc';
 
 const Results = SortableContainer((props:any) => {
     return(
@@ -26,70 +26,39 @@ const Element = SortableElement((props:any) => {
     )
 });
 
-
-const NUM_ITEMS = 10;
-
-function getColor(i: number) {
-  const multiplier = 64 / (NUM_ITEMS - 1);
-  const colorVal = i * multiplier;
-  return `rgb(${colorVal+192}, ${Math.abs(32 - colorVal) + 192}, ${64 - colorVal + 192})`;
+export type RenderItemParams<T> = {
+  item:T,
+  index:number
 }
 
-const exampleData: Item[] = [...Array(20)].map((d, index) => {
-  const backgroundColor = getColor(index);
-  return {
-    key: `item-${backgroundColor}`,
-    label: String(index),
-    backgroundColor
-  };
-});
+type Props<T> = {
+  data:T[],
+  renderItem:(params:RenderItemParams<T>)=>React.ReactNode,
+  height:number,
+  keyExtractor:(item:T, index:number)=>string
+}
 
-type Item = {
-  key: string;
-  label: string;
-  backgroundColor: string;
-};
-
-function Example() {
-  const [data, setData] = useState(exampleData);
-
+function DraggableFlatList<T>(props:Props<T>) {
+  const [data, setData] = useState(props.data);
   const renderItem = useCallback(
-    ({item, index, isActive, drag}) => {
+    ({item, index, isActive}) => {
       return (<Element key = {index} index={index}>
-          <TouchableOpacity
-          style={{
-            height: 100,
-            backgroundColor: isActive ? "red" : item.backgroundColor,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onLongPress={drag}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: "white",
-              fontSize: 32,
-            }}
-          >
-            {item.label}
-          </Text>
-        </TouchableOpacity>
+          {props.renderItem({item:item, index:index})}
       </Element>)
   },
     []
   );
 
   return (
-    <View style={{ height:Dimensions.get("window").height - 64 }}>
+    <View style={{ height:props.height }}>
       <Results
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item:any, index:number) => `draggable-item-${item.key}`}
-        onSortEnd={({newIndex, oldIndex}:any) => {const _data = data.map(item=>item); _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]); setData(_data)}}
+        keyExtractor={props.keyExtractor}
+        onSortEnd={({newIndex, oldIndex}:SortEnd) => {const _data = data.map((item:T)=>item); _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]); setData(_data)}}
       />
     </View>
   );
 }
 
-export default Example;
+export default DraggableFlatList;
