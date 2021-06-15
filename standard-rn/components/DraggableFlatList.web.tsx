@@ -7,6 +7,7 @@ const Results = SortableContainer((props:any) => {
       <FlatList
         renderItem={props.renderItem}
         data={props.data}
+        scrollEnabled={props.scrollEnabled}
         keyExtractor={(item, index) => index.toString()}
         removeClippedSubviews={true}
         initialNumToRender={10}
@@ -33,6 +34,8 @@ export type RenderItemParams<T> = {
 
 type Props<T> = {
   data:T[],
+  scrollEnabled?:boolean,
+  sortEnabled:boolean,
   renderItem:(params:RenderItemParams<T>)=>React.ReactNode,
   height:number,
   keyExtractor:(item:T, index:number)=>string
@@ -56,6 +59,8 @@ function DraggableFlatList<T>(props:Props<T>) {
         renderItem={renderItem}
         keyExtractor={props.keyExtractor}
         onSortEnd={({newIndex, oldIndex}:SortEnd) => {const _data = data.map((item:T)=>item); _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]); setData(_data)}}
+        distance={props.sortEnabled ? 5 : 99999}
+        scrollEnabled={props.scrollEnabled}
       />
     </View>
   );
