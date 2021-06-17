@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { View, FlatList, Button } from "react-native";
 import {SortableContainer, SortableElement, SortEnd} from 'react-sortable-hoc';
 
@@ -13,7 +13,6 @@ const Results = SortableContainer((props:any) => {
         setDataLength(props.data.length)
       }
     });
-    console.log(dataLength, props.last, props.data.length)
     return(
       <FlatList
         ref={ref}
@@ -22,8 +21,7 @@ const Results = SortableContainer((props:any) => {
         scrollEnabled={props.scrollEnabled}
         keyExtractor={(item, index) => index.toString()}
         removeClippedSubviews={true}
-        initialNumToRender={10}
-        legacyImplementation={true}
+        windowSize={Math.floor(props.data.length / 2)}
         ListFooterComponent={props.ListFooterComponent}
         //contentContainerStyle={{
         //    flexGrow: 1
@@ -33,11 +31,7 @@ const Results = SortableContainer((props:any) => {
   });
 
 const Element = SortableElement((props:any) => {
-    return(
-        <View>
-            {props.children}
-        </View>
-    )
+    return props.children
 });
 
 export type RenderItemParams<T> = {
@@ -59,12 +53,18 @@ type Props<T> = {
 function DraggableFlatList<T>(props:Props<T>) {
   const [data, setData] = useState(props.data);
   const [last, setLast] = useState(props.data.length)
-  const ref = useRef<React.Component<any, any, any>>(null)
+  const cacheItem:any = {}
   const renderItem = useCallback(
     ({item, index, isActive}) => {
-      return (<Element key = {index} index={index}>
-          {props.renderItem({item:item, index:index})}
-      </Element>)
+      if (index in cacheItem && cacheItem[index][0] == item)
+        return cacheItem[index][1]
+        cacheItem[index] = [item, (<Element key = {index} index={index}>
+        {props.renderItem({item:item, index:index})}
+      </Element>)]
+      return cacheItem[index][1]
+      // return (<Element key = {index} index={index}>
+      //     {props.renderItem({item:item, index:index})}
+      // </Element>)
   },
     []
   );
@@ -80,11 +80,10 @@ function DraggableFlatList<T>(props:Props<T>) {
   return (
     <View style={{ height:props.height }}>
       <Results
-        ref={ref}
         data={data}
         renderItem={renderItem}
         keyExtractor={props.keyExtractor}
-        onSortEnd={({newIndex, oldIndex}:SortEnd) => {const _data = data.map((item:T)=>item); _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]); setData(_data)}}
+        onSortEnd={({newIndex, oldIndex}:SortEnd) => {if (newIndex!=oldIndex){const _data = data.map((item:T)=>item); _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]); setData(_data)}}}
         distance={props.sortEnabled ? 5 : 99999}
         scrollEnabled={props.scrollEnabled}
         ListFooterComponent={<Button
@@ -92,8 +91,8 @@ function DraggableFlatList<T>(props:Props<T>) {
           title={props.addTitle || ""}
           color="#888"
         />}
-        last={last}
-      />
+    last={last}
+  />
     </View>
   );
 }

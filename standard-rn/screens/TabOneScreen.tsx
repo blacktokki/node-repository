@@ -18,35 +18,23 @@ export default function TabOneScreen({
        path='/screens/TabOneScreen.tsx'
       />)
   },[])
+
+  const arr = []
+  for (let i=0;i<100;i++){
+    arr[i] = <SectionDummy
+    key={i}
+    title={'Tab One' + (i+1)}
+    pressText1='Go 2 screen!'
+    onPress1={() => {navigation.navigate('TabTwo')}}
+    path='/screens/TabOneScreen.tsx'
+  />
+  }
   return (
     <DraggableFlatListMain
       addElement={addElement}
       addTitle="add"
     >
-      <SectionDummy
-        title='Tab One1'
-        pressText1='Go 2 screen!'
-        onPress1={() => {navigation.navigate('TabTwo')}}
-        path='/screens/TabOneScreen.tsx'
-      />
-      <SectionDummy
-        title='Tab One2'
-        pressText1='Go 2 screen!'
-        onPress1={() => {navigation.navigate('TabTwo')}}
-        path='/screens/TabOneScreen.tsx'
-      />
-      <SectionDummy
-        title='Tab One3'
-        pressText1='Go 2 screen!'
-        onPress1={() => {navigation.navigate('TabTwo')}}
-        path='/screens/TabOneScreen.tsx'
-      />
-      <SectionDummy
-        title='Tab One4'
-        pressText1='Go 2 screen!'
-        onPress1={() => {navigation.navigate('TabTwo')}}
-        path='/screens/TabOneScreen.tsx'
-      />
+      {arr}
     </DraggableFlatListMain>
   );
 }

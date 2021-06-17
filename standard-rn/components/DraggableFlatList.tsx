@@ -38,11 +38,9 @@ function DraggableFlatList<T>(props:Props<T>) {
     else if (reff !== null){
       flatListRef = reff
     }
-    console.log(Object.keys(flatListRef).length)
-    console.log(dataLength, last, data.length)
     if (dataLength != data.length){
       if (last == data.length){
-        setTimeout(() =>{flatListRef.current?.scrollToEnd()}, 0.5 * data.length)
+        setTimeout(() =>{flatListRef.current?.scrollToEnd()}, 1)
       }
       setDataLength(data.length)
     }
@@ -57,6 +55,7 @@ function DraggableFlatList<T>(props:Props<T>) {
         keyExtractor={props.keyExtractor}
         onDragEnd={({ data }:DragEndParams<T>) => setData(data)}
         activationDistance={props.sortEnabled?0:9999}
+        removeClippedSubviews={true}
         ListFooterComponent={<Button
           onPress={() => add(data, last)}
           title={props.addTitle || ""}
