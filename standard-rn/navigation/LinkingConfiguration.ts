@@ -5,12 +5,14 @@
  */
 
 import * as Linking from 'expo-linking';
+const _package = require('../package.json')
 
 export default {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
       Root: {
+        path: _package.homepage.split('github.io/')[1],  //github repository name
         screens: {
           TabOne: {
             screens: {
