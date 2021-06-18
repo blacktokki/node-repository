@@ -10,7 +10,10 @@ export default function TabTwoScreen({
 }: StackScreenProps< DrawerParamList, 'TabOne'>) {
   //return (<DraggableFlatListDummy/>)
   return (
-    <DraggableFlatListMain sortEnabled={false}>
+    <DraggableFlatListMain 
+      sortEnabled={false}
+      dataCallback={()=>{}}
+    >
       <SectionDummy
         title='Tab Two'
         pressText1='Go 1 screen!'

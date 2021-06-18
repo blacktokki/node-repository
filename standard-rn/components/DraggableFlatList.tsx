@@ -1,18 +1,19 @@
-import React ,{ useState, useCallback, useEffect, useRef, RefObject} from "react";
-import { View, Button, FlatList } from "react-native";
+import React ,{ useState, useCallback, useEffect, RefObject, MutableRefObject} from "react";
+import { View, Button } from "react-native";
 import { default as _DraggableFlatList, RenderItemParams as _RenderItemParams, DragEndParams } from "react-native-draggable-flatlist";
 
 export type RenderItemParams<T> = _RenderItemParams<T>
 
 type Props<T> = {
   data:T[],
+  dataCallback:(data:T[])=>void,
   scrollEnabled?:boolean,
   sortEnabled:boolean,
   renderItem:(params:RenderItemParams<T>)=>React.ReactNode,
   height:number,
   keyExtractor:(item:T, index:number)=>string,
   addTitle:string | undefined,
-  addElement: (data:T[])=> T | undefined
+  addElement?: (data:T[])=> T
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -22,11 +23,11 @@ function DraggableFlatList<T>(props:Props<T>) {
   const [reff, setReff] = useState<RefObject<any>| null>(null)
   const renderItem = useCallback(props.renderItem, [])
   const add = useCallback((data, last) => {
-    const element = props.addElement(data)
-    if (element !== undefined){
+    if (props.addElement !== undefined){
       const _data = data.map((item:T)=>item);
-      _data.splice(_data.length, 0, element);
+      _data.splice(_data.length, 0, props.addElement(data));
       setData(_data)
+      props.dataCallback(_data)
       setLast(_data.length)
     }
   }, [data, last])
@@ -53,7 +54,7 @@ function DraggableFlatList<T>(props:Props<T>) {
         data={data}
         renderItem={renderItem}
         keyExtractor={props.keyExtractor}
-        onDragEnd={({ data }:DragEndParams<T>) => setData(data)}
+        onDragEnd={({ data }:DragEndParams<T>) => {setData(data);props.dataCallback(data)}}
         activationDistance={props.sortEnabled?0:9999}
         removeClippedSubviews={true}
         ListFooterComponent={<Button

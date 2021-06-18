@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, {useCallback, useRef} from "react";
 import { View, TouchableOpacity, Dimensions, Platform } from "react-native";
 import { useHeaderHeight } from '@react-navigation/stack';
 import DraggableFlatList, {RenderItemParams} from './DraggableFlatList'
@@ -23,7 +23,8 @@ const renderItemUnsort = ({ item, index, drag, isActive }:RenderItemParams<React
   return (
     <View
       style={{
-        marginRight: 5,
+        backgroundColor: "white",
+        marginRight: 0,
         alignItems: "center",
         justifyContent: "center",
       }}
@@ -32,14 +33,25 @@ const renderItemUnsort = ({ item, index, drag, isActive }:RenderItemParams<React
     </View>
   )
 }
-export default function DraggableFlatListMain(props:{children: React.ReactNode, scrollEnabled?: boolean, sortEnabled?: boolean, addTitle?: string, addElement:(data:React.ReactNode[])=>React.ReactNode}){
+type Props = {
+  children: React.ReactNode,
+  scrollEnabled?: boolean, 
+  sortEnabled?: boolean, 
+  addTitle?: string, 
+  addElement?:(data:React.ReactNode[])=>React.ReactNode,
+  dataCallback:(data:React.ReactNode[])=>void
+}
+
+export default function DraggableFlatListMain(props:Props){
     const headerHeight = useHeaderHeight();
+    let _data = React.Children.toArray(props.children)
     let _sortEnabled = (props.sortEnabled === undefined ? true : props.sortEnabled)
     return (<DraggableFlatList<React.ReactNode>
         sortEnabled={_sortEnabled}
         scrollEnabled={props.scrollEnabled}
         height={Dimensions.get("window").height - headerHeight}
-        data={React.Children.toArray(props.children)}
+        data={_data}
+        dataCallback={props.dataCallback}
         renderItem={_sortEnabled ? renderItem : renderItemUnsort}
         keyExtractor={(item:React.ReactNode, index:number) => `main-draggable-item-${index}`}
         addElement={props.addElement}

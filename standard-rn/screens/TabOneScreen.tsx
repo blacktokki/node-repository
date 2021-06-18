@@ -18,6 +18,7 @@ export default function TabOneScreen({
        path='/screens/TabOneScreen.tsx'
       />)
   },[])
+  const dataCallback = useCallback((data)=>{console.log('!')}, [])
 
   const arr = []
   for (let i=0;i<100;i++){
@@ -32,6 +33,7 @@ export default function TabOneScreen({
   return (
     <DraggableFlatListMain
       addElement={addElement}
+      dataCallback={dataCallback}
       addTitle="add"
     >
       {arr}
