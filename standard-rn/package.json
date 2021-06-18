@@ -9,7 +9,7 @@
     "eject": "expo eject",
     "test": "jest --watchAll",
     "github": "gh-pages -d web-build",
-    "pregithub": "expo build:web"
+    "pregithub": "expo build:web  && copyfiles --flat 404.html web-build"
   },
   "jest": {
     "preset": "jest-expo"
@@ -20,6 +20,7 @@
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "~5.8.10",
     "@react-navigation/stack": "~5.12.8",
+    "copyfiles": "^2.4.1",
     "expo": "~41.0.1",
     "expo-asset": "~8.3.1",
     "expo-constants": "~10.1.3",
