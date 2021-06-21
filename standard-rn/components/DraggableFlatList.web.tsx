@@ -21,7 +21,7 @@ const Results = SortableContainer((props:any) => {
         scrollEnabled={props.scrollEnabled}
         keyExtractor={(item, index) => index.toString()}
         removeClippedSubviews={true}
-        windowSize={Math.floor(props.data.length / 2)}
+        windowSize={1 + Math.floor(props.data.length / 2)}
         ListFooterComponent={props.ListFooterComponent}
         //contentContainerStyle={{
         //    flexGrow: 1

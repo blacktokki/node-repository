@@ -1,10 +1,10 @@
 
-import React, {useCallback, useRef} from "react";
-import { View, TouchableOpacity, Dimensions, Platform } from "react-native";
+import React from "react";
+import { View, TouchableOpacity, Dimensions, Platform, StyleProp, ViewStyle } from "react-native";
 import { useHeaderHeight } from '@react-navigation/stack';
-import DraggableFlatList, {RenderItemParams} from './DraggableFlatList'
+import DraggableAccordion, {RenderItemParams, RenderItemOuterParams} from './DraggableAccordion'
 
-const renderItem = ({ item, index, drag, isActive }:RenderItemParams<React.ReactNode>) => {
+const renderItemSort = ({ item, index, drag, isActive, children }:RenderItemOuterParams<React.ReactNode>) => {
     return (
         <TouchableOpacity
         style={{
@@ -15,11 +15,11 @@ const renderItem = ({ item, index, drag, isActive }:RenderItemParams<React.React
         }}
         onLongPress={drag}
       >
-        {item}
+        {children}
     </TouchableOpacity>
     )
 }
-const renderItemUnsort = ({ item, index, drag, isActive }:RenderItemParams<React.ReactNode>) => {
+const renderItemUnsort = ({ item, index, drag, isActive, children }:RenderItemOuterParams<React.ReactNode>) => {
   return (
     <View
       style={{
@@ -29,30 +29,53 @@ const renderItemUnsort = ({ item, index, drag, isActive }:RenderItemParams<React
         justifyContent: "center",
       }}
     >
-      {item}
+      {children}
     </View>
   )
 }
+const renderItemHeader = ({item, index, drag, isActive}:RenderItemParams<DraggableSection>) =>{
+  return item.header
+}
+const renderItemBody = ({item, index, drag, isActive}:RenderItemParams<DraggableSection>) =>{
+  return item.body
+}
+
 type Props = {
   children: React.ReactNode,
+  itemStyles?: {[key:string]:StyleProp<ViewStyle>},
   scrollEnabled?: boolean, 
   sortEnabled?: boolean, 
   addTitle?: string, 
-  addElement?:(data:React.ReactNode[])=>React.ReactNode,
-  dataCallback:(data:React.ReactNode[])=>void
+  addElement?:(data:DraggableSection[])=>DraggableSection,
+  dataCallback:(data:DraggableSection[])=>void
+}
+
+export type DraggableSection = {
+  header:React.ReactNode
+  body:React.ReactNode | null
 }
 
 export default function DraggableFlatListMain(props:Props){
     const headerHeight = useHeaderHeight();
-    let _data = React.Children.toArray(props.children)
+    let _data:DraggableSection[] = []
+    React.Children.toArray(props.children).forEach((item, index)=>{
+      if(index % 2 == 0)
+        _data.push({header:item, body:(<View></View>)})
+      else
+        _data[Math.floor(index/2)].body = item
+    })
+    let _itemStyles = props.itemStyles || {Panel_Holder:{}, Btn:{}}
     let _sortEnabled = (props.sortEnabled === undefined ? true : props.sortEnabled)
-    return (<DraggableFlatList<React.ReactNode>
+    return (<DraggableAccordion<DraggableSection, {}>
         sortEnabled={_sortEnabled}
         scrollEnabled={props.scrollEnabled}
         height={Dimensions.get("window").height - headerHeight}
         data={_data}
         dataCallback={props.dataCallback}
-        renderItem={_sortEnabled ? renderItem : renderItemUnsort}
+        itemStyles={_itemStyles}
+        renderItemHeader={renderItemHeader}
+        renderItemBody={renderItemBody}
+        renderItemOuter={_sortEnabled ? renderItemSort : renderItemUnsort}
         keyExtractor={(item:React.ReactNode, index:number) => `main-draggable-item-${index}`}
         addElement={props.addElement}
         addTitle={props.addTitle}

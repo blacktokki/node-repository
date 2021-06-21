@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import Accordion  from './Accordion'
 import DraggableFlatList, {RenderItemParams as _RenderItemParams} from './DraggableFlatList'
@@ -9,7 +9,9 @@ export type RenderItemParams<T> = _RenderItemParams<T>
 
 type Props<T> ={
   height: number,
+  addTitle?: string, 
   renderItemOuter?: (params:RenderItemOuterParams<T>)=>React.ReactNode
+  addElement?:(data:T[])=>T
 }
 
 export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemParams<T> ,Props<T> & P>{
@@ -25,14 +27,15 @@ export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemPar
   render() {
     return (
       <View style={styles.MainContainer}>
-        <DraggableFlatList
+        <DraggableFlatList<T>
           data={this.props.data}
           dataCallback={()=>{}}
           renderItem={this.draggableRenderItem}
           sortEnabled={false}
           height={this.props.height}
           keyExtractor={(item, index)=>`${index}`}
-          addTitle=''
+          addTitle={this.props.addTitle}
+          addElement={this.props.addElement}
         />
       </View>
     );
