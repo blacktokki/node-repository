@@ -10,25 +10,32 @@ export default function TabTwoScreen({
   navigation
 }: StackScreenProps< DrawerParamList, 'TabTwo'>) {
   return (<DraggableFlatListMain
+    header={[
+      <Text style={styles.Panel_Button_Text}>{'Tab Two 1'} </Text>,
+      <Text style={styles.Panel_Button_Text}>{'Tab Two 2'} </Text>
+    ]}
     dataCallback={()=>{}}
-    itemStyles={itemStyles}
+    holderStyle={styles.Panel_Holder}
     sortEnabled={false}
   >
-    <Text style={styles.Panel_Button_Text}>{'Tab Two 1'} </Text>
     <SectionDummy
       title='Tab Two'
       pressText1='Go 1 screen!'
       onPress1={() => {navigation.navigate('TabOne')}}
       path='/screens/TabTwoScreen.tsx'
     />
-    <Text style={styles.Panel_Button_Text}>{'Tab Two 2'} </Text>
     <SectionDummy
         title='Tab Two'
         pressText1='Go 1 screen!'
         onPress1={() => {navigation.navigate('TabOne')}}
         path='/screens/TabTwoScreen.tsx'
-      />
-    <Text style={styles.Panel_Button_Text}>{'Tab Two 3'} </Text>
+    />
+    <SectionDummy
+        title='Tab Two'
+        pressText1='Go 1 screen!'
+        onPress1={() => {navigation.navigate('TabOne')}}
+        path='/screens/TabTwoScreen.tsx'
+    />
   </DraggableFlatListMain>
   )
   //return (<DraggableFlatListDummy/>) 
@@ -45,16 +52,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 21
   },
-})
-
-const itemStyles = {
   Panel_Holder: {
     borderWidth: 1,
     borderColor: '#888',
     marginVertical: 5
-  },
-  Btn: {
-    padding: 10,
-    backgroundColor: '#888'
   }
-}
+})

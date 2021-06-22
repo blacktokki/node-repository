@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, ScrollView, TouchableOpacity, Animated, GestureResponderEvent, StyleProp, ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, ScrollView, Animated, GestureResponderEvent, StyleProp, ViewStyle, LayoutChangeEvent } from 'react-native';
+
+export type renderItemInnerParams<T> = {
+  item:T,
+  holderStyle:StyleProp<ViewStyle>,
+  buttonOnPress:(event:GestureResponderEvent)=>void,
+  onClose:()=>void,
+  contentStyle:StyleProp<ViewStyle>,
+  contentOnLayout:(event:LayoutChangeEvent)=>void,
+}
 
 interface PanelProp<T>{
     item: T,
-    number: number,
-    itemStyles: {[key:string]:StyleProp<ViewStyle>},
+    numnum:number,
+    initExpanded:boolean,
+    expandSpeed:number
+    holderStyle:StyleProp<ViewStyle>,
     closeAll: ()=>void,
-    renderItemHeader:(item:T)=>React.ReactNode,
-    renderItemBody: (item:T)=>React.ReactNode,
+    renderItem: (params:renderItemInnerParams<T>)=>React.ReactNode
 }
 
 interface PanelState{
@@ -16,16 +26,40 @@ interface PanelState{
     style:any
 }
 
-class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
+export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
   state:PanelState = {
-    expanded: false,  
+    expanded: this.props.initExpanded,  
     maxHeight: null,
     style: {
         overflow: 'hidden'
     }
   }
+  mount:boolean = false
+
   setExpand(value:boolean){
-    this.setState({expanded:value})
+    console.log(this.props.numnum, this.mount, value)
+    if (this.mount){
+      this.setState({expanded:value})
+    }
+  }
+
+  onClose(){
+    this.setState({
+      expanded:false,
+      style:{
+        overflow: 'hidden',
+        height: new Animated.Value(0)
+      }
+    })
+  }
+
+  componentDidMount(){
+    if(this.props.initExpanded)
+      this.props.closeAll()
+    this.mount = true
+  }
+  componentWillUnmount(){
+    this.mount = false
   }
 
   componentDidUpdate(){
@@ -34,15 +68,15 @@ class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
       if (this.state.expanded && this.state.style.height._value == 0) {
         Animated.timing(this.state.style.height, {
           toValue: this.state.maxHeight,
-          duration: 200,
-          useNativeDriver:true,
+          duration: this.props.expandSpeed,
+          useNativeDriver:false,
         }).start();
       }
       else if (!this.state.expanded && this.state.style.height._value == this.state.maxHeight){
         Animated.timing(this.state.style.height, {
           toValue: 0,
-          duration: 200,
-          useNativeDriver:true,
+          duration: this.props.expandSpeed,
+          useNativeDriver:false,
         }).start();
       }
     }
@@ -61,51 +95,48 @@ class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
   }
  
   render() {
-    return (
-      <View style={[this.props.itemStyles.Panel_Holder, this.state.maxHeight== null?{opacity:0}:{opacity:100}]}>
-        <TouchableOpacity activeOpacity={0.7} onPress={this.onPress.bind(this)} style={this.props.itemStyles.Btn}>
-          {this.props.renderItemHeader(this.props.item)}
-        </TouchableOpacity>
-        <Animated.View 
-          style={this.state.style} 
-          onLayout={(event) => {
-          var {x, y, width, height} = event.nativeEvent.layout;
-          if (this.state.maxHeight == null)
-            this.setState({
-              maxHeight: height
-            })
-        }}>
-          {this.props.renderItemBody(this.props.item)}
-        </Animated.View>
-      </View>
-    );
+    return this.props.renderItem({
+      item:this.props.item,
+      holderStyle:[this.props.holderStyle, {flex:1, opacity:this.state.maxHeight== null?0:100}],
+      buttonOnPress:this.onPress.bind(this),
+      contentStyle:this.state.style,
+      contentOnLayout:((event:LayoutChangeEvent) => {
+        var {x, y, width, height} = event.nativeEvent.layout;
+        if (this.state.maxHeight == null){
+          this.setState({
+            maxHeight: height
+          })
+        }
+      }).bind(this),
+      onClose:this.onClose.bind(this)
+    })
   }
 }
 
-export type RenderItemPartParams<T> = {
-    item:T,
-    index?:number|undefined,
-  }
 
-type Props<T, R> = {
+
+
+export type RenderItemParams<T> = renderItemInnerParams<T> & {index: number}
+
+type Props<T, R extends RenderItemParams<T>> = {
     data:T[],
-    dataCallback:(data:T[])=>void,
     scrollEnabled?:boolean,
-    sortEnabled:boolean,
-    renderItemHeader:(params:RenderItemPartParams<T> & R)=>React.ReactNode,
-    renderItemBody: (params:RenderItemPartParams<T> & R)=>React.ReactNode,
+    renderItem:(params:R)=>React.ReactNode,
     keyExtractor:(item:T, index:number)=>string,
-    itemStyles: {[key:string]:StyleProp<ViewStyle>},
+    holderStyle:StyleProp<ViewStyle>,
+    expandSpeed?:number
   }
 
-export default class Accordion<T, R, P> extends Component<Props<T, R> & P> {
+export default class Accordion<T, R extends RenderItemParams<T>, P> extends Component<Props<T, R> & P> {
   constructor(props:Props<T, R> & P) {
     super(props);
     this.childrenRef = []
+    this.expandSpeed = props.expandSpeed || 200
   }
   childrenRef: (Accordion_Panel<T>| null)[];
+  expandSpeed: number;
 
-  update_Layout = (index:number) => {
+  update_Layout = () => {
     this.childrenRef.forEach((ref) => {
       if (ref && ref.state.expanded){
         ref.setExpand(false)
@@ -113,31 +144,32 @@ export default class Accordion<T, R, P> extends Component<Props<T, R> & P> {
     });
   }
   
-  renderItem = (item:T, key:number) => (
-    <Accordion_Panel<T>
+  renderItem = (params:R & {initExpanded:boolean}) => {
+    return <Accordion_Panel<T>
         ref={ref=>{this.childrenRef.push(ref)}}
-        key={key}
-        number={key}
-        itemStyles={this.props.itemStyles}
-        closeAll={this.update_Layout.bind(this, key)}
-        item={item}
-        renderItemHeader={(_item) => this.props.renderItemHeader({item:_item, index:key} as RenderItemPartParams<T> & R)}
-        renderItemBody={(_item) => this.props.renderItemBody({item:_item, index:key} as RenderItemPartParams<T> & R)}
-    />)
+        numnum={params.index}
+        key={params.index}
+        holderStyle={this.props.holderStyle}
+        closeAll={this.update_Layout.bind(this)}
+        item={params.item}
+        initExpanded={params.initExpanded}
+        expandSpeed={this.expandSpeed}
+        renderItem={(params2:renderItemInnerParams<T>)=> this.props.renderItem({...params2, ...params} as R)}
+    />}
 
   render() {
     return (
       <View style={styles.MainContainer}>
         <ScrollView contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}>
           {
-            this.props.data.map(this.renderItem)
+            this.props.data.map((item, index)=> this.renderItem({item:item, index:index, initExpanded:false} as R & {initExpanded:boolean}))
           }
         </ScrollView>
       </View>
     );
   }
 }
- 
+
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,

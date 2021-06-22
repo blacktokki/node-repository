@@ -1,25 +1,40 @@
 
 import React from "react";
-import { View, TouchableOpacity, Dimensions, Platform, StyleProp, ViewStyle } from "react-native";
+import { View, TouchableOpacity, Dimensions, Platform, StyleProp, ViewStyle, Animated } from "react-native";
 import { useHeaderHeight } from '@react-navigation/stack';
-import DraggableAccordion, {RenderItemParams, RenderItemOuterParams} from './DraggableAccordion'
+import DraggableAccordion, { RenderItemParams } from './DraggableAccordion'
 
-const renderItemSort = ({ item, index, drag, isActive, children }:RenderItemOuterParams<React.ReactNode>) => {
-    return (
+const renderItem = ({ item, index, drag, isActive, holderStyle, buttonOnPress, contentStyle, contentOnLayout, onClose }:RenderItemParams<DraggableSection>) => {
+  return (
+    <View style={holderStyle}>
+        <TouchableOpacity activeOpacity={0.7} onPress={buttonOnPress} style={{padding: 10, backgroundColor: '#888'}}>
+          {item.header}
+        </TouchableOpacity>
+        <Animated.View 
+          style={contentStyle} 
+          onLayout={contentOnLayout}>
+          {item.body}
+        </Animated.View>
+      </View>
+  )
+}
+
+const renderItemSort = (params:RenderItemParams<DraggableSection>) => {
+  return (
         <TouchableOpacity
         style={{
-          backgroundColor: isActive ? "red" : "white",
+          backgroundColor: params.isActive ? "red" : "white",
           marginRight: Platform.OS == 'web'? 0 : 5,
           alignItems: "center",
           justifyContent: "center",
         }}
-        onLongPress={drag}
+        onLongPress={()=>{params.onClose(); params.drag()}}
       >
-        {children}
+      {renderItem(params)}
     </TouchableOpacity>
     )
 }
-const renderItemUnsort = ({ item, index, drag, isActive, children }:RenderItemOuterParams<React.ReactNode>) => {
+const renderItemUnsort = (params:RenderItemParams<DraggableSection>) => {
   return (
     <View
       style={{
@@ -29,53 +44,41 @@ const renderItemUnsort = ({ item, index, drag, isActive, children }:RenderItemOu
         justifyContent: "center",
       }}
     >
-      {children}
+      {renderItem(params)}
     </View>
   )
 }
-const renderItemHeader = ({item, index, drag, isActive}:RenderItemParams<DraggableSection>) =>{
-  return item.header
-}
-const renderItemBody = ({item, index, drag, isActive}:RenderItemParams<DraggableSection>) =>{
-  return item.body
-}
+
 
 type Props = {
   children: React.ReactNode,
-  itemStyles?: {[key:string]:StyleProp<ViewStyle>},
+  header: React.ReactNode[],
+  holderStyle?:StyleProp<ViewStyle>,
   scrollEnabled?: boolean, 
   sortEnabled?: boolean, 
   addTitle?: string, 
   addElement?:(data:DraggableSection[])=>DraggableSection,
-  dataCallback:(data:DraggableSection[])=>void
+  dataCallback:(data:React.ReactNode[])=>void
 }
 
 export type DraggableSection = {
   header:React.ReactNode
-  body:React.ReactNode | null
+  body:React.ReactNode
 }
 
 export default function DraggableFlatListMain(props:Props){
     const headerHeight = useHeaderHeight();
-    let _data:DraggableSection[] = []
-    React.Children.toArray(props.children).forEach((item, index)=>{
-      if(index % 2 == 0)
-        _data.push({header:item, body:(<View></View>)})
-      else
-        _data[Math.floor(index/2)].body = item
-    })
-    let _itemStyles = props.itemStyles || {Panel_Holder:{}, Btn:{}}
+    let _data =  React.Children.toArray(props.children).map((value, index)=>({header:props.header[index] || (<View></View>), body:value}))
+    let _itemStyles = props.holderStyle || {}
     let _sortEnabled = (props.sortEnabled === undefined ? true : props.sortEnabled)
     return (<DraggableAccordion<DraggableSection, {}>
+        data={_data}  
+        dataCallback={props.dataCallback}
         sortEnabled={_sortEnabled}
         scrollEnabled={props.scrollEnabled}
         height={Dimensions.get("window").height - headerHeight}
-        data={_data}
-        dataCallback={props.dataCallback}
-        itemStyles={_itemStyles}
-        renderItemHeader={renderItemHeader}
-        renderItemBody={renderItemBody}
-        renderItemOuter={_sortEnabled ? renderItemSort : renderItemUnsort}
+        holderStyle={props.holderStyle}
+        renderItem={_sortEnabled ? renderItemSort : renderItemUnsort}
         keyExtractor={(item:React.ReactNode, index:number) => `main-draggable-item-${index}`}
         addElement={props.addElement}
         addTitle={props.addTitle}

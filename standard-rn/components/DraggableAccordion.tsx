@@ -1,41 +1,39 @@
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import Accordion  from './Accordion'
+import Accordion, {RenderItemParams as AccordionRenderItemParams, Accordion_Panel, renderItemInnerParams}  from './Accordion'
 import DraggableFlatList, {RenderItemParams as _RenderItemParams} from './DraggableFlatList'
 
-
-export type RenderItemOuterParams<T> = _RenderItemParams<T> & {children:React.ReactNode}
-export type RenderItemParams<T> = _RenderItemParams<T> 
+export type RenderItemParams<T> = _RenderItemParams<T> & AccordionRenderItemParams<T>
 
 type Props<T> ={
+  dataCallback:(data:T[])=>void,
   height: number,
-  addTitle?: string, 
-  renderItemOuter?: (params:RenderItemOuterParams<T>)=>React.ReactNode
+  addTitle?: string,
+  sortEnabled:boolean,
+  renderItem:(params:RenderItemParams<T>)=>React.ReactNode
   addElement?:(data:T[])=>T
 }
 
 export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemParams<T> ,Props<T> & P>{
-  draggableRenderItem = (params:_RenderItemParams<T>) => {
-    if (this.props.renderItemOuter)
-      return this.props.renderItemOuter({
-          ...params,
-          children:this.renderItem(params.item, params.index || -1)
-        })
-    return this.renderItem(params.item, params.index || -1)
-  }
+  initExpanded:boolean = false
 
+  renderDraggableItem = (params:_RenderItemParams<T>) => this.renderItem({...params, initExpanded:this.initExpanded} as RenderItemParams<T> & {initExpanded:boolean})
+  componentDidMount(){
+    this.initExpanded = true
+  }
   render() {
     return (
       <View style={styles.MainContainer}>
         <DraggableFlatList<T>
           data={this.props.data}
-          dataCallback={()=>{}}
-          renderItem={this.draggableRenderItem}
-          sortEnabled={false}
+          dataCallback={this.props.dataCallback}
+          renderItem={this.renderDraggableItem}//1
+          sortEnabled={this.props.sortEnabled}
           height={this.props.height}
           keyExtractor={(item, index)=>`${index}`}
           addTitle={this.props.addTitle}
           addElement={this.props.addElement}
+          scrollDelay={this.expandSpeed * 2}
         />
       </View>
     );

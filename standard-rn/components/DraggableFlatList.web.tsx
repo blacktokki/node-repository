@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect, MutableRefObject } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, FlatList, Button } from "react-native";
 import {SortableContainer, SortableElement, SortEnd} from 'react-sortable-hoc';
 
@@ -8,7 +8,7 @@ const Results = SortableContainer((props:any) => {
     useEffect(()=>{
       if (dataLength != props.data.length){
         if (props.last == props.data.length){
-          setTimeout(() =>{ref.current?.scrollToEnd()}, 0.5 * props.data.length)
+          setTimeout(() =>{ref.current?.scrollToEnd()}, props.scrollDelay)
         }
         setDataLength(props.data.length)
       }
@@ -21,7 +21,7 @@ const Results = SortableContainer((props:any) => {
         scrollEnabled={props.scrollEnabled}
         keyExtractor={(item, index) => index.toString()}
         removeClippedSubviews={true}
-        windowSize={1 + Math.floor(props.data.length / 2)}
+        windowSize={10 + Math.floor(props.data.length / 2)}
         ListFooterComponent={props.ListFooterComponent}
         //contentContainerStyle={{
         //    flexGrow: 1
@@ -49,6 +49,7 @@ type Props<T> = {
   keyExtractor:(item:T, index:number)=>string,
   addTitle:string | undefined,
   addElement?: (data:T[])=> T
+  scrollDelay?: number
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -89,7 +90,8 @@ function DraggableFlatList<T>(props:Props<T>) {
           title={props.addTitle || ""}
           color="#888"
         />}
-    last={last}
+        last={last}
+        scrollDelay={props.scrollDelay || 0.5 * data.length}
   />
     </View>
   );

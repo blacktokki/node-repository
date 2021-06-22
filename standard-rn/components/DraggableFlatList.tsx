@@ -1,4 +1,4 @@
-import React ,{ useState, useCallback, useEffect, RefObject, MutableRefObject} from "react";
+import React ,{ useState, useCallback, useEffect, RefObject } from "react";
 import { View, Button } from "react-native";
 import { default as _DraggableFlatList, RenderItemParams as _RenderItemParams, DragEndParams } from "react-native-draggable-flatlist";
 
@@ -14,6 +14,7 @@ type Props<T> = {
   keyExtractor:(item:T, index:number)=>string,
   addTitle:string | undefined,
   addElement?: (data:T[])=> T
+  scrollDelay?: number
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -41,7 +42,7 @@ function DraggableFlatList<T>(props:Props<T>) {
     }
     if (dataLength != data.length){
       if (last == data.length){
-        setTimeout(() =>{flatListRef.current?.scrollToEnd()}, 1)
+        setTimeout(() =>{flatListRef.current?.scrollToEnd()}, props.scrollDelay || 1)
       }
       setDataLength(data.length)
     }
@@ -57,6 +58,7 @@ function DraggableFlatList<T>(props:Props<T>) {
         onDragEnd={({ data }:DragEndParams<T>) => {setData(data);props.dataCallback(data)}}
         activationDistance={props.sortEnabled?0:9999}
         removeClippedSubviews={true}
+        windowSize={10 + Math.floor(props.data.length / 2)}
         ListFooterComponent={<Button
           onPress={() => add(data, last)}
           title={props.addTitle || ""}
