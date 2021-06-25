@@ -1,3 +1,4 @@
+import { toNumber } from 'lodash';
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, ScrollView, Animated, GestureResponderEvent, StyleProp, ViewStyle, LayoutChangeEvent } from 'react-native';
 
@@ -5,7 +6,7 @@ export type renderItemInnerParams<T> = {
   item:T,
   holderStyle:StyleProp<ViewStyle>,
   buttonOnPress:(event:GestureResponderEvent)=>void,
-  onClose:()=>void,
+  onClose:(callback:()=>void)=>void,
   contentStyle:StyleProp<ViewStyle>,
   contentOnLayout:(event:LayoutChangeEvent)=>void,
 }
@@ -23,7 +24,8 @@ interface PanelProp<T>{
 interface PanelState{
     expanded: boolean
     maxHeight: number | null,
-    style:any
+    style:any,
+    onCloseCallback: ()=>void
 }
 
 export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
@@ -32,24 +34,33 @@ export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
     maxHeight: null,
     style: {
         overflow: 'hidden'
-    }
+    },
+    onCloseCallback:()=>{}
   }
   mount:boolean = false
+  useCloseCallback = false
 
   setExpand(value:boolean){
-    console.log(this.props.numnum, this.mount, value)
+    //console.log('num', this.props.numnum, 'mount', this.mount, 'will-expended', value, this.state)
     if (this.mount){
       this.setState({expanded:value})
     }
   }
 
-  onClose(){
+  onClose(callback:()=>void){
+    this.useCloseCallback = true,
+    Animated.timing(this.state.style.height, {
+      toValue: 0,
+      duration: 0,
+      useNativeDriver:false,
+    }).start();
     this.setState({
       expanded:false,
       style:{
         overflow: 'hidden',
         height: new Animated.Value(0)
-      }
+      },
+      onCloseCallback:callback
     })
   }
 
@@ -87,6 +98,10 @@ export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
           height: new Animated.Value(0)
         }
       })
+    }
+    if (this.useCloseCallback){
+      this.useCloseCallback = false
+      setTimeout(this.state.onCloseCallback, 100)
     }
   }
   onPress(event:GestureResponderEvent){

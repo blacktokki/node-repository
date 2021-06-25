@@ -23,7 +23,7 @@ export default function TabOneScreen({
        path='/screens/TabOneScreen.tsx'
       />)}
   },[])
-  const dataCallback = useCallback((data)=>{console.log('')}, [])
+  const dataCallback = useCallback((data)=>{console.log('dataCallback')}, [])
   const header = []
   const arr = []
   for (let i=0;i<10;i++){

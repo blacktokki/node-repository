@@ -10,8 +10,8 @@ const renderItem = ({ item, index, drag, isActive, holderStyle, buttonOnPress, c
         <TouchableOpacity activeOpacity={0.7} onPress={buttonOnPress} style={{padding: 10, backgroundColor: '#888'}}>
           {item.header}
         </TouchableOpacity>
-        <Animated.View 
-          style={contentStyle} 
+        <Animated.View
+          style={[contentStyle, isActive?{height:0}:{}]} 
           onLayout={contentOnLayout}>
           {item.body}
         </Animated.View>
@@ -28,7 +28,7 @@ const renderItemSort = (params:RenderItemParams<DraggableSection>) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-        onLongPress={()=>{params.onClose(); params.drag()}}
+        onLongPress={()=>{if(params.drag)params.onClose(params.drag)}}
       >
       {renderItem(params)}
     </TouchableOpacity>

@@ -21,6 +21,14 @@ export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemPar
   componentDidMount(){
     this.initExpanded = true
   }
+  updateBeforeSortStart = ()=>{
+    this.childrenRef.forEach((ref) => {
+      if (ref && ref.state.expanded){
+        ref.onClose(()=>{})
+      }
+    });
+  }
+
   render() {
     return (
       <View style={styles.MainContainer}>
@@ -34,6 +42,7 @@ export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemPar
           addTitle={this.props.addTitle}
           addElement={this.props.addElement}
           scrollDelay={this.expandSpeed * 2}
+          updateBeforeSortStart={this.updateBeforeSortStart}
         />
       </View>
     );

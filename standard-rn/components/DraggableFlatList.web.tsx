@@ -49,7 +49,8 @@ type Props<T> = {
   keyExtractor:(item:T, index:number)=>string,
   addTitle:string | undefined,
   addElement?: (data:T[])=> T
-  scrollDelay?: number
+  scrollDelay?: number,
+  updateBeforeSortStart?: ()=> void
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -92,6 +93,7 @@ function DraggableFlatList<T>(props:Props<T>) {
         />}
         last={last}
         scrollDelay={props.scrollDelay || 0.5 * data.length}
+        updateBeforeSortStart={props.updateBeforeSortStart}
   />
     </View>
   );

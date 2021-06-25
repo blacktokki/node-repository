@@ -14,7 +14,8 @@ type Props<T> = {
   keyExtractor:(item:T, index:number)=>string,
   addTitle:string | undefined,
   addElement?: (data:T[])=> T
-  scrollDelay?: number
+  scrollDelay?: number,
+  updateBeforeSortStart?: ()=> void
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -50,7 +51,7 @@ function DraggableFlatList<T>(props:Props<T>) {
   return (
     <View style={{ height:props.height }}>
       <_DraggableFlatList
-        onRef={(ref)=>{console.log('!', Object.keys(ref).length);flatListRef = ref}}
+        onRef={(ref)=>{console.log('onref');flatListRef = ref}}
         scrollEnabled={props.scrollEnabled}
         data={data}
         renderItem={renderItem}
