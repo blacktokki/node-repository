@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, FlatList, Button } from "react-native";
+import React, { useState, useCallback, useRef, useEffect, RefObject } from "react";
+import { View, FlatList, Button, NativeSyntheticEvent, NativeScrollEvent, ScrollViewComponent } from "react-native";
 import {SortableContainer, SortableElement, SortEnd} from 'react-sortable-hoc';
 
 const Results = SortableContainer((props:any) => {
@@ -12,6 +12,18 @@ const Results = SortableContainer((props:any) => {
         }
         setDataLength(props.data.length)
       }
+      const el = (ref.current?.getNativeScrollRef() as any).getScrollableNode()
+      if (el && props.horizontal) {
+        const onWheel = (e:any) => {
+          if (e.deltaY == 0) return;
+          e.preventDefault();
+          el.scrollTo({
+            left: el.scrollLeft + e.deltaY,
+          });
+        };
+        el.addEventListener("wheel", onWheel);
+        return () => el.removeEventListener("wheel", onWheel);
+      }
     });
     return(
       <FlatList
@@ -20,9 +32,15 @@ const Results = SortableContainer((props:any) => {
         data={props.data}
         scrollEnabled={props.scrollEnabled}
         keyExtractor={(item, index) => index.toString()}
+        horizontal={props.horizontal}
         removeClippedSubviews={true}
         windowSize={10 + Math.floor(props.data.length / 2)}
         ListFooterComponent={props.ListFooterComponent}
+        onScroll={(e:NativeSyntheticEvent<NativeScrollEvent>) => { 
+          //ref.current?.scrollToOffset({
+          //  offset:1,
+          //})
+        }}
         //contentContainerStyle={{
         //    flexGrow: 1
         //}}
@@ -51,6 +69,7 @@ type Props<T> = {
   addElement?: (data:T[])=> T
   scrollDelay?: number,
   updateBeforeSortStart?: ()=> void
+  horizontal: boolean | null | undefined
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -92,6 +111,7 @@ function DraggableFlatList<T>(props:Props<T>) {
           color="#888"
         />}
         last={last}
+        horizontal={props.horizontal}
         scrollDelay={props.scrollDelay || 0.5 * data.length}
         updateBeforeSortStart={props.updateBeforeSortStart}
   />

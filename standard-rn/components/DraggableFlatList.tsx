@@ -16,6 +16,7 @@ type Props<T> = {
   addElement?: (data:T[])=> T
   scrollDelay?: number,
   updateBeforeSortStart?: ()=> void
+  horizontal: boolean | null | undefined
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -58,6 +59,7 @@ function DraggableFlatList<T>(props:Props<T>) {
         keyExtractor={props.keyExtractor}
         onDragEnd={({ data }:DragEndParams<T>) => {setData(data);props.dataCallback(data)}}
         activationDistance={props.sortEnabled?0:9999}
+        horizontal={props.horizontal}
         removeClippedSubviews={true}
         windowSize={10 + Math.floor(props.data.length / 2)}
         ListFooterComponent={<Button

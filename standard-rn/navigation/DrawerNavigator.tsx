@@ -6,7 +6,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerScreenProps, createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ParamListBase, Route } from '@react-navigation/native'; 
 import * as React from 'react';
 import { Button } from 'react-native';
 
@@ -14,7 +13,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { DrawerParamList, TabOneParamList, TabTwoParamList } from '../types';
+import TabThreeScreen from '../screens/TabThreeScreen';
+import { DrawerParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from '../types';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -83,5 +83,6 @@ const initialRouteName = "TabOne"
 
 const Navigators = [
   DrawerNavigatorGeneric<TabOneParamList>("TabOne", "TabOneScreen", TabOneScreen, 'Tab One Title'),
-  DrawerNavigatorGeneric<TabTwoParamList>("TabTwo", "TabTwoScreen", TabTwoScreen, 'Tab Two Title')
+  DrawerNavigatorGeneric<TabTwoParamList>("TabTwo", "TabTwoScreen", TabTwoScreen, 'Tab Two Title'),
+  DrawerNavigatorGeneric<TabThreeParamList>("TabThree", "TabThreeScreen", TabThreeScreen, 'Tab Three Title')
 ]

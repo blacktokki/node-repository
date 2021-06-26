@@ -57,6 +57,7 @@ type Props = {
   scrollEnabled?: boolean, 
   sortEnabled?: boolean, 
   addTitle?: string, 
+  horizontal?: boolean | null,
   addElement?:(data:DraggableSection[])=>DraggableSection,
   dataCallback:(data:React.ReactNode[])=>void
 }
@@ -82,5 +83,6 @@ export default function DraggableFlatListMain(props:Props){
         keyExtractor={(item:React.ReactNode, index:number) => `main-draggable-item-${index}`}
         addElement={props.addElement}
         addTitle={props.addTitle}
+        horizontal={props.horizontal}
     />)
 }

@@ -11,7 +11,8 @@ type Props<T> ={
   addTitle?: string,
   sortEnabled:boolean,
   renderItem:(params:RenderItemParams<T>)=>React.ReactNode
-  addElement?:(data:T[])=>T
+  addElement?:(data:T[])=>T,
+  horizontal?: boolean | null
 }
 
 export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemParams<T> ,Props<T> & P>{
@@ -42,6 +43,7 @@ export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemPar
           addTitle={this.props.addTitle}
           addElement={this.props.addElement}
           scrollDelay={this.expandSpeed * 2}
+          horizontal={this.props.horizontal}
           updateBeforeSortStart={this.updateBeforeSortStart}
         />
       </View>
