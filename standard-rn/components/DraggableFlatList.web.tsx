@@ -1,16 +1,20 @@
 import React, { useState, useCallback, useRef, useEffect, RefObject } from "react";
-import { View, FlatList, Button, NativeSyntheticEvent, NativeScrollEvent, ScrollViewComponent } from "react-native";
+import { View, FlatList, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import {SortableContainer, SortableElement, SortEnd} from 'react-sortable-hoc';
 
 const Results = SortableContainer((props:any) => {
     const [dataLength, setDataLength] = useState(props.data.length)
     const ref = useRef<FlatList>(null)
     useEffect(()=>{
-      if (dataLength != props.data.length){
-        if (props.last == props.data.length){
+      console.log(dataLength, '!=', props.data.length, '==', props.last)
+      if (dataLength != props.data.length && props.last > 0){
+        if (dataLength < props.data.length && props.last == props.data.length){
           setTimeout(() =>{ref.current?.scrollToEnd()}, props.scrollDelay)
         }
         setDataLength(props.data.length)
+      }
+      if (dataLength < props.data.length && props.last ==1){
+        ref.current?.scrollToIndex({animated:true, index:1})
       }
       const el = (ref.current?.getNativeScrollRef() as any).getScrollableNode()
       if (el && props.horizontal) {
@@ -36,11 +40,7 @@ const Results = SortableContainer((props:any) => {
         removeClippedSubviews={true}
         windowSize={10 + Math.floor(props.data.length / 2)}
         ListFooterComponent={props.ListFooterComponent}
-        onScroll={(e:NativeSyntheticEvent<NativeScrollEvent>) => { 
-          //ref.current?.scrollToOffset({
-          //  offset:1,
-          //})
-        }}
+        onScroll={props.onScroll}
         //contentContainerStyle={{
         //    flexGrow: 1
         //}}
@@ -52,9 +52,9 @@ const Element = SortableElement((props:any) => {
     return props.children
 });
 
-export type RenderItemParams<T> = {
-  item:T,
-  index:number
+export type RenderItemParams<T> = {item:T, index:number}
+export type CommandSetterParams<T> = {
+  getData:()=>T[], add:(newData:T, index:any)=>void, remove:(index:any)=>T, shift:(newIndex:any, oldIndex:any)=>void
 }
 
 type Props<T> = {
@@ -65,11 +65,12 @@ type Props<T> = {
   renderItem:(params:RenderItemParams<T>)=>React.ReactNode,
   height:number,
   keyExtractor:(item:T, index:number)=>string,
-  addTitle:string | undefined,
-  addElement?: (data:T[])=> T
   scrollDelay?: number,
   updateBeforeSortStart?: ()=> void
-  horizontal: boolean | null | undefined
+  horizontal: boolean | null | undefined,
+  onScroll?: (e:NativeSyntheticEvent<NativeScrollEvent>)=>void,
+  commandSetter?: (params:CommandSetterParams<T>)=>void
+  ListFooterComponent?:React.ReactElement
 }
 
 function DraggableFlatList<T>(props:Props<T>) {
@@ -87,33 +88,47 @@ function DraggableFlatList<T>(props:Props<T>) {
   },
     []
   );
-  const add = useCallback((data, last) => {
-    if (props.addElement !== undefined){
-      const _data = data.map((item:T)=>item);
-      _data.splice(_data.length, 0, props.addElement(data));
-      setData(_data)
-      props.dataCallback(_data)
-      setLast(_data.length)
-    }
+  const read = useCallback(()=>data, [data])
+  const add = useCallback((newData, index) => {
+    const _data = data.map((item:T)=>item);
+    _data.splice(index, 0, newData);
+    setData(_data)
+    props.dataCallback(_data)
+    setLast(index + 1)
   }, [data, last])
+  const remove = useCallback((index)=>{
+    const _data = data.map((item:T)=>item);
+    _data.splice(index, 1);
+    setData(_data)
+    props.dataCallback(_data)
+    setLast(-1)
+    return data[index]
+  }, [data])
+  const shift = useCallback((newIndex, oldIndex)=>{
+    if (newIndex!=oldIndex){
+      const _data = data.map((item:T)=>item);
+      _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]);
+      setData(_data);
+      props.dataCallback(_data)
+    }
+  },[data])
+  if (props.commandSetter)
+    props.commandSetter({getData:read, add:add, remove:remove, shift:shift})
   return (
     <View style={{ height:props.height }}>
       <Results
         data={data}
         renderItem={renderItem}
         keyExtractor={props.keyExtractor}
-        onSortEnd={({newIndex, oldIndex}:SortEnd) => {if (newIndex!=oldIndex){const _data = data.map((item:T)=>item); _data.splice(newIndex, 0, _data.splice(oldIndex, 1)[0]); setData(_data); props.dataCallback(_data)}}}
+        onSortEnd={({newIndex, oldIndex}:SortEnd) => shift(newIndex, oldIndex)}
         distance={props.sortEnabled ? 5 : 99999}
         scrollEnabled={props.scrollEnabled}
-        ListFooterComponent={<Button
-          onPress={()=>add(data, last)}
-          title={props.addTitle || ""}
-          color="#888"
-        />}
+        ListFooterComponent={props.ListFooterComponent}
         last={last}
         horizontal={props.horizontal}
         scrollDelay={props.scrollDelay || 0.5 * data.length}
         updateBeforeSortStart={props.updateBeforeSortStart}
+        onScroll={props.onScroll}
   />
     </View>
   );

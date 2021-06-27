@@ -1,64 +1,49 @@
-import * as React from 'react';
+import React, {useCallback} from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { DrawerParamList} from '../types';
-import { StyleSheet, Text} from 'react-native';
+import { StyleSheet, Text, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 //import DraggableFlatListDummy from '../components/DraggableFlatListDummy'
 import SectionDummy from '../components/SectionDummy'
-import DraggableFlatListMain from '../components/DraggableFlatListMain'
+import DraggableFlatListMain, {CommandSetterParams} from '../components/DraggableFlatListMain'
 
 export default function TabThreeScreen({
   navigation
 }: StackScreenProps< DrawerParamList, 'TabTwo'>) {
+  const header = []
+  const arr = []
+  for (let i=0;i<10;i++){
+    header[i] = <Text style={styles.Panel_Button_Text}>{'Tab One' + (i+1)} </Text>
+    arr[i] = <SectionDummy
+    key={i}
+    title={'Tab One' + (i+1)}
+    pressText1='Go 2 screen!'
+    onPress1={() => {navigation.navigate('TabTwo')}}
+    path='/screens/TabOneScreen.tsx'
+  />
+  }
+  const command:CommandSetterParams | any = {} 
+  const onScroll = (e:NativeSyntheticEvent<NativeScrollEvent>) =>{
+    const n=e.nativeEvent;
+    console.log(n.contentOffset.x/n.contentSize.width, n.layoutMeasurement.width/n.contentSize.width)
+    if ((n.contentOffset.x + n.layoutMeasurement.width) >= n.contentSize.width){
+      const _data = command.remove(0);
+      setTimeout(() => command.add(_data, command.getData().length), 200)
+    }
+    else if (n.contentOffset.x == 0 ){
+      const _data = command.remove(command.getData().length -1);
+      setTimeout(() => command.add(_data, 0), 200)
+    }
+  }
   return (<DraggableFlatListMain
-    header={[
-      <Text style={styles.Panel_Button_Text}>{'Tab Two 1'} </Text>,
-      <Text style={styles.Panel_Button_Text}>{'Tab Two 2'} </Text>,
-      <Text style={styles.Panel_Button_Text}>{'Tab Two 3'} </Text>,
-      <Text style={styles.Panel_Button_Text}>{'Tab Two 4'} </Text>,
-      <Text style={styles.Panel_Button_Text}>{'Tab Two 5'} </Text>,
-      <Text style={styles.Panel_Button_Text}>{'Tab Two 6'} </Text>
-    ]}
+    header={header}
+    commandSetter={(commandAll:CommandSetterParams)=>{Object.assign(command, commandAll)}}
     dataCallback={()=>{}}
     holderStyle={styles.Panel_Holder}
     sortEnabled={false}
     horizontal={true}
+    onScroll={onScroll}
   >
-    <SectionDummy
-      title='Tab Two'
-      pressText1='Go 1 screen!'
-      onPress1={() => {navigation.navigate('TabOne')}}
-      path='/screens/TabTwoScreen.tsx'
-    />
-    <SectionDummy
-        title='Tab Two'
-        pressText1='Go 1 screen!'
-        onPress1={() => {navigation.navigate('TabOne')}}
-        path='/screens/TabTwoScreen.tsx'
-    />
-    <SectionDummy
-        title='Tab Two'
-        pressText1='Go 1 screen!'
-        onPress1={() => {navigation.navigate('TabOne')}}
-        path='/screens/TabTwoScreen.tsx'
-    />
-    <SectionDummy
-      title='Tab Two'
-      pressText1='Go 1 screen!'
-      onPress1={() => {navigation.navigate('TabOne')}}
-      path='/screens/TabTwoScreen.tsx'
-    />
-    <SectionDummy
-        title='Tab Two'
-        pressText1='Go 1 screen!'
-        onPress1={() => {navigation.navigate('TabOne')}}
-        path='/screens/TabTwoScreen.tsx'
-    />
-    <SectionDummy
-        title='Tab Two'
-        pressText1='Go 1 screen!'
-        onPress1={() => {navigation.navigate('TabOne')}}
-        path='/screens/TabTwoScreen.tsx'
-    />
+    {arr}
   </DraggableFlatListMain>
   )
   //return (<DraggableFlatListDummy/>) 
@@ -78,6 +63,5 @@ const styles = StyleSheet.create({
   Panel_Holder: {
     borderWidth: 1,
     borderColor: '#888',
-    marginVertical: 5
   }
 })

@@ -1,18 +1,19 @@
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import Accordion, {RenderItemParams as AccordionRenderItemParams, Accordion_Panel, renderItemInnerParams}  from './Accordion'
-import DraggableFlatList, {RenderItemParams as _RenderItemParams} from './DraggableFlatList'
-
+import { Platform, StyleSheet, View, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import Accordion, {RenderItemParams as AccordionRenderItemParams }  from './Accordion'
+import DraggableFlatList, {RenderItemParams as _RenderItemParams, CommandSetterParams as _CommandSetterParams} from './DraggableFlatList'
 export type RenderItemParams<T> = _RenderItemParams<T> & AccordionRenderItemParams<T>
+export type CommandSetterParams<T> = _CommandSetterParams<T>
 
 type Props<T> ={
   dataCallback:(data:T[])=>void,
   height: number,
-  addTitle?: string,
   sortEnabled:boolean,
   renderItem:(params:RenderItemParams<T>)=>React.ReactNode
-  addElement?:(data:T[])=>T,
-  horizontal?: boolean | null
+  horizontal?: boolean | null,
+  onScroll?: (e:NativeSyntheticEvent<NativeScrollEvent>)=>void,
+  commandSetter?: (params:CommandSetterParams<T>)=> void
+  ListFooterComponent?:React.ReactElement
 }
 
 export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemParams<T> ,Props<T> & P>{
@@ -36,15 +37,16 @@ export default class DraggableAccordion<T, P> extends Accordion<T, RenderItemPar
         <DraggableFlatList<T>
           data={this.props.data}
           dataCallback={this.props.dataCallback}
+          commandSetter={this.props.commandSetter}
           renderItem={this.renderDraggableItem}//1
           sortEnabled={this.props.sortEnabled}
           height={this.props.height}
           keyExtractor={(item, index)=>`${index}`}
-          addTitle={this.props.addTitle}
-          addElement={this.props.addElement}
           scrollDelay={this.expandSpeed * 2}
           horizontal={this.props.horizontal}
           updateBeforeSortStart={this.updateBeforeSortStart}
+          onScroll={this.props.onScroll}
+          ListFooterComponent={this.props.ListFooterComponent}
         />
       </View>
     );

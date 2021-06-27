@@ -1,8 +1,8 @@
 import React, {useCallback, useRef} from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import {  DrawerParamList } from '../types';
-import { StyleSheet, Text} from 'react-native';
-import DraggableFlatListMain, {DraggableSection} from '../components/DraggableFlatListMain'
+import { StyleSheet, Text, Button} from 'react-native';
+import DraggableFlatListMain, {CommandSetterParams} from '../components/DraggableFlatListMain'
 import SectionDummy from '../components/SectionDummy'
 
 
@@ -10,19 +10,7 @@ export default function TabOneScreen({
   navigation
 }: StackScreenProps< DrawerParamList, 'TabOne'>) {
   const ref= useRef<typeof DraggableFlatListMain>(null)
-  const addElement = useCallback((data:DraggableSection[])=>{
-    return {
-    header:(
-      <Text style={styles.Panel_Button_Text}>{'Tab One' + (data.length +1)} </Text>
-    ),
-    body:(
-     <SectionDummy
-        title={'Tab One' + (data.length + 1)}
-        pressText1='Go 2 screen!'
-        onPress1={() => {navigation.navigate('TabTwo')}}
-       path='/screens/TabOneScreen.tsx'
-      />)}
-  },[])
+  const command:CommandSetterParams | any = {} 
   const dataCallback = useCallback((data)=>{console.log('dataCallback')}, [])
   const header = []
   const arr = []
@@ -39,9 +27,25 @@ export default function TabOneScreen({
   return (
     <DraggableFlatListMain
       header={header}
-      addElement={addElement}
+      commandSetter={(commandAll:CommandSetterParams)=>{Object.assign(command, commandAll)}}
       dataCallback={dataCallback}
-      addTitle="add"
+      ListFooterComponent={
+        <Button
+          onPress={()=>{command.add({
+            header:(
+              <Text style={styles.Panel_Button_Text}>{'Tab One' + (command.getData().length +1)} </Text>
+            ),
+            body:(
+             <SectionDummy
+                title={'Tab One' + (command.getData().length + 1)}
+                pressText1='Go 2 screen!'
+                onPress1={() => {navigation.navigate('TabTwo')}}
+               path='/screens/TabOneScreen.tsx'
+              />)}, command.getData().length)}}
+          title="add"
+          color="#888"
+        />
+      }
     >
       {arr}
     </DraggableFlatListMain>

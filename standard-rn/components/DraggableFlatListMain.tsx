@@ -1,8 +1,9 @@
 
 import React from "react";
-import { View, TouchableOpacity, Dimensions, Platform, StyleProp, ViewStyle, Animated } from "react-native";
+import { View, TouchableOpacity, Dimensions, Platform, StyleProp, ViewStyle, Animated, NativeSyntheticEvent, NativeScrollEvent  } from "react-native";
 import { useHeaderHeight } from '@react-navigation/stack';
-import DraggableAccordion, { RenderItemParams } from './DraggableAccordion'
+import DraggableAccordion, { RenderItemParams, CommandSetterParams as _CommandSetterParams } from './DraggableAccordion'
+export type CommandSetterParams = _CommandSetterParams<DraggableSection>
 
 const renderItem = ({ item, index, drag, isActive, holderStyle, buttonOnPress, contentStyle, contentOnLayout, onClose }:RenderItemParams<DraggableSection>) => {
   return (
@@ -56,24 +57,26 @@ type Props = {
   holderStyle?:StyleProp<ViewStyle>,
   scrollEnabled?: boolean, 
   sortEnabled?: boolean, 
-  addTitle?: string, 
   horizontal?: boolean | null,
-  addElement?:(data:DraggableSection[])=>DraggableSection,
-  dataCallback:(data:React.ReactNode[])=>void
+  dataCallback:(data:React.ReactNode[])=>void,
+  onScroll?: (e:NativeSyntheticEvent<NativeScrollEvent>)=>void,
+  commandSetter?: (params:CommandSetterParams)=> void
+  ListFooterComponent?:React.ReactElement
 }
 
-export type DraggableSection = {
+type DraggableSection = {
   header:React.ReactNode
   body:React.ReactNode
 }
 
+
 export default function DraggableFlatListMain(props:Props){
     const headerHeight = useHeaderHeight();
     let _data =  React.Children.toArray(props.children).map((value, index)=>({header:props.header[index] || (<View></View>), body:value}))
-    let _itemStyles = props.holderStyle || {}
     let _sortEnabled = (props.sortEnabled === undefined ? true : props.sortEnabled)
     return (<DraggableAccordion<DraggableSection, {}>
-        data={_data}  
+        data={_data}
+        commandSetter={props.commandSetter}
         dataCallback={props.dataCallback}
         sortEnabled={_sortEnabled}
         scrollEnabled={props.scrollEnabled}
@@ -81,8 +84,8 @@ export default function DraggableFlatListMain(props:Props){
         holderStyle={props.holderStyle}
         renderItem={_sortEnabled ? renderItemSort : renderItemUnsort}
         keyExtractor={(item:React.ReactNode, index:number) => `main-draggable-item-${index}`}
-        addElement={props.addElement}
-        addTitle={props.addTitle}
         horizontal={props.horizontal}
+        onScroll={props.onScroll}
+        ListFooterComponent={props.ListFooterComponent}
     />)
 }
