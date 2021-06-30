@@ -72,17 +72,22 @@ type DraggableSection = {
 
 export default function DraggableFlatListMain(props:Props){
     const headerHeight = useHeaderHeight();
-    let _data =  React.Children.toArray(props.children).map((value, index)=>({header:props.header[index] || (<View></View>), body:value}))
-    let _sortEnabled = (props.sortEnabled === undefined ? true : props.sortEnabled)
+    const _data =  React.Children.toArray(props.children).map((value, index)=>({header:props.header[index] || (<View></View>), body:value}))
+    const _sortEnabled = (props.sortEnabled === undefined ? true : props.sortEnabled)
+    const _renderItem = _sortEnabled ? renderItemSort : renderItemUnsort
+    const _height = Dimensions.get("window").height - headerHeight
+    const __renderItem = (params:RenderItemParams<DraggableSection>)=> {
+      return <View style={props.horizontal?{minHeight:0, width:Dimensions.get('window').width}:{flex:1}}>{_renderItem(params)}</View>
+    }
     return (<DraggableAccordion<DraggableSection, {}>
         data={_data}
         commandSetter={props.commandSetter}
         dataCallback={props.dataCallback}
         sortEnabled={_sortEnabled}
         scrollEnabled={props.scrollEnabled}
-        height={Dimensions.get("window").height - headerHeight}
+        height={_height}
         holderStyle={props.holderStyle}
-        renderItem={_sortEnabled ? renderItemSort : renderItemUnsort}
+        renderItem={__renderItem}
         keyExtractor={(item:React.ReactNode, index:number) => `main-draggable-item-${index}`}
         horizontal={props.horizontal}
         onScroll={props.onScroll}

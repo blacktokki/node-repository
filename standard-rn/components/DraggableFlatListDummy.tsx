@@ -55,6 +55,9 @@ export default function DraggableFlatListDummy(){
     return (<DraggableFlatList<Item>
         height={Dimensions.get("window").height - headerHeight}
         data={exampleData}
+        dataCallback={()=>{}}
+        sortEnabled={false}
+        horizontal={false}
         renderItem={exampleRenderItem}
         keyExtractor={(item:Item, index:number) => `draggable-item-${item.key}`}
     />)

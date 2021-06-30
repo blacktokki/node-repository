@@ -112,7 +112,7 @@ export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
   render() {
     return this.props.renderItem({
       item:this.props.item,
-      holderStyle:[this.props.holderStyle, {flex:1, opacity:this.state.maxHeight== null?0:100}],
+      holderStyle:[this.props.holderStyle, {opacity:this.state.maxHeight== null?0:100}],
       buttonOnPress:this.onPress.bind(this),
       contentStyle:this.state.style,
       contentOnLayout:((event:LayoutChangeEvent) => {
