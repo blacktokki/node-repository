@@ -7,7 +7,12 @@ import Navigation from './navigation';
 import _ from 'lodash';
 
 (function(l) {
-  if (l !== undefined && l.search[1] === '/' ) {
+  if (process.versions['electron']){  // for electron
+    window.history.replaceState(null, '',
+        '/node-repository/one'
+    );
+  }
+  else if (l !== undefined && l.search[1] === '/' ) {  // for github-page
     var decoded = l.search.slice(1).split('&').map(function(s) { 
       return s.replace(/~and~/g, '&')
     }).join('?');
@@ -22,7 +27,7 @@ const _console = _.clone(console);
 console.warn = (message: string) => {
     var warn = true;
     ignoreWarnings.forEach((value)=>{
-        if (message.indexOf(value) <= -1) {
+        if (message.indexOf && message.indexOf(value) <= -1) {
             warn = false;
         }
     });

@@ -1,4 +1,6 @@
 {
+  "version": "1.0.0",
+  "name": "standard-rn",
   "main": "node_modules/expo/AppEntry.js",
   "homepage": "http://blacktokki.github.io/node-repository",
   "scripts": {
@@ -6,10 +8,13 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "desktop": "ELECTRON_DISABLE_SECURITY_WARNINGS=1 electron-webpack dev",
     "eject": "expo eject",
     "test": "jest --watchAll",
     "github": "gh-pages -d web-build",
-    "pregithub": "expo build:web  && copyfiles --flat 404.html web-build"
+    "pregithub": "expo build:web  && copyfiles --flat 404.html web-build",
+    "desktop-build": "electron-webpack && electron-builder --dir -c.compression=store",
+    "desktop-test:build": "electron-webpack && electron-builder --dir -c.compression=store -c.mac.identity=null"
   },
   "jest": {
     "preset": "jest-expo"
@@ -44,11 +49,42 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@expo/electron-adapter": "0.0.55",
+    "@expo/webpack-config": "^0.13.1",
     "@types/lodash": "^4.14.170",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
+    "electron": "^6.0.12",
+    "electron-builder": "^22.11.7",
     "jest-expo": "~41.0.0",
     "typescript": "~4.0.0"
+  },
+  "build": {
+    "appId": "com.electron.standard-rn",
+    "mac": {
+      "target": "default",
+      "category": "public.app-category.business"
+    },
+    "dmg": {
+      "title": "standard-rn"
+    },
+    "extraMetadata": {
+      "main": "main.js"
+    },
+    "files": [
+      {
+        "from": "dist/main/",
+        "to": "./",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "dist/renderer",
+        "to": "./",
+        "filter": ["**/*"]
+      },
+      "package.json",
+      "**/node_modules/**/*"
+    ]
   },
   "private": true
 }
