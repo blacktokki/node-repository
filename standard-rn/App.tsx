@@ -7,12 +7,7 @@ import Navigation from './navigation';
 import _ from 'lodash';
 
 (function(l) {
-  if (process.versions['electron']){  // for electron
-    window.history.replaceState(null, '',
-        '/node-repository/one'
-    );
-  }
-  else if (l !== undefined && l.search[1] === '/' ) {  // for github-page
+  if (l !== undefined && l.search[1] === '/' ) {  // for github-page
     var decoded = l.search.slice(1).split('&').map(function(s) { 
       return s.replace(/~and~/g, '&')
     }).join('?');
@@ -46,6 +41,11 @@ export default function App() {
   if (!isLoadingComplete) {
     return null;
   } else {
+    if (process.versions['electron']){  // for electron
+      window.history.replaceState(null, '',
+          '/node-repository/one'
+      );
+    }
     return (
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />
