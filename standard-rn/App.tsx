@@ -6,17 +6,19 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import _ from 'lodash';
 
-(function() {  // for electron
-  var proxied = window.XMLHttpRequest.prototype.open;
-  window.XMLHttpRequest.prototype.open = function() {
-      if(window.location.href != window.location.origin){
-        sessionStorage.setItem('_href', window.location.href)
-        window.history.replaceState(null, '', window.location.origin)
-      }
-      var arr:any = []
-      return proxied.apply(this, arr.slice.call(arguments));
-  };
-})();
+if (process.versions && process.versions['electron']){
+  (function() {  // for electron
+    var proxied = window.XMLHttpRequest.prototype.open;
+    window.XMLHttpRequest.prototype.open = function() {
+        if(window.location.href != window.location.origin){
+          sessionStorage.setItem('_href', window.location.href)
+          window.history.replaceState(null, '', window.location.origin)
+        }
+        var arr:any = []
+        return proxied.apply(this, arr.slice.call(arguments));
+    };
+  })();
+}
 
 
 (function(l) {  // for github-page
@@ -58,7 +60,7 @@ export default function App() {
   if (!isLoadingComplete) {
     return null;
   } else {
-    if (process.versions['electron']){  // for electron
+    if (process.versions && process.versions['electron']){  // for electron
       var _href = sessionStorage.getItem('_href')
       if (_href){
         window.history.replaceState(null, '', _href)
