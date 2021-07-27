@@ -15,7 +15,8 @@ interface PanelProp<T>{
     item: T,
     numnum:number,
     initExpanded:boolean,
-    expandSpeed:number
+    horizontal?:boolean | null,
+    expandSpeed:number,
     holderStyle:StyleProp<ViewStyle>,
     closeAll: ()=>void,
     renderItem: (params:renderItemInnerParams<T>)=>React.ReactNode
@@ -110,9 +111,12 @@ export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
   }
  
   render() {
+    const holderStyle:any[] = [this.props.holderStyle, {opacity:this.state.maxHeight== null?0:100}]
+    if (this.props.horizontal)
+      holderStyle.push({height:'100%', backgroundColor: 'rgba(0, 0, 0, 0)'})
     return this.props.renderItem({
       item:this.props.item,
-      holderStyle:[this.props.holderStyle, {opacity:this.state.maxHeight== null?0:100}],
+      holderStyle:holderStyle,
       buttonOnPress:this.onPress.bind(this),
       contentStyle:this.state.style,
       contentOnLayout:((event:LayoutChangeEvent) => {
@@ -124,7 +128,7 @@ export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
           })
         }
       }).bind(this),
-      onClose:this.onClose.bind(this)
+      onClose:this.onClose.bind(this),
     })
   }
 }
@@ -140,7 +144,8 @@ type Props<T, R extends RenderItemParams<T>> = {
     renderItem:(params:R)=>React.ReactNode,
     keyExtractor:(item:T, index:number)=>string,
     holderStyle:StyleProp<ViewStyle>,
-    expandSpeed?:number
+    expandSpeed?:number,
+    horizontal?: boolean | null
   }
 
 export default class Accordion<T, R extends RenderItemParams<T>, P> extends Component<Props<T, R> & P> {
@@ -166,6 +171,7 @@ export default class Accordion<T, R extends RenderItemParams<T>, P> extends Comp
         numnum={params.index}
         key={params.index}
         holderStyle={this.props.holderStyle}
+        horizontal={this.props.horizontal}
         closeAll={this.update_Layout.bind(this)}
         item={params.item}
         initExpanded={params.initExpanded}

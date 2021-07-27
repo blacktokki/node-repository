@@ -10,7 +10,6 @@ type Props<T> ={
   height: number,
   sortEnabled:boolean,
   renderItem:(params:RenderItemParams<T>)=>React.ReactNode
-  horizontal?: boolean | null,
   onScroll?: (e:NativeSyntheticEvent<NativeScrollEvent>)=>void,
   commandSetter?: (params:CommandSetterParams<T>)=> void
   ListFooterComponent?:React.ReactElement
