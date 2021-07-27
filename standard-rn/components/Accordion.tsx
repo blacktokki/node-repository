@@ -122,7 +122,7 @@ export class Accordion_Panel<T> extends Component<PanelProp<T>, PanelState> {
       contentOnLayout:((event:LayoutChangeEvent) => {
         var {x, y, width, height} = event.nativeEvent.layout;
         if (this.state.maxHeight == null){
-          console.log(this.state.maxHeight, height)
+          //console.log(this.state.maxHeight, height)
           this.setState({
             maxHeight: height
           })

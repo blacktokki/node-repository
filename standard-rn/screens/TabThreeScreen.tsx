@@ -24,7 +24,7 @@ export default function TabThreeScreen({
   const command:CommandSetterParams | any = {} 
   const onScroll = (e:NativeSyntheticEvent<NativeScrollEvent>) =>{
     const n=e.nativeEvent;
-    console.log(n.contentOffset.x/n.contentSize.width, n.layoutMeasurement.width/n.contentSize.width)
+    //console.log(n.contentOffset.x/n.contentSize.width, n.layoutMeasurement.width/n.contentSize.width)
     if ((n.contentOffset.x + n.layoutMeasurement.width) >= n.contentSize.width){
       const _data = command.remove(0);
       setTimeout(() => command.add(_data, command.getData().length), 200)

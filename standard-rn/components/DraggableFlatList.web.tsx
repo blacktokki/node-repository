@@ -6,7 +6,7 @@ const Results = SortableContainer((props:any) => {
     const [dataLength, setDataLength] = useState(props.data.length)
     const ref = useRef<FlatList>(null)
     useEffect(()=>{
-      console.log(dataLength, '!=', props.data.length, '==', props.last)
+      //console.log(dataLength, '!=', props.data.length, '==', props.last)
       if (dataLength != props.data.length && props.last > 0){
         if (dataLength < props.data.length && props.last == props.data.length){
           setTimeout(() =>{ref.current?.scrollToEnd()}, props.scrollDelay)

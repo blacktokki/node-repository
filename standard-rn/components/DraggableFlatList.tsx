@@ -74,7 +74,7 @@ function DraggableFlatList<T>(props:Props<T>) {
   return (
     <View style={{ height:props.height }}>
       <_DraggableFlatList
-        onRef={(ref)=>{console.log('onref');flatListRef = ref}}
+        onRef={(ref)=>{flatListRef = ref}}
         onScrollOffsetChange={(offset: number) => {/*console.log(offset)*/}}
         scrollEnabled={props.scrollEnabled}
         data={data}
