@@ -10,12 +10,12 @@ if (process.versions && process.versions['electron']){
   (function() {  // for electron
     var proxied = window.XMLHttpRequest.prototype.open;
     window.XMLHttpRequest.prototype.open = function() {
-        if(window.location.href != window.location.origin){
-          sessionStorage.setItem('_href', window.location.href)
-          window.history.replaceState(null, '', window.location.origin)
-        }
-        var arr:any = []
-        return proxied.apply(this, arr.slice.call(arguments));
+      if(window.location.href != window.location.origin + '/'){
+        sessionStorage.setItem('_href', window.location.href)
+      }
+      window.history.replaceState(null, '', window.location.origin)    
+      var arr:any = []
+      return proxied.apply(this, arr.slice.call(arguments));
     };
   })();
 }
@@ -62,13 +62,7 @@ export default function App() {
   } else {
     if (process.versions && process.versions['electron']){  // for electron
       var _href = sessionStorage.getItem('_href')
-      if (_href){
-        window.history.replaceState(null, '', _href)
-        sessionStorage.removeItem('_href')    
-      }
-      else{
-        window.history.replaceState(null, '', '/');
-      }
+      window.history.replaceState(null, '', _href || '/')
     }
     return (
       <SafeAreaProvider>

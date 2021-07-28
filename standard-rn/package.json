@@ -13,9 +13,10 @@
     "test": "jest --watchAll",
     "github": "gh-pages -d web-build",
     "pregithub": "expo build:web  && copyfiles --flat 404.html web-build",
-    "desktop-build": "electron-webpack && electron-builder --dir -c.compression=store",
-    "desktop-test:build": "electron-webpack && electron-builder --dir -c.compression=store -c.mac.identity=null",
-    "desktop-windows:build": ".\\node_modules\\.bin\\electron-webpack.cmd && electron-builder --dir -c.compression=store"
+    "desktop:mac": "electron-webpack && electron-builder --dir -c.compression=store -c.mac.identity=null",
+    "desktop:windows": ".\\node_modules\\.bin\\electron-webpack.cmd && electron-builder --dir -c.compression=store",
+    "mac": "electron-webpack && electron-builder --mac -c.compression=store",
+    "windows": ".\\node_modules\\.bin\\electron-webpack.cmd && electron-builder --win -c.compression=store"
   },
   "jest": {
     "preset": "jest-expo"
@@ -71,9 +72,6 @@
     },
     "win":{
       "target": ["nsis", "msi"]
-    },
-    "nsis":{
-      "oneClick": false
     },
     "extraMetadata": {
       "main": "main.js"
