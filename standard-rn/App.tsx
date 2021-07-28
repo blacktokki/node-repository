@@ -61,8 +61,13 @@ export default function App() {
     return null;
   } else {
     if (process.versions && process.versions['electron']){  // for electron
-      var _href = sessionStorage.getItem('_href')
-      window.history.replaceState(null, '', _href || '/')
+      if (process.platform == 'win32' && process.env.NODE_ENV == 'production'){
+        window.history.replaceState(null, '', 'file:///')
+      }
+      else{
+        var _href = sessionStorage.getItem('_href')
+        window.history.replaceState(null, '', _href || '/')
+      }
     }
     return (
       <SafeAreaProvider>

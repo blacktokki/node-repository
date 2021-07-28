@@ -71,7 +71,7 @@
       "title": "standard-rn"
     },
     "win":{
-      "target": ["nsis", "msi"]
+      "target": ["nsis"]
     },
     "extraMetadata": {
       "main": "main.js"
