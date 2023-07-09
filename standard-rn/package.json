@@ -58,7 +58,7 @@
     "@types/react-native": "~0.63.2",
     "electron": "^9.4.0",
     "electron-builder": "^22.11.7",
-    "jest-expo": "~41.0.0",
+    "jest-expo": "~49.0.0",
     "typescript": "~4.0.0"
   },
   "build": {
